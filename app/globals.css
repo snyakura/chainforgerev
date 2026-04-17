@@ -3,7 +3,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
-:root {
+/* Dark Theme (default) */
+.dark, :root {
   --radius: 0.625rem;
   --background: oklch(0.08 0.01 60);
   --foreground: oklch(0.95 0.01 90);
@@ -29,6 +30,34 @@
   --chart-3: oklch(0.6 0.22 25);
   --chart-4: oklch(0.7 0.15 230);
   --chart-5: oklch(0.7 0.15 300);
+}
+
+/* Light Theme */
+.light {
+  --background: oklch(0.98 0.005 90);
+  --foreground: oklch(0.15 0.01 60);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.01 60);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.01 60);
+  --primary: oklch(0.65 0.2 55);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.94 0.01 90);
+  --secondary-foreground: oklch(0.15 0.01 60);
+  --muted: oklch(0.92 0.01 90);
+  --muted-foreground: oklch(0.45 0.02 60);
+  --accent: oklch(0.65 0.2 55);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.55 0.25 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.88 0.01 90);
+  --input: oklch(0.88 0.01 90);
+  --ring: oklch(0.65 0.2 55);
+  --chart-1: oklch(0.65 0.2 55);
+  --chart-2: oklch(0.6 0.22 145);
+  --chart-3: oklch(0.55 0.25 25);
+  --chart-4: oklch(0.6 0.18 230);
+  --chart-5: oklch(0.6 0.18 300);
 }
 
 @theme inline {
@@ -69,7 +98,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300;
   }
 }
 

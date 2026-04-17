@@ -18,10 +18,10 @@ const initialMarketData: MarketData[] = [
   { symbol: "ETH/USD", name: "Ethereum", price: 3456.78, change: -1.23, volume: "12.3B", type: "crypto" },
   { symbol: "EUR/USD", name: "Euro", price: 1.0872, change: 0.15, volume: "8.2B", type: "forex" },
   { symbol: "GBP/USD", name: "British Pound", price: 1.2634, change: -0.08, volume: "5.1B", type: "forex" },
+  { symbol: "USD/ZAR", name: "South African Rand", price: 18.4523, change: 0.67, volume: "3.2B", type: "forex" },
   { symbol: "XRP/USD", name: "Ripple", price: 0.5234, change: 4.56, volume: "2.1B", type: "crypto" },
-  { symbol: "USD/JPY", name: "Japanese Yen", price: 154.32, change: 0.23, volume: "6.8B", type: "forex" },
   { symbol: "SOL/USD", name: "Solana", price: 145.67, change: -2.89, volume: "3.4B", type: "crypto" },
-  { symbol: "AUD/USD", name: "Australian Dollar", price: 0.6542, change: 0.45, volume: "4.2B", type: "forex" },
+  { symbol: "USDT/USD", name: "Tether", price: 1.0001, change: 0.01, volume: "45.2B", type: "crypto" },
 ];
 
 export function LiveMarket() {

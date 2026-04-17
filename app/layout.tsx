@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -12,7 +13,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "TradeMaster | Bitcoin & Crypto Trading Institute",
   description:
-    "Master the art of Bitcoin, Forex and Cryptocurrency trading with expert-led courses. Join thousands of successful traders worldwide.",
+    "Master the art of Bitcoin, Forex and Cryptocurrency trading with expert-led courses, mentorship, signals, and tools. Join thousands of successful traders worldwide.",
   keywords: [
     "bitcoin trading",
     "forex trading",
@@ -21,6 +22,8 @@ export const metadata: Metadata = {
     "bitcoin",
     "cryptocurrency",
     "investment",
+    "trading signals",
+    "mentorship",
   ],
   generator: "v0.app",
   icons: {
@@ -45,9 +48,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-background scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className={`${poppins.variable} font-sans antialiased`}>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange={false}
+        >
+          {children}
+        </ThemeProvider>
         {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>

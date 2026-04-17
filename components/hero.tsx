@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Play, TrendingUp, Shield, Zap } from "lucide-react";
+import { ArrowRight, Play, TrendingUp, Shield, Zap, Signal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TradingChart } from "@/components/trading-chart";
 
@@ -13,9 +13,10 @@ const stats = [
 ];
 
 const features = [
-  { icon: TrendingUp, label: "Live Market Analysis" },
-  { icon: Shield, label: "Risk Management" },
-  { icon: Zap, label: "Instant Signals" },
+  { icon: TrendingUp, label: "Expert Mentorship" },
+  { icon: Signal, label: "Live Trading Signals" },
+  { icon: Shield, label: "Risk Management Tools" },
+  { icon: Zap, label: "Real-time Analysis" },
 ];
 
 function scrollToSection(href: string) {
@@ -59,7 +60,7 @@ export function Hero() {
             </div>
 
             <h1 className="text-pretty text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              Master the Art of{" "}
+              Master{" "}
               <span className="bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
                 Forex & Crypto
               </span>{" "}
@@ -67,9 +68,9 @@ export function Hero() {
             </h1>
 
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Join over 50,000 traders who have transformed their financial
-              future with our expert-led courses, real-time market analysis, and
-              proven trading strategies.
+              Transform your financial future with expert-led mentorship, real-time trading signals, 
+              and professional tools. Join over 50,000 successful traders who have mastered the 
+              markets with our proven strategies.
             </p>
 
             <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
@@ -78,27 +79,26 @@ export function Hero() {
                 className="w-full bg-gradient-to-r from-primary to-orange-500 text-primary-foreground hover:opacity-90 sm:w-auto"
                 onClick={() => scrollToSection("#market")}
               >
-                Start Learning Now
+                Get Started
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="w-full border-border text-foreground hover:bg-secondary sm:w-auto"
-                onClick={() => scrollToSection("#testimonials")}
+                onClick={() => scrollToSection("#payments")}
               >
-                <Play className="mr-2 h-5 w-5" />
-                Watch Demo
+                Join Now
               </Button>
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-6 lg:justify-start">
+            <div className="mt-10 grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-6 lg:justify-start">
               {features.map((feature) => (
                 <div
                   key={feature.label}
                   className="flex items-center gap-2 text-sm text-muted-foreground"
                 >
-                  <feature.icon className="h-5 w-5 text-primary" />
+                  <feature.icon className="h-4 w-4 text-primary" />
                   {feature.label}
                 </div>
               ))}
