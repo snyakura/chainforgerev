@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Play, TrendingUp, Shield, Zap, Signal } from "lucide-react";
+import { ArrowRight, TrendingUp, Shield, Zap, Signal, Wallet, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TradingChart } from "@/components/trading-chart";
 
@@ -9,14 +9,14 @@ const stats = [
   { label: "Active Traders", value: "50K+" },
   { label: "Success Rate", value: "94%" },
   { label: "Countries", value: "120+" },
-  { label: "Courses", value: "45+" },
+  { label: "Signals Daily", value: "100+" },
 ];
 
 const features = [
-  { icon: TrendingUp, label: "Expert Mentorship" },
-  { icon: Signal, label: "Live Trading Signals" },
-  { icon: Shield, label: "Risk Management Tools" },
-  { icon: Zap, label: "Real-time Analysis" },
+  { icon: Signal, label: "Premium Signals" },
+  { icon: Wallet, label: "Funding & Withdrawals" },
+  { icon: Shield, label: "Secure Transactions" },
+  { icon: Zap, label: "Instant Processing" },
 ];
 
 function scrollToSection(href: string) {
@@ -34,7 +34,7 @@ function scrollToSection(href: string) {
 
 export function Hero() {
   return (
-    <section id="courses" className="relative min-h-screen overflow-hidden pt-32">
+    <section id="home" className="relative min-h-screen overflow-hidden pt-32">
       {/* Background effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
       <div className="absolute inset-0 opacity-30">
@@ -56,28 +56,28 @@ export function Hero() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
               </span>
-              Live Trading Sessions Available
+              Premium Trading Signals Available
             </div>
 
             <h1 className="text-pretty text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              Master{" "}
+              Your Gateway to{" "}
               <span className="bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
                 Forex & Crypto
               </span>{" "}
-              Trading
+              Success
             </h1>
 
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Transform your financial future with expert-led mentorship, real-time trading signals, 
-              and professional tools. Join over 50,000 successful traders who have mastered the 
-              markets with our proven strategies.
+              Signal provision and seamless transactions for traders 18+. We assist in funding and 
+              withdrawing from Deriv, Weltrade, and other brokers. Join the CHAINFORGE family and 
+              elevate your trading game.
             </p>
 
             <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
               <Button
                 size="lg"
                 className="w-full bg-gradient-to-r from-primary to-orange-500 text-primary-foreground hover:opacity-90 sm:w-auto"
-                onClick={() => scrollToSection("#market")}
+                onClick={() => scrollToSection("#services")}
               >
                 Get Started
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -86,9 +86,10 @@ export function Hero() {
                 size="lg"
                 variant="outline"
                 className="w-full border-border text-foreground hover:bg-secondary sm:w-auto"
-                onClick={() => scrollToSection("#payments")}
+                onClick={() => window.open("https://wa.me/message", "_blank")}
               >
-                Join Now
+                <MessageCircle className="mr-2 h-5 w-5" />
+                WhatsApp Us
               </Button>
             </div>
 

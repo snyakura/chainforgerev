@@ -77,7 +77,7 @@ export function PaymentMethods() {
   };
 
   return (
-    <section id="payments" className="border-y border-border bg-card/50 py-16">
+    <section id="services" className="border-y border-border bg-card/50 py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

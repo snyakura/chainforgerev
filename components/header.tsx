@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
@@ -8,13 +8,18 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 
 const navItems = [
-  { label: "Courses", href: "#courses" },
+  { label: "Home", href: "#home" },
+  { label: "Services", href: "#services" },
   { label: "Market", href: "#market" },
-  { label: "Payments", href: "#payments" },
-  { label: "Community", href: "#testimonials" },
+  { label: "Testimonials", href: "#testimonials" },
+  { label: "Contact", href: "#contact" },
 ];
 
 function scrollToSection(href: string) {
+  if (href === "#home") {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
   const element = document.querySelector(href);
   if (element) {
     const headerOffset = 120;
@@ -29,7 +34,12 @@ function scrollToSection(href: string) {
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleNavClick = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
@@ -53,13 +63,18 @@ export function Header() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.75 13.5c0 1.1-.67 2.04-1.62 2.44l.37 1.06h-1.5l-.3-.87H11.5v.87h-1.5v-.87h-1V17.5h1v-7H9V9h1v-.87h1.5V9h1.2l.3-.87h1.5l-.37 1.06c.95.4 1.62 1.34 1.62 2.44 0 .59-.19 1.13-.52 1.57.33.44.52.98.52 1.57V15.5z" />
               </svg>
             </div>
-            <span className="text-lg font-bold text-foreground">
-              Trade<span className="text-primary">Master</span>
-            </span>
+            <div className="flex flex-col">
+              <span className="text-lg font-bold leading-tight text-foreground">
+                CHAIN<span className="text-primary">FORGE</span>
+              </span>
+              <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                The Forex Mafia
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-1 lg:flex">
             {navItems.map((item) => (
               <a
                 key={item.label}
@@ -77,18 +92,22 @@ export function Header() {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-all hover:bg-secondary hover:text-foreground"
               aria-label="Toggle theme"
             >
-              {theme === "dark" ? (
-                <Sun className="h-4 w-4" />
+              {mounted ? (
+                theme === "dark" ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )
               ) : (
-                <Moon className="h-4 w-4" />
+                <div className="h-4 w-4" />
               )}
             </button>
 
             {/* Desktop CTA */}
-            <div className="hidden items-center gap-2 md:flex">
+            <div className="hidden items-center gap-2 lg:flex">
               <Button
                 variant="ghost"
                 size="sm"
@@ -100,7 +119,7 @@ export function Header() {
               <Button
                 size="sm"
                 className="bg-gradient-to-r from-primary to-orange-500 text-primary-foreground hover:opacity-90"
-                onClick={() => scrollToSection("#courses")}
+                onClick={() => scrollToSection("#services")}
               >
                 Get Started
               </Button>
@@ -108,7 +127,7 @@ export function Header() {
 
             {/* Mobile Menu Button */}
             <button
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground md:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground lg:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -124,7 +143,7 @@ export function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t border-border bg-background md:hidden"
+            className="border-t border-border bg-background lg:hidden"
           >
             <div className="space-y-1 px-4 py-4">
               {navItems.map((item) => (
@@ -151,7 +170,7 @@ export function Header() {
                 <Button
                   className="w-full bg-gradient-to-r from-primary to-orange-500 text-primary-foreground"
                   onClick={() => {
-                    scrollToSection("#courses");
+                    scrollToSection("#services");
                     setMobileMenuOpen(false);
                   }}
                 >

@@ -11,19 +11,19 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "TradeMaster | Bitcoin & Crypto Trading Institute",
+  title: "CHAINFORGE | The Forex Mafia - Trading Signals & Transactions",
   description:
-    "Master the art of Bitcoin, Forex and Cryptocurrency trading with expert-led courses, mentorship, signals, and tools. Join thousands of successful traders worldwide.",
+    "Signal provision and seamless transactions for traders. We assist in funding and withdrawing from Deriv, Weltrade, and other brokers. Join the CHAINFORGE family.",
   keywords: [
-    "bitcoin trading",
-    "forex trading",
+    "forex signals",
     "crypto trading",
-    "trading education",
+    "deriv funding",
+    "weltrade",
+    "trading signals",
     "bitcoin",
     "cryptocurrency",
-    "investment",
-    "trading signals",
-    "mentorship",
+    "forex mafia",
+    "chainforge",
   ],
   generator: "v0.app",
   icons: {

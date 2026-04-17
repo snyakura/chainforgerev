@@ -1,27 +1,25 @@
 "use client";
 
-import { Mail, Phone, MapPin, Twitter, Youtube, Linkedin, Instagram } from "lucide-react";
+import { Mail, Phone, MapPin, Twitter, Youtube, Linkedin, Instagram, MessageCircle } from "lucide-react";
 
 const footerLinks = {
-  courses: [
-    { label: "Forex Basics", href: "#courses" },
-    { label: "Crypto Trading", href: "#courses" },
-    { label: "Technical Analysis", href: "#courses" },
-    { label: "Risk Management", href: "#courses" },
-    { label: "Advanced Strategies", href: "#courses" },
+  services: [
+    { label: "Trading Signals", href: "#services" },
+    { label: "Deriv Funding", href: "#services" },
+    { label: "Weltrade Support", href: "#services" },
+    { label: "Crypto Exchange", href: "#services" },
+    { label: "Withdrawals", href: "#services" },
   ],
   resources: [
     { label: "Market News", href: "#news" },
-    { label: "Economic Calendar", href: "#market" },
+    { label: "Live Market", href: "#market" },
     { label: "Trading Tools", href: "#market" },
-    { label: "Glossary", href: "#news" },
     { label: "FAQ", href: "#contact" },
   ],
   company: [
-    { label: "About Us", href: "#courses" },
-    { label: "Careers", href: "#contact" },
-    { label: "Partners", href: "#payments" },
-    { label: "Press", href: "#news" },
+    { label: "About Us", href: "#home" },
+    { label: "Testimonials", href: "#testimonials" },
+    { label: "Partners", href: "#services" },
     { label: "Contact", href: "#contact" },
   ],
   legal: [
@@ -35,12 +33,16 @@ const footerLinks = {
 const socialLinks = [
   { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
   { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
   { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
+  { icon: MessageCircle, href: "https://wa.me/message", label: "WhatsApp" },
 ];
 
 function scrollToSection(href: string) {
   if (href === "#") return;
+  if (href === "#home") {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
   const element = document.querySelector(href);
   if (element) {
     const headerOffset = 120;
@@ -67,34 +69,41 @@ export function Footer() {
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.75 13.5c0 1.1-.67 2.04-1.62 2.44l.37 1.06h-1.5l-.3-.87H11.5v.87h-1.5v-.87h-1V17.5h1v-7H9V9h1v-.87h1.5V9h1.2l.3-.87h1.5l-.37 1.06c.95.4 1.62 1.34 1.62 2.44 0 .59-.19 1.13-.52 1.57.33.44.52.98.52 1.57V15.5z" />
                 </svg>
               </div>
-              <span className="text-xl font-bold text-foreground">
-                Trade<span className="text-primary">Master</span>
-              </span>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold leading-tight text-foreground">
+                  CHAIN<span className="text-primary">FORGE</span>
+                </span>
+                <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                  The Forex Mafia
+                </span>
+              </div>
             </a>
 
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Empowering traders worldwide with expert education, real-time
-              market analysis, and proven trading strategies since 2018.
+              Signal provision and seamless transactions for traders 18+. We assist in funding 
+              and withdrawing from Deriv, Weltrade, and other brokers.
             </p>
 
             <div className="mt-6 space-y-3">
               <a
-                href="mailto:support@trademaster.com"
+                href="mailto:support@chainforge.trade"
                 className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
               >
                 <Mail className="h-4 w-4" />
-                support@trademaster.com
+                support@chainforge.trade
               </a>
               <a
-                href="tel:+1234567890"
+                href="https://wa.me/message"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
               >
-                <Phone className="h-4 w-4" />
-                +1 (234) 567-890
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp Support
               </a>
               <p className="flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />
-                123 Trading Street, New York, NY
+                Global Service
               </p>
             </div>
 
@@ -116,9 +125,9 @@ export function Footer() {
 
           {/* Links columns */}
           <div>
-            <h3 className="font-semibold text-foreground">Courses</h3>
+            <h3 className="font-semibold text-foreground">Services</h3>
             <ul className="mt-4 space-y-3">
-              {footerLinks.courses.map((link) => (
+              {footerLinks.services.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
@@ -187,12 +196,12 @@ export function Footer() {
         <div className="mt-12 border-t border-border pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} TradeMaster Institute. All rights
+              &copy; {new Date().getFullYear()} CHAINFORGE - The Forex Mafia. All rights
               reserved.
             </p>
             <p className="text-xs text-muted-foreground">
               Risk Warning: Trading involves significant risk of loss. Past
-              performance is not indicative of future results.
+              performance is not indicative of future results. 18+ only.
             </p>
           </div>
         </div>
