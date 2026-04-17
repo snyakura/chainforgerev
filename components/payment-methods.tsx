@@ -38,7 +38,7 @@ const paymentMethods = [
 
 export function PaymentMethods() {
   return (
-    <section className="border-y border-border bg-card/50 py-16">
+    <section id="payments" className="border-y border-border bg-card/50 py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -62,7 +62,8 @@ export function PaymentMethods() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="group flex flex-col items-center rounded-xl border border-border bg-card p-4 text-center transition-all hover:border-primary/50 hover:bg-secondary"
+              onClick={() => alert(`${method.name} selected - Setting up payment method!`)}
+              className="group cursor-pointer flex flex-col items-center rounded-xl border border-border bg-card p-4 text-center transition-all hover:border-primary/50 hover:bg-secondary"
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 transition-colors group-hover:bg-primary/20">
                 <method.icon className="h-6 w-6 text-primary" />

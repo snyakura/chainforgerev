@@ -74,7 +74,7 @@ const announcements = [
 
 export function NewsFeed() {
   return (
-    <section className="py-20 bg-card/30" id="news">
+    <section className="py-20 bg-card/30" id="news" data-section="community">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -94,7 +94,10 @@ export function NewsFeed() {
           <div className="lg:col-span-2">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="font-semibold text-foreground">Latest News</h3>
-              <button className="flex items-center gap-1 text-sm text-primary hover:underline">
+              <button 
+                onClick={() => alert("Full news archive coming soon!")}
+                className="flex items-center gap-1 text-sm text-primary hover:underline"
+              >
                 View All <ArrowRight className="h-4 w-4" />
               </button>
             </div>
@@ -106,6 +109,7 @@ export function NewsFeed() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
+                  onClick={() => alert(`Reading: ${item.title}`)}
                   className="group cursor-pointer rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/50 hover:bg-secondary/50"
                 >
                   <div className="flex gap-4">
@@ -161,7 +165,8 @@ export function NewsFeed() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/50"
+                  onClick={() => alert(`Opening: ${item.title}`)}
+                  className="cursor-pointer rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/50"
                 >
                   <div className="mb-2 flex items-center gap-2">
                     <span
@@ -201,7 +206,10 @@ export function NewsFeed() {
                   placeholder="Enter your email"
                   className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
                 />
-                <button className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+                <button 
+                  onClick={() => alert("Thanks for subscribing! Check your email for confirmation.")}
+                  className="rounded-lg bg-gradient-to-r from-primary to-orange-500 px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+                >
                   Subscribe
                 </button>
               </div>

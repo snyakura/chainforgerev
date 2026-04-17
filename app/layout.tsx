@@ -10,38 +10,31 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "TradeMaster Institute | Learn Forex & Crypto Trading",
+  title: "TradeMaster | Bitcoin & Crypto Trading Institute",
   description:
-    "Master the art of trading with expert-led courses in Forex and Cryptocurrency. Join thousands of successful traders worldwide.",
+    "Master the art of Bitcoin, Forex and Cryptocurrency trading with expert-led courses. Join thousands of successful traders worldwide.",
   keywords: [
+    "bitcoin trading",
     "forex trading",
     "crypto trading",
     "trading education",
     "bitcoin",
+    "cryptocurrency",
     "investment",
   ],
   generator: "v0.app",
   icons: {
     icon: [
       {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
+        url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23F7931A'/><text y='65' x='50' text-anchor='middle' fill='white' font-size='50' font-weight='bold'>₿</text></svg>",
         type: "image/svg+xml",
       },
     ],
-    apple: "/apple-icon.png",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1a1a1a",
+  themeColor: "#F7931A",
   width: "device-width",
   initialScale: 1,
 };
@@ -52,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-background">
+    <html lang="en" className="bg-background scroll-smooth">
       <body className={`${poppins.variable} font-sans antialiased`}>
         {children}
         {process.env.NODE_ENV === "production" && <Analytics />}

@@ -176,7 +176,10 @@ export function LiveMarket() {
                       ${item.volume}
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button className="rounded-lg bg-primary/10 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground">
+                      <button 
+                        onClick={() => alert(`Trading ${item.symbol} - Feature coming soon!`)}
+                        className="rounded-lg bg-gradient-to-r from-primary/20 to-orange-500/20 px-4 py-2 text-sm font-medium text-primary transition-all hover:from-primary hover:to-orange-500 hover:text-primary-foreground"
+                      >
                         Trade
                       </button>
                     </td>

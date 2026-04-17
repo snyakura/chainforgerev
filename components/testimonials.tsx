@@ -68,7 +68,7 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-20" id="testimonials">
+    <section className="py-20" id="testimonials" data-section="community">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -151,7 +151,18 @@ export function Testimonials() {
               Join 50,000+ traders and start learning today
             </p>
           </div>
-          <button className="rounded-lg bg-primary px-8 py-3 font-semibold text-primary-foreground transition-all hover:bg-primary/90">
+          <button 
+            onClick={() => {
+              const element = document.querySelector("#courses");
+              if (element) {
+                const headerOffset = 120;
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+              }
+            }}
+            className="rounded-lg bg-gradient-to-r from-primary to-orange-500 px-8 py-3 font-semibold text-primary-foreground transition-all hover:opacity-90"
+          >
             Get Started Free
           </button>
         </motion.div>

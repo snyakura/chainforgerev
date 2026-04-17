@@ -1,29 +1,28 @@
 "use client";
 
-import Link from "next/link";
-import { TrendingUp, Mail, Phone, MapPin, Twitter, Youtube, Linkedin, Instagram } from "lucide-react";
+import { Mail, Phone, MapPin, Twitter, Youtube, Linkedin, Instagram } from "lucide-react";
 
 const footerLinks = {
   courses: [
-    { label: "Forex Basics", href: "#" },
-    { label: "Crypto Trading", href: "#" },
-    { label: "Technical Analysis", href: "#" },
-    { label: "Risk Management", href: "#" },
-    { label: "Advanced Strategies", href: "#" },
+    { label: "Forex Basics", href: "#courses" },
+    { label: "Crypto Trading", href: "#courses" },
+    { label: "Technical Analysis", href: "#courses" },
+    { label: "Risk Management", href: "#courses" },
+    { label: "Advanced Strategies", href: "#courses" },
   ],
   resources: [
-    { label: "Market News", href: "#" },
-    { label: "Economic Calendar", href: "#" },
-    { label: "Trading Tools", href: "#" },
-    { label: "Glossary", href: "#" },
-    { label: "FAQ", href: "#" },
+    { label: "Market News", href: "#news" },
+    { label: "Economic Calendar", href: "#market" },
+    { label: "Trading Tools", href: "#market" },
+    { label: "Glossary", href: "#news" },
+    { label: "FAQ", href: "#contact" },
   ],
   company: [
-    { label: "About Us", href: "#" },
-    { label: "Careers", href: "#" },
-    { label: "Partners", href: "#" },
-    { label: "Press", href: "#" },
-    { label: "Contact", href: "#" },
+    { label: "About Us", href: "#courses" },
+    { label: "Careers", href: "#contact" },
+    { label: "Partners", href: "#payments" },
+    { label: "Press", href: "#news" },
+    { label: "Contact", href: "#contact" },
   ],
   legal: [
     { label: "Privacy Policy", href: "#" },
@@ -34,26 +33,44 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Youtube, href: "#", label: "YouTube" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+  { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
+  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
 ];
+
+function scrollToSection(href: string) {
+  if (href === "#") return;
+  const element = document.querySelector(href);
+  if (element) {
+    const headerOffset = 120;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  }
+}
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-card">
+    <footer id="contact" className="border-t border-border bg-card">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid gap-8 lg:grid-cols-6">
+          {/* Brand column */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-                <TrendingUp className="h-6 w-6 text-primary-foreground" />
+            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary via-primary to-orange-500">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-primary-foreground">
+                  <path d="M11.5 11.5v-2h1.75c.55 0 1 .45 1 1s-.45 1-1 1H11.5zm0 1h2.25c.55 0 1 .45 1 1s-.45 1-1 1H11.5v-2z" />
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.75 13.5c0 1.1-.67 2.04-1.62 2.44l.37 1.06h-1.5l-.3-.87H11.5v.87h-1.5v-.87h-1V17.5h1v-7H9V9h1v-.87h1.5V9h1.2l.3-.87h1.5l-.37 1.06c.95.4 1.62 1.34 1.62 2.44 0 .59-.19 1.13-.52 1.57.33.44.52.98.52 1.57V15.5z" />
+                </svg>
               </div>
               <span className="text-xl font-bold text-foreground">
                 Trade<span className="text-primary">Master</span>
               </span>
-            </Link>
+            </a>
 
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
               Empowering traders worldwide with expert education, real-time
@@ -86,8 +103,10 @@ export function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-secondary text-muted-foreground transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-secondary text-muted-foreground transition-all hover:border-primary hover:bg-gradient-to-r hover:from-primary hover:to-orange-500 hover:text-primary-foreground"
                 >
                   <social.icon className="h-5 w-5" />
                 </a>
@@ -95,17 +114,19 @@ export function Footer() {
             </div>
           </div>
 
+          {/* Links columns */}
           <div>
             <h3 className="font-semibold text-foreground">Courses</h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.courses.map((link) => (
                 <li key={link.label}>
-                  <Link
+                  <a
                     href={link.href}
+                    onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
                     className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {link.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -116,12 +137,13 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.label}>
-                  <Link
+                  <a
                     href={link.href}
+                    onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
                     className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {link.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -132,12 +154,13 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
-                  <Link
+                  <a
                     href={link.href}
+                    onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
                     className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {link.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -148,12 +171,13 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.label}>
-                  <Link
+                  <a
                     href={link.href}
+                    onClick={(e) => { e.preventDefault(); alert(`${link.label} - Coming soon!`); }}
                     className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {link.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
