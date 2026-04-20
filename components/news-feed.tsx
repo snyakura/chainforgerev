@@ -1,55 +1,19 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Clock, TrendingUp, AlertCircle, Newspaper, ArrowRight } from "lucide-react";
+import { Clock, AlertCircle, ArrowRight, Calendar } from "lucide-react";
 
-const newsItems = [
-  {
-    id: 1,
-    type: "alert",
-    icon: AlertCircle,
-    title: "Bitcoin Surges Past $67,000 Amid ETF Optimism",
-    excerpt: "BTC reaches new yearly highs as institutional demand continues to grow...",
-    time: "5 min ago",
-    category: "Crypto",
-  },
-  {
-    id: 2,
-    type: "news",
-    icon: Newspaper,
-    title: "Fed Signals Potential Rate Cuts in Q3 2024",
-    excerpt: "Markets react positively to dovish comments from Federal Reserve officials...",
-    time: "32 min ago",
-    category: "Forex",
-  },
-  {
-    id: 3,
-    type: "analysis",
-    icon: TrendingUp,
-    title: "EUR/USD Technical Analysis: Key Levels to Watch",
-    excerpt: "Support at 1.0850 holds firm as bulls eye 1.0950 resistance zone...",
-    time: "1 hour ago",
-    category: "Forex",
-  },
-  {
-    id: 4,
-    type: "news",
-    icon: Newspaper,
-    title: "Ethereum Dencun Upgrade: What Traders Need to Know",
-    excerpt: "The upcoming upgrade promises significant improvements to scalability...",
-    time: "2 hours ago",
-    category: "Crypto",
-  },
-  {
-    id: 5,
-    type: "alert",
-    icon: AlertCircle,
-    title: "GBP Volatile Ahead of UK Employment Data",
-    excerpt: "Traders brace for potential volatility as key economic indicators loom...",
-    time: "3 hours ago",
-    category: "Forex",
-  },
-];
+interface CalendarEvent {
+  title: string;
+  country: string;
+  date: string;
+  impact: "Low" | "Medium" | "High";
+  forecast: string;
+  previous: string;
+  actual: string;
+  time: string;
+}
 
 const announcements = [
   {
@@ -73,8 +37,37 @@ const announcements = [
 ];
 
 export function NewsFeed() {
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const fetchCalendar = async () => {
+      try {
+        const response = await fetch("/api/calendar");
+        if (!response.ok) throw new Error("Failed to fetch");
+        
+        const data = await response.json();
+        
+        const filtered = data
+          .filter((e: CalendarEvent) => e.impact === "High" || e.impact === "Medium")
+          .slice(0, 10);
+        setEvents(filtered);
+      } catch (error) {
+        console.error("Calendar fetch error:", error);
+        setEvents([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCalendar();
+    const interval = setInterval(fetchCalendar, 60000); // refresh every 60s
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section className="py-20 bg-card/30" id="news" data-section="community">
+    <section className="py-24 bg-card/10 relative overflow-hidden" id="news" data-section="community">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -83,69 +76,76 @@ export function NewsFeed() {
           className="text-center mb-12"
         >
           <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-            Market News & Announcements
+              Institutional Economic Calendar
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Stay updated with the latest market movements and platform news
+              Live high-impact events powered by Trading Economics
           </p>
         </motion.div>
 
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">Latest News</h3>
+              <h3 className="font-semibold text-foreground flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-primary" />
+                High Impact Events
+              </h3>
               <button 
-                onClick={() => alert("Full news archive coming soon!")}
+                onClick={() => window.open("https://tradingeconomics.com/calendar", "_blank")}
                 className="flex items-center gap-1 text-sm text-primary hover:underline"
               >
-                View All <ArrowRight className="h-4 w-4" />
+                Full Calendar <ArrowRight className="h-4 w-4" />
               </button>
             </div>
             <div className="space-y-4">
-              {newsItems.map((item, index) => (
+              {isLoading ? (
+                <div className="p-8 text-center text-muted-foreground italic">Fetching market events...</div>
+              ) : events.map((item, index) => (
                 <motion.article
-                  key={item.id}
+                  key={index}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  onClick={() => alert(`Reading: ${item.title}`)}
-                  className="group cursor-pointer rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/50 hover:bg-secondary/50"
+                  className="group rounded-xl border border-border/50 bg-card/40 backdrop-blur-md p-4 transition-all hover:border-primary/50"
                 >
                   <div className="flex gap-4">
                     <div
-                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
-                        item.type === "alert"
-                          ? "bg-primary/10 text-primary"
-                          : item.type === "analysis"
-                            ? "bg-chart-2/10 text-chart-2"
-                            : "bg-chart-4/10 text-chart-4"
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl font-black text-sm ${
+                        item.impact === "High"
+                          ? "bg-destructive/10 text-destructive ring-1 ring-destructive/30 shadow-[0_0_15px_rgba(239,68,68,0.1)]"
+                          : "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30"
                       }`}
                     >
-                      <item.icon className="h-5 w-5" />
+                      {item.country}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span
-                          className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                            item.category === "Crypto"
-                              ? "bg-primary/10 text-primary"
-                              : "bg-chart-4/10 text-chart-4"
-                          }`}
-                        >
-                          {item.category}
-                        </span>
-                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                           <Clock className="h-3 w-3" />
-                          {item.time}
+                          {item.date} • {item.time}
                         </span>
                       </div>
-                      <h4 className="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                      <h4 className="font-bold text-foreground text-lg line-clamp-1">
                         {item.title}
                       </h4>
-                      <p className="mt-1 text-sm text-muted-foreground line-clamp-1">
-                        {item.excerpt}
-                      </p>
+                      <div className="mt-2 flex gap-4 text-[11px] font-semibold">
+                        <div className="flex flex-col">
+                          <span className="text-muted-foreground uppercase text-[8px] opacity-70">Actual</span>
+                          <span className={`${item.actual ? 'text-emerald-400' : 'text-foreground'}`}>{item.actual || "-"}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-muted-foreground uppercase text-[8px] opacity-70">Forecast</span>
+                          <span className="text-foreground">{item.forecast || "-"}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-muted-foreground uppercase text-[8px] opacity-70">Previous</span>
+                          <span className="text-foreground">{item.previous || "-"}</span>
+                        </div>
+                        <span className={`ml-auto self-end rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-tighter ${item.impact === 'High' ? 'bg-destructive/10 text-destructive' : 'bg-amber-500/10 text-amber-500'}`}>
+                          {item.impact} IMPACT
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </motion.article>
@@ -203,12 +203,21 @@ export function NewsFeed() {
               <div className="mt-3 flex gap-2">
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
                 />
                 <button 
-                  onClick={() => alert("Thanks for subscribing! Check your email for confirmation.")}
-                  className="rounded-lg bg-gradient-to-r from-primary to-orange-500 px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+                  onClick={() => {
+                    if (!email || !email.includes('@')) {
+                      alert("Please enter a valid email address.");
+                      return;
+                    }
+                    alert("Thanks for subscribing! Check your email for confirmation.");
+                    setEmail("");
+                  }}
+                  className="rounded-lg bg-gradient-to-r from-[#F59E0B] to-[#D97706] px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
                 >
                   Subscribe
                 </button>

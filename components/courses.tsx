@@ -1,46 +1,38 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { BookOpen, TrendingUp, BarChart3, Shield, Clock, Users, CheckCircle, ArrowRight } from "lucide-react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { Shield, Flame, ArrowRight, MessageCircle, Target, Users, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const courses = [
+const storyValues = [
   {
-    id: 1,
-    title: "Forex Fundamentals",
-    description: "Learn the basics of forex trading, currency pairs, and market analysis techniques.",
-    icon: TrendingUp,
-    level: "Beginner",
-    duration: "4 weeks",
-    students: 2450,
-    price: 49,
-    features: ["Market basics", "Technical analysis", "Risk management", "Live demos"],
-    color: "from-emerald-500 to-teal-500",
-  },
-  {
-    id: 2,
-    title: "Crypto Trading Mastery",
-    description: "Master cryptocurrency trading with advanced strategies for BTC, ETH, and altcoins.",
-    icon: BarChart3,
-    level: "Intermediate",
-    duration: "6 weeks",
-    students: 1820,
-    price: 99,
-    features: ["Crypto fundamentals", "DeFi strategies", "Portfolio building", "Signal analysis"],
-    color: "from-primary to-orange-500",
-    popular: true,
-  },
-  {
-    id: 3,
-    title: "Advanced Signal Trading",
-    description: "Professional signal interpretation and execution strategies for consistent profits.",
+    title: "Trust First",
+    description: "Every signal, every transaction — transparent and accountable.",
     icon: Shield,
-    level: "Advanced",
-    duration: "8 weeks",
-    students: 945,
-    price: 199,
-    features: ["Signal mastery", "Risk/reward ratios", "Position sizing", "1-on-1 mentorship"],
-    color: "from-violet-500 to-purple-500",
+    color: "text-blue-400",
+    bg: "bg-blue-400/10",
+  },
+  {
+    title: "Precision",
+    description: "Data-driven setups with clearly defined entries, stops, and targets.",
+    icon: Target,
+    color: "text-emerald-400",
+    bg: "bg-emerald-400/10",
+  },
+  {
+    title: "Community",
+    description: "An 18+ family of traders learning, winning, and growing together.",
+    icon: Users,
+    color: "text-purple-400",
+    bg: "bg-purple-400/10",
+  },
+  {
+    title: "Speed",
+    description: "Fast funding and withdrawals across Deriv, Weltrade and more.",
+    icon: Zap,
+    color: "text-amber-400",
+    bg: "bg-amber-400/10",
   },
 ];
 
@@ -55,122 +47,150 @@ function scrollToSection(href: string) {
 }
 
 export function Courses() {
+  const containerRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 50,
+    damping: 25,
+    restDelta: 0.001
+  });
+
+  const phoneRotate = useTransform(smoothProgress, [0, 1], [10, -45]);
+  const phoneX = useTransform(smoothProgress, [0, 1], [120, 280]);
+
   return (
-    <section id="courses" className="py-20 bg-secondary/30">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="courses" ref={containerRef} className="relative py-24 overflow-hidden bg-zinc-950">
+      {/* Bitcoin Background Image */}
+      <div className="absolute inset-0 -z-10 pointer-events-none">
+        <img 
+          src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?q=80&w=2000&auto=format&fit=crop" 
+          alt="Bitcoin Background" 
+          className="h-full w-full object-cover opacity-10 grayscale"
+        />
+      </div>
+
+      {/* Background Decorative Blobs */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute top-1/2 -left-20 h-[600px] w-[600px] rounded-full bg-[#F59E0B]/10 blur-[140px]" />
+        <div className="absolute bottom-0 -right-20 h-[500px] w-[500px] rounded-full bg-[#D97706]/5 blur-[120px]" />
+      </div>
+
+      {/* Large Bold Background Label */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none -z-10 overflow-hidden">
+        <span className="text-[25vw] font-black tracking-tighter uppercase text-foreground/[0.03] dark:text-foreground/[0.05] leading-none">
+          Mafia
+        </span>
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 mb-6">
-            <BookOpen className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Trading Education</span>
-          </div>
-          <h2 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl mb-4">
-            Master Trading with Our <span className="text-primary">Expert Courses</span>
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            From beginner to advanced, our comprehensive courses will help you become a profitable trader
-          </p>
-        </motion.div>
+        {/* Header Grid: Mafia Title + Tilted Phone Visual */}
+        <div className="grid lg:grid-cols-5 gap-12 items-center mb-16 relative">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-3 text-left"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-4 py-1.5 mb-6">
+              <Flame className="h-4 w-4 text-[#F59E0B]" />
+              <span className="text-xs font-bold text-[#F59E0B] uppercase tracking-widest">ABOUT CHAINFORGE</span>
+            </div>
+            <h2 className="text-pretty text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl mb-6 uppercase">
+              We are the{" "}
+              <span className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">
+                Forex Mafia
+              </span>
+            </h2>
+            <p className="max-w-2xl text-lg text-muted-foreground leading-relaxed">
+              Chainforge is a signal provision and brokerage facilitation service for serious 18+ traders. 
+              We help our community fund and withdraw from Deriv, Weltrade and other major brokers — 
+              and deliver the live signals, mentorship, and tools you need to trade with an edge.
+            </p>
 
-        {/* Courses Grid */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {courses.map((course, index) => (
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:scale-105 transition-all text-white hover:text-black font-bold px-8 py-6 rounded-2xl"
+                onClick={() => scrollToSection("#services")}
+              >
+                See Our Services
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button 
+                onClick={() => window.open("https://wa.me/message", "_blank")}
+                variant="outline" 
+                size="lg" 
+                className="border-white/10 text-zinc-400 hover:text-white hover:bg-white/5 hover:scale-105 transition-all font-bold px-8 py-6 rounded-2xl"
+              >
+                <MessageCircle className="mr-2 h-5 w-5" />
+                Talk to the Team
+              </Button>
+            </div>
+          </motion.div>
+
+          {/* Tilted Phone Visual - Partially covered by right side */}
+          <div className="lg:col-span-2 relative hidden lg:flex justify-end pr-0 overflow-visible pointer-events-none">
             <motion.div
-              key={course.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              style={{ rotate: phoneRotate, x: phoneX }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5"
+              transition={{ duration: 0.8 }}
+              className="relative w-[340px] h-[720px] rounded-[3.5rem] border-[8px] border-zinc-900 bg-zinc-950 shadow-[0_0_120px_rgba(245,158,11,0.4)] overflow-hidden ring-1 ring-white/10"
             >
-              {course.popular && (
-                <div className="absolute top-4 right-4 z-10">
-                  <span className="rounded-full bg-gradient-to-r from-primary to-orange-500 px-3 py-1 text-xs font-semibold text-primary-foreground">
-                    Most Popular
-                  </span>
-                </div>
-              )}
-
-              {/* Course Header */}
-              <div className={`bg-gradient-to-r ${course.color} p-6`}>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
-                    <course.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-                    {course.level}
-                  </span>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{course.title}</h3>
-                <p className="text-sm text-white/80">{course.description}</p>
-              </div>
-
-              {/* Course Body */}
-              <div className="flex flex-1 flex-col p-6">
-                {/* Stats */}
-                <div className="flex items-center gap-4 mb-6 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    <span>{course.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Users className="h-4 w-4" />
-                    <span>{course.students.toLocaleString()} students</span>
-                  </div>
-                </div>
-
-                {/* Features */}
-                <ul className="flex-1 space-y-3 mb-6">
-                  {course.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm text-foreground">
-                      <CheckCircle className="h-4 w-4 text-primary" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Price & CTA */}
-                <div className="flex items-center justify-between pt-4 border-t border-border">
-                  <div>
-                    <span className="text-2xl font-bold text-foreground">${course.price}</span>
-                    <span className="text-sm text-muted-foreground">/course</span>
-                  </div>
-                  <Button
-                    onClick={() => alert(`Enrolling in ${course.title} - Coming soon!`)}
-                    className={`bg-gradient-to-r ${course.color} text-white hover:opacity-90`}
-                  >
-                    Enroll Now
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
+              <img 
+                src="https://images.unsplash.com/photo-1611974717483-36005791a877?q=80&w=800&auto=format&fit=crop" 
+                alt="TradingView XAUUSD Chart" 
+                className="h-full w-full object-cover opacity-100 scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent" />
+              {/* iPhone 17 Pro Max Dynamic Island */}
+              <div className="absolute top-0 inset-x-0 h-10 flex justify-center pt-4">
+                <div className="w-28 h-7 bg-black rounded-[1.25rem] ring-1 ring-white/5" />
               </div>
             </motion.div>
-          ))}
+          </div>
         </div>
 
-        {/* Bottom CTA */}
+        {/* Our Story Grid Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 text-center"
+          className="grid lg:grid-cols-2 gap-12 items-start mt-24 mb-16"
         >
-          <p className="text-muted-foreground mb-4">
-            Not sure which course is right for you?
-          </p>
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={() => scrollToSection("#contact")}
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-          >
-            Get Free Consultation
-          </Button>
+          <div>
+            <h2 className="text-pretty text-3xl font-bold tracking-tight text-white mb-6 uppercase">
+              Our story
+            </h2>
+            <div className="space-y-6 text-zinc-400 text-base leading-relaxed">
+              <p>
+                Chainforge started as a small circle of Zimbabwean traders frustrated by the lack of local payment options and trustworthy signal providers. 
+                We built what we couldn't find: a service that bridges global brokers like Deriv and Weltrade with local rails like EcoCash, InnBucks and Ozow.
+              </p>
+              <p>
+                Today we serve a fast-growing community of traders across Southern Africa and beyond — funding accounts, 
+                processing withdrawals, and delivering live signals that keep our members on the right side of the market.
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {storyValues.map((value, i) => (
+              <div key={i} className="p-5 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-xl hover:border-[#F59E0B]/30 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] hover:scale-[1.02] transition-all duration-300 cursor-default">
+                <div className={`h-10 w-10 rounded-xl ${value.bg} flex items-center justify-center mb-4`}>
+                  <value.icon className={`h-5 w-5 ${value.color}`} />
+                </div>
+                <h3 className="text-sm font-bold text-white mb-1 uppercase">{value.title}</h3>
+                <p className="text-xs text-zinc-500 leading-relaxed">{value.description}</p>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

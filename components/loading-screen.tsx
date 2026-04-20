@@ -1,8 +1,15 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export function LoadingScreen() {
+  const [particles, setParticles] = useState<number[]>([]);
+
+  useEffect(() => {
+    setParticles([...Array(6)]);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 1 }}
@@ -35,7 +42,7 @@ export function LoadingScreen() {
         <motion.div
           animate={{ rotateY: [0, 360] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-primary via-primary to-orange-500 shadow-2xl shadow-primary/50"
+          className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#F59E0B] via-[#F59E0B] to-[#D97706] shadow-2xl shadow-primary/50"
         >
           {/* Bitcoin Symbol */}
           <svg
@@ -57,7 +64,7 @@ export function LoadingScreen() {
         className="mt-8 text-center"
       >
         <h2 className="text-2xl font-bold text-foreground">
-          Trade<span className="text-primary">Master</span>
+          CHAIN<span className="text-primary">FORGE</span>
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">Loading markets...</p>
       </motion.div>
@@ -78,25 +85,19 @@ export function LoadingScreen() {
       </motion.div>
 
       {/* Floating particles */}
-      {[...Array(6)].map((_, i) => (
+      {particles.map((_, i) => (
         <motion.div
           key={i}
           className="absolute h-2 w-2 rounded-full bg-primary/30"
           initial={{
-            x: Math.random() * 200 - 100,
-            y: Math.random() * 200 - 100,
             opacity: 0,
+            x: Math.random() * 100 - 50,
+            y: Math.random() * 100 - 50,
           }}
           animate={{
-            x: Math.random() * 400 - 200,
-            y: Math.random() * 400 - 200,
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            delay: i * 0.5,
-            ease: "easeInOut",
+            opacity: 1,
+            x: Math.random() * 100 - 50,
+            y: Math.random() * 100 - 50,
           }}
         />
       ))}

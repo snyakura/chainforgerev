@@ -17,7 +17,7 @@ const footerLinks = {
     { label: "FAQ", href: "#contact" },
   ],
   company: [
-    { label: "About Us", href: "#home" },
+    { label: "About Us", href: "#courses" },
     { label: "Testimonials", href: "#testimonials" },
     { label: "Partners", href: "#services" },
     { label: "Contact", href: "#contact" },
@@ -63,7 +63,7 @@ export function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-2">
             <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary via-primary to-orange-500">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#F59E0B] via-[#F59E0B] to-[#D97706]">
                 <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-primary-foreground">
                   <path d="M11.5 11.5v-2h1.75c.55 0 1 .45 1 1s-.45 1-1 1H11.5zm0 1h2.25c.55 0 1 .45 1 1s-.45 1-1 1H11.5v-2z" />
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.75 13.5c0 1.1-.67 2.04-1.62 2.44l.37 1.06h-1.5l-.3-.87H11.5v.87h-1.5v-.87h-1V17.5h1v-7H9V9h1v-.87h1.5V9h1.2l.3-.87h1.5l-.37 1.06c.95.4 1.62 1.34 1.62 2.44 0 .59-.19 1.13-.52 1.57.33.44.52.98.52 1.57V15.5z" />
@@ -115,7 +115,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-secondary text-muted-foreground transition-all hover:border-primary hover:bg-gradient-to-r hover:from-primary hover:to-orange-500 hover:text-primary-foreground"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-secondary text-muted-foreground transition-all hover:border-primary hover:bg-gradient-to-r hover:from-[#F59E0B] hover:to-[#D97706] hover:text-primary-foreground"
                 >
                   <social.icon className="h-5 w-5" />
                 </a>

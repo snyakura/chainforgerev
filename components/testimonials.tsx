@@ -12,7 +12,7 @@ const testimonials = [
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
     rating: 5,
     profit: "+$45,000",
-    text: "TradeMaster completely transformed my understanding of forex markets. The risk management modules alone were worth the investment. I went from losing consistently to profitable within 6 months.",
+    text: "ChainForge completely transformed my understanding of forex markets. The risk management modules alone were worth the investment. I went from losing consistently to profitable within 6 months.",
   },
   {
     id: 2,
@@ -62,7 +62,7 @@ const testimonials = [
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face",
     rating: 5,
     profit: "+$52,300",
-    text: "Trading has become my second income stream thanks to TradeMaster. The courses are practical, the signals are accurate, and the mentors truly care about your success.",
+    text: "Trading has become my second income stream thanks to ChainForge. The courses are practical, the signals are accurate, and the mentors truly care about your success.",
   },
 ];
 
@@ -125,7 +125,7 @@ export function Testimonials() {
                     />
                   ))}
                 </div>
-                <span className="rounded-full bg-chart-2/10 px-3 py-1 text-sm font-semibold text-chart-2">
+                <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-sm font-semibold text-emerald-500">
                   {testimonial.profit}
                 </span>
               </div>
@@ -161,7 +161,7 @@ export function Testimonials() {
                 window.scrollTo({ top: offsetPosition, behavior: "smooth" });
               }
             }}
-            className="rounded-lg bg-gradient-to-r from-primary to-orange-500 px-8 py-3 font-semibold text-primary-foreground transition-all hover:opacity-90"
+            className="rounded-lg bg-gradient-to-r from-[#F59E0B] to-[#D97706] px-8 py-3 font-semibold text-primary-foreground transition-all hover:opacity-90"
           >
             Get Started Free
           </button>

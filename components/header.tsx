@@ -9,6 +9,7 @@ import { useTheme } from "next-themes";
 
 const navItems = [
   { label: "Home", href: "#home" },
+  { label: "About", href: "#courses" },
   { label: "Services", href: "#services" },
   { label: "Market", href: "#market" },
   { label: "Testimonials", href: "#testimonials" },
@@ -35,7 +36,7 @@ function scrollToSection(href: string) {
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -48,16 +49,16 @@ export function Header() {
   };
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   return (
-    <header className="fixed top-[40px] left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <header className="fixed top-12 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-7xl rounded-2xl sm:rounded-full border border-border/50 bg-background/70 backdrop-blur-xl shadow-2xl transition-all duration-300 ring-1 ring-white/10">
+      <div className="mx-auto px-6 lg:px-10">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-orange-500">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#F59E0B] to-[#D97706]">
               <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-primary-foreground">
                 <path d="M11.5 11.5v-2h1.75c.55 0 1 .45 1 1s-.45 1-1 1H11.5zm0 1h2.25c.55 0 1 .45 1 1s-.45 1-1 1H11.5v-2z" />
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.75 13.5c0 1.1-.67 2.04-1.62 2.44l.37 1.06h-1.5l-.3-.87H11.5v.87h-1.5v-.87h-1V17.5h1v-7H9V9h1v-.87h1.5V9h1.2l.3-.87h1.5l-.37 1.06c.95.4 1.62 1.34 1.62 2.44 0 .59-.19 1.13-.52 1.57.33.44.52.98.52 1.57V15.5z" />
@@ -96,7 +97,7 @@ export function Header() {
               aria-label="Toggle theme"
             >
               {mounted ? (
-                theme === "dark" ? (
+                resolvedTheme === "dark" ? (
                   <Sun className="h-4 w-4" />
                 ) : (
                   <Moon className="h-4 w-4" />
@@ -109,16 +110,8 @@ export function Header() {
             {/* Desktop CTA */}
             <div className="hidden items-center gap-2 lg:flex">
               <Button
-                variant="ghost"
                 size="sm"
-                className="text-muted-foreground hover:text-foreground"
-                onClick={() => scrollToSection("#contact")}
-              >
-                Sign In
-              </Button>
-              <Button
-                size="sm"
-                className="bg-gradient-to-r from-primary to-orange-500 text-primary-foreground hover:opacity-90"
+                className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-primary-foreground hover:opacity-90"
                 onClick={() => scrollToSection("#services")}
               >
                 Get Started
@@ -158,17 +151,7 @@ export function Header() {
               ))}
               <div className="flex flex-col gap-2 pt-4">
                 <Button
-                  variant="outline"
-                  className="w-full border-border text-foreground"
-                  onClick={() => {
-                    scrollToSection("#contact");
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  Sign In
-                </Button>
-                <Button
-                  className="w-full bg-gradient-to-r from-primary to-orange-500 text-primary-foreground"
+                  className="w-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-primary-foreground"
                   onClick={() => {
                     scrollToSection("#services");
                     setMobileMenuOpen(false);
