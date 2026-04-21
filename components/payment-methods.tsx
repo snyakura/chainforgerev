@@ -32,6 +32,7 @@ export function PaymentMethods() {
     brokerId: "",
     gateway: "",
     amount: "100",
+    type: "deposit",
     gatewayNumber: "",
     usdtAccount: "",
     usdtRef: "",
@@ -46,7 +47,7 @@ export function PaymentMethods() {
   const prevStep = () => setStep(s => s - 1);
 
   return (
-    <section id="services" className="relative border-y border-border/50 py-24 overflow-hidden">
+    <section id="services" className="relative border-y border-border/50 py-24 overflow-hidden bg-background">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-1/2 -right-20 h-[400px] w-[400px] rounded-full bg-blue-500/5 blur-[100px]" />
@@ -64,7 +65,7 @@ export function PaymentMethods() {
             <Briefcase className="h-4 w-4 text-[#F59E0B]" />
             <span className="text-xs font-bold text-[#F59E0B] uppercase tracking-widest">SERVICES & PRODUCTS</span>
           </div>
-          <h2 className="text-pretty text-4xl font-black tracking-tighter text-white sm:text-5xl lg:text-6xl mb-6 uppercase leading-[1.1]">
+          <h2 className="text-pretty text-4xl font-black tracking-tighter text-foreground sm:text-5xl lg:text-6xl mb-6 uppercase leading-[1.1]">
             Everything you need to trade{" "}
             <span className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">with an edge</span>
           </h2>
@@ -79,18 +80,18 @@ export function PaymentMethods() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-2xl hover:border-[#F59E0B]/30 transition-all group"
+            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-[#F59E0B]/30 transition-all group shadow-sm"
           >
             <div className="h-12 w-12 rounded-2xl bg-[#F59E0B]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <TrendingUp className="h-6 w-6 text-[#F59E0B]" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-3 uppercase tracking-tight">Live Trading Signals</h3>
-            <p className="text-zinc-400 text-sm leading-relaxed mb-6">
+            <h3 className="text-2xl font-bold text-foreground mb-3 uppercase tracking-tight">Live Trading Signals</h3>
+            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
               Daily forex, indices and synthetic indices signals with entry, stop, and take-profit levels. Delivered via Telegram & WhatsApp.
             </p>
             <ul className="space-y-3">
               {["Forex majors & minors", "Deriv synthetic indices", "Risk-managed setups"].map((item, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-zinc-500">
+                <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
                     <Check className="h-3 w-3 text-emerald-500" />
                   </div>
@@ -105,18 +106,18 @@ export function PaymentMethods() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-2xl hover:border-[#F59E0B]/30 transition-all group"
+            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-[#F59E0B]/30 transition-all group shadow-sm"
           >
             <div className="h-12 w-12 rounded-2xl bg-[#F59E0B]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Wallet className="h-6 w-6 text-[#F59E0B]" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-3 uppercase tracking-tight">Broker Funding & Withdrawals</h3>
-            <p className="text-zinc-400 text-sm leading-relaxed mb-6">
+            <h3 className="text-2xl font-bold text-foreground mb-3 uppercase tracking-tight">Broker Funding & Withdrawals</h3>
+            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
               We deposit and withdraw to/from Deriv, Weltrade and other major brokers using local payment rails.
             </p>
             <ul className="space-y-3">
               {["Deriv, Weltrade & more", "EcoCash, InnBucks, Ozow, crypto", "Same-day processing"].map((item, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-zinc-500">
+                <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
                     <Check className="h-3 w-3 text-emerald-500" />
                   </div>
@@ -128,7 +129,10 @@ export function PaymentMethods() {
         </div>
 
         <div className="max-w-3xl mx-auto mt-20">
-          <div className="bg-zinc-900/40 border border-white/10 rounded-[2.5rem] p-8 md:p-12 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
+          <h3 className="text-2xl font-bold text-foreground text-center mb-8 uppercase tracking-tight">
+            Make a withdrawal or deposit
+          </h3>
+          <div className="bg-card border border-border rounded-[2.5rem] p-8 md:p-12 backdrop-blur-2xl shadow-2xl relative overflow-hidden transition-colors">
             {/* Background Accent */}
             <div className="absolute top-0 right-0 h-32 w-32 bg-[#F59E0B]/5 blur-3xl -z-10" />
             
@@ -146,41 +150,41 @@ export function PaymentMethods() {
                       <User className="h-6 w-6 text-[#F59E0B]" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-white uppercase tracking-tight">Client Details</h3>
-                      <p className="text-zinc-500 text-xs uppercase tracking-widest font-bold">Step 01 / 04</p>
+                      <h3 className="text-2xl font-bold text-foreground uppercase tracking-tight">Client Details</h3>
+                      <p className="text-muted-foreground text-xs uppercase tracking-widest font-bold">Step 01 / 04</p>
                     </div>
                   </div>
                   
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <Label className="text-xs uppercase font-bold text-zinc-400">Full Name</Label>
+                      <Label className="text-xs uppercase font-bold text-muted-foreground">Full Name</Label>
                       <Input 
-                        className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-[#F59E0B]"
+                        className="bg-secondary/30 border-border py-6 rounded-xl focus:border-[#F59E0B]"
                         placeholder="John Doe" 
                         value={formData.name}
                         onChange={(e) => updateForm({ name: e.target.value })}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-xs uppercase font-bold text-zinc-400">Email Address</Label>
+                      <Label className="text-xs uppercase font-bold text-muted-foreground">Email Address</Label>
                       <Input 
-                        className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-[#F59E0B]"
+                        className="bg-secondary/30 border-border py-6 rounded-xl focus:border-[#F59E0B]"
                         placeholder="john@example.com"
                         value={formData.email}
                         onChange={(e) => updateForm({ email: e.target.value })}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-xs uppercase font-bold text-zinc-400">Phone Number</Label>
+                      <Label className="text-xs uppercase font-bold text-muted-foreground">Phone Number</Label>
                       <Input 
-                        className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-[#F59E0B]"
+                        className="bg-secondary/30 border-border py-6 rounded-xl focus:border-[#F59E0B]"
                         placeholder="+263 77 000 000"
                         value={formData.phone}
                         onChange={(e) => updateForm({ phone: e.target.value })}
                       />
                     </div>
                   </div>
-                  <Button onClick={nextStep} className="w-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all">
+                  <Button onClick={nextStep} className="w-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-primary-foreground font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all">
                     Continue to Broker Selection <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </motion.div>
@@ -205,6 +209,19 @@ export function PaymentMethods() {
                   </div>
 
                   <div className="space-y-6">
+                    <Label className="text-xs uppercase font-bold text-zinc-400">Transaction Type</Label>
+                    <div className="grid grid-cols-2 gap-4">
+                      {["deposit", "withdrawal"].map((t) => (
+                        <button 
+                          key={t}
+                          onClick={() => updateForm({ type: t, gateway: "" })}
+                          className={`py-4 rounded-xl border text-sm font-bold uppercase transition-all ${formData.type === t ? "border-[#F59E0B] bg-[#F59E0B]/10 text-white" : "border-white/5 bg-black/20 text-zinc-500"}`}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+
                     <Label className="text-xs uppercase font-bold text-zinc-400">Select Broker</Label>
                     <div className="grid grid-cols-3 gap-4">
                       {["Weltrade", "Deriv", "Other"].map((b) => (
@@ -233,7 +250,7 @@ export function PaymentMethods() {
                     )}
                   </div>
                   <Button disabled={!formData.broker || !formData.brokerId} onClick={nextStep} className="w-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all">
-                    Choose Payment Gateway <ArrowRight className="ml-2 h-5 w-5" />
+                    {formData.type === "deposit" ? "Choose Payment Gateway" : "Withdrawal Methods"} <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </motion.div>
               )}
@@ -251,24 +268,37 @@ export function PaymentMethods() {
                       <ArrowLeft className="h-4 w-4 text-zinc-400" />
                     </button>
                     <div>
-                      <h3 className="text-2xl font-bold text-white uppercase tracking-tight">Payment Details</h3>
+                      <h3 className="text-2xl font-bold text-white uppercase tracking-tight">
+                        {formData.type === "deposit" ? "Deposit Details" : "Withdrawal Details"}
+                      </h3>
                       <p className="text-zinc-500 text-xs uppercase tracking-widest font-bold">Step 03 / 04</p>
                     </div>
                   </div>
 
                   <div className="space-y-6">
-                    <div className="grid grid-cols-3 gap-4">
-                      {[
-                        { id: "EcoCash", icon: Smartphone, color: "text-green-500" },
-                        { id: "InnBucks", icon: Wallet, color: "text-blue-500" },
-                        { id: "USDT", icon: Bitcoin, color: "text-[#F59E0B]" }
-                      ].map((g) => (
+                    <div className={`grid ${formData.type === "deposit" ? "grid-cols-3" : "grid-cols-2"} gap-4`}>
+                      {(formData.type === "deposit" 
+                        ? [
+                            { id: "EcoCash", icon: Smartphone, color: "text-green-500" },
+                            { id: "InnBucks", icon: Wallet, color: "text-blue-500" },
+                            { id: "USDT", icon: Bitcoin, color: "text-[#F59E0B]" }
+                          ]
+                        : [
+                            { id: "Office Cash", icon: Briefcase, color: "text-[#F59E0B]" },
+                            { id: "EcoCash", icon: Smartphone, color: "text-green-500" }
+                          ]
+                      ).map((g) => (
                         <button 
                           key={g.id}
                           onClick={() => updateForm({ gateway: g.id })}
                           className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${formData.gateway === g.id ? "border-[#F59E0B] bg-[#F59E0B]/10" : "border-white/5 bg-black/20"}`}
                         >
-                          <g.icon className={`h-6 w-6 ${g.color}`} />
+                          <div className="relative">
+                            <g.icon className={`h-6 w-6 ${g.color}`} />
+                            {formData.gateway === g.id && (
+                              <motion.div layoutId="active" className="absolute -top-1 -right-1 h-2 w-2 bg-[#F59E0B] rounded-full shadow-[0_0_10px_#F59E0B]" />
+                            )}
+                          </div>
                           <span className={`text-[10px] font-bold uppercase ${formData.gateway === g.id ? "text-white" : "text-zinc-500"}`}>{g.id}</span>
                         </button>
                       ))}
@@ -284,7 +314,7 @@ export function PaymentMethods() {
                       />
                     </div>
 
-                    {formData.gateway && formData.gateway !== "USDT" && (
+                    {formData.gateway === "EcoCash" && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
                         <Label className="text-xs uppercase font-bold text-zinc-400">{formData.gateway} Number</Label>
                         <Input 
@@ -370,7 +400,7 @@ export function PaymentMethods() {
                   </div>
                   <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">Transaction Initiated</h3>
                   <p className="text-zinc-400 text-sm leading-relaxed max-w-sm mx-auto mb-10">
-                    Thank you, <span className="text-white font-bold">{formData.name}</span>. Your request via <span className="text-[#F59E0B] font-bold">{formData.gateway}</span> is now being processed.
+                    Thank you, <span className="text-white font-bold">{formData.name}</span>. Your <span className="text-[#F59E0B] font-bold uppercase">{formData.type}</span> request via <span className="text-[#F59E0B] font-bold">{formData.gateway}</span> is now being processed.
                   </p>
                   
                   <div className="bg-black/40 rounded-3xl p-6 border border-white/5 text-left mb-10">

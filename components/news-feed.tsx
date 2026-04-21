@@ -49,8 +49,8 @@ export function NewsFeed() {
         
         const data = await response.json();
         
-        const filtered = data
-          .filter((e: CalendarEvent) => e.impact === "High" || e.impact === "Medium")
+        const filtered = (Array.isArray(data) ? data : [])
+          .filter((e: CalendarEvent) => e && (e.impact === "High" || e.impact === "Medium"))
           .slice(0, 10);
         setEvents(filtered);
       } catch (error) {

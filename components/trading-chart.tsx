@@ -24,10 +24,14 @@ const generateInitialData = () => {
 };
 
 export function TradingChart() {
-  const [data, setData] = useState(generateInitialData);
-  const [currentPrice, setCurrentPrice] = useState(data[data.length - 1].price);
+  const [data, setData] = useState<{time: string, price: number}[]>([]);
+  const [currentPrice, setCurrentPrice] = useState<number>(0);
 
   useEffect(() => {
+    const initialData = generateInitialData();
+    setData(initialData);
+    setCurrentPrice(initialData[initialData.length - 1].price);
+
     const interval = setInterval(() => {
       setData((prev) => {
         const newData = [...prev.slice(1)];
@@ -45,6 +49,8 @@ export function TradingChart() {
 
     return () => clearInterval(interval);
   }, []);
+
+  if (data.length === 0) return null;
 
   const minPrice = Math.min(...data.map((d) => d.price)) - 200;
   const maxPrice = Math.max(...data.map((d) => d.price)) + 200;

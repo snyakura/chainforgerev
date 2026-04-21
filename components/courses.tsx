@@ -59,11 +59,12 @@ export function Courses() {
     restDelta: 0.001
   });
 
-  const phoneRotate = useTransform(smoothProgress, [0, 1], [10, -45]);
-  const phoneX = useTransform(smoothProgress, [0, 1], [120, 280]);
+  // Enhanced scrolling parallax effects for the phone
+  const phoneRotate = useTransform(smoothProgress, [0, 1], [12, -35]);
+  const phoneX = useTransform(smoothProgress, [0, 1], [150, 450]);
 
   return (
-    <section id="courses" ref={containerRef} className="relative py-24 overflow-hidden bg-zinc-950">
+    <section id="courses" ref={containerRef} className="relative py-24 overflow-hidden bg-background transition-colors duration-500">
       {/* Bitcoin Background Image */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
         <img 
@@ -100,22 +101,22 @@ export function Courses() {
               <Flame className="h-4 w-4 text-[#F59E0B]" />
               <span className="text-xs font-bold text-[#F59E0B] uppercase tracking-widest">ABOUT CHAINFORGE</span>
             </div>
-            <h2 className="text-pretty text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl mb-6 uppercase">
+            <h2 className="text-pretty text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl mb-6 uppercase">
               We are the{" "}
               <span className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">
                 Forex Mafia
               </span>
             </h2>
-            <p className="max-w-2xl text-lg text-muted-foreground leading-relaxed">
+            <p className="max-w-2xl text-lg text-muted-foreground leading-relaxed transition-colors">
               Chainforge is a signal provision and brokerage facilitation service for serious 18+ traders. 
               We help our community fund and withdraw from Deriv, Weltrade and other major brokers — 
               and deliver the live signals, mentorship, and tools you need to trade with an edge.
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:scale-105 transition-all text-white hover:text-black font-bold px-8 py-6 rounded-2xl"
+                className="w-full sm:w-auto bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:scale-105 transition-all text-primary-foreground hover:text-black font-bold px-8 py-6 rounded-2xl flex justify-center"
                 onClick={() => scrollToSection("#services")}
               >
                 See Our Services
@@ -125,7 +126,7 @@ export function Courses() {
                 onClick={() => window.open("https://wa.me/message", "_blank")}
                 variant="outline" 
                 size="lg" 
-                className="border-white/10 text-zinc-400 hover:text-white hover:bg-white/5 hover:scale-105 transition-all font-bold px-8 py-6 rounded-2xl"
+                className="w-full sm:w-auto border-border text-muted-foreground hover:text-foreground hover:bg-secondary hover:scale-105 transition-all font-bold px-8 py-6 rounded-2xl flex justify-center"
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
                 Talk to the Team
@@ -133,27 +134,23 @@ export function Courses() {
             </div>
           </motion.div>
 
-          {/* Tilted Phone Visual - Partially covered by right side */}
-          <div className="lg:col-span-2 relative hidden lg:flex justify-end pr-0 overflow-visible pointer-events-none">
+          {/* Tilted Phone Visual with Scrolling Effect */}
+          <div className="lg:col-span-2 relative hidden lg:flex justify-end items-center overflow-visible pointer-events-none">
             <motion.div
-              style={{ rotate: phoneRotate, x: phoneX }}
+              style={{ 
+                rotate: phoneRotate, 
+                x: phoneX,
+              }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative w-[340px] h-[720px] rounded-[3.5rem] border-[8px] border-zinc-900 bg-zinc-950 shadow-[0_0_120px_rgba(245,158,11,0.4)] overflow-hidden ring-1 ring-white/10"
+              className="relative z-10 origin-center"
             >
               <img 
-                src="https://images.unsplash.com/photo-1611974717483-36005791a877?q=80&w=800&auto=format&fit=crop" 
-                alt="TradingView XAUUSD Chart" 
-                className="h-full w-full object-cover opacity-100 scale-110"
+                src="/phone.png" 
+                alt="ChainForge Mobile" 
+                className="max-h-[1100px] w-auto drop-shadow-[0_40px_120px_rgba(245,158,11,0.45)] scale-[1.6]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent" />
-              {/* iPhone 17 Pro Max Dynamic Island */}
-              <div className="absolute top-0 inset-x-0 h-10 flex justify-center pt-4">
-                <div className="w-28 h-7 bg-black rounded-[1.25rem] ring-1 ring-white/5" />
-              </div>
             </motion.div>
           </div>
         </div>
@@ -166,10 +163,10 @@ export function Courses() {
           className="grid lg:grid-cols-2 gap-12 items-start mt-24 mb-16"
         >
           <div>
-            <h2 className="text-pretty text-3xl font-bold tracking-tight text-white mb-6 uppercase">
+            <h2 className="text-pretty text-3xl font-bold tracking-tight text-foreground mb-6 uppercase">
               Our story
             </h2>
-            <div className="space-y-6 text-zinc-400 text-base leading-relaxed">
+            <div className="space-y-6 text-muted-foreground text-base leading-relaxed transition-colors">
               <p>
                 Chainforge started as a small circle of Zimbabwean traders frustrated by the lack of local payment options and trustworthy signal providers. 
                 We built what we couldn't find: a service that bridges global brokers like Deriv and Weltrade with local rails like EcoCash, InnBucks and Ozow.
@@ -182,12 +179,12 @@ export function Courses() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {storyValues.map((value, i) => (
-              <div key={i} className="p-5 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-xl hover:border-[#F59E0B]/30 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] hover:scale-[1.02] transition-all duration-300 cursor-default">
+              <div key={i} className="p-5 rounded-2xl bg-card border border-border backdrop-blur-xl hover:border-[#F59E0B]/30 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] hover:scale-[1.02] transition-all duration-300 cursor-default">
                 <div className={`h-10 w-10 rounded-xl ${value.bg} flex items-center justify-center mb-4`}>
                   <value.icon className={`h-5 w-5 ${value.color}`} />
                 </div>
-                <h3 className="text-sm font-bold text-white mb-1 uppercase">{value.title}</h3>
-                <p className="text-xs text-zinc-500 leading-relaxed">{value.description}</p>
+                <h3 className="text-sm font-bold text-foreground mb-1 uppercase">{value.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed transition-colors">{value.description}</p>
               </div>
             ))}
           </div>

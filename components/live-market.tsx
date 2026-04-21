@@ -14,7 +14,8 @@ export function LiveMarket() {
   useEffect(() => {
     if (!mounted || !container.current) return;
     
-    container.current.innerHTML = '';
+    const currentContainer = container.current;
+    currentContainer.innerHTML = '';
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
     script.type = "text/javascript";
@@ -54,7 +55,11 @@ export function LiveMarket() {
         }
       ]
     });
-    container.current.appendChild(script);
+    currentContainer.appendChild(script);
+
+    return () => {
+      currentContainer.innerHTML = '';
+    };
   }, [mounted]);
 
   return (
