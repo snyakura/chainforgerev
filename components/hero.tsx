@@ -26,7 +26,7 @@ function scrollToSection(href: string) {
 
 export function Hero() {
   return (
-    <section id="home" className="relative min-h-screen overflow-hidden pt-32">
+    <section id="home" className="relative min-h-screen overflow-hidden pt-32 bg-zinc-950">
       {/* Background effects */}
       <video
         autoPlay
@@ -38,7 +38,7 @@ export function Hero() {
         <source src="/hero-background.mp4" type="video/mp4" />
       </video>
 
-      <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+      <div className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-32">
         <div className="flex flex-col items-center justify-center gap-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -46,23 +46,23 @@ export function Hero() {
             transition={{ duration: 0.6 }}
             className="mx-auto max-w-3xl text-center"
           >
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-sm text-primary">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm text-blue-400 font-semibold uppercase tracking-wider">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-500" />
               </span>
               Premium Trading Signals Available
             </div>
 
-            <h1 className="text-pretty text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            <h1 className="text-pretty text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
               Forge your wealth{" "}
-              <span className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] bg-clip-text text-transparent">
                 with The Forex 
               </span>{" "}
               Mafia
             </h1>
 
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-6 text-lg leading-relaxed text-zinc-400">
               Signal provision and seamless transactions for traders. We assist in funding and 
               withdrawing from Deriv, Weltrade, and other brokers. Join the CHAINFORGE family and 
               elevate your trading game.
@@ -71,7 +71,7 @@ export function Hero() {
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button
                 size="lg"
-                className="w-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-primary-foreground hover:text-black sm:w-auto flex justify-center hover:scale-105 transition-all"
+                className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white hover:text-white sm:w-auto flex justify-center hover:scale-105 transition-all font-bold px-8 py-6 rounded-2xl"
                 onClick={() => scrollToSection("#services")}
               >
                 Get Started
@@ -92,9 +92,9 @@ export function Hero() {
               {features.map((feature) => (
                 <div
                   key={feature.label}
-                  className="flex items-center gap-2 text-sm text-muted-foreground"
+                  className="flex items-center gap-2 text-sm text-zinc-400"
                 >
-                  <feature.icon className="h-4 w-4 text-primary" />
+                  <feature.icon className="h-4 w-4 text-blue-500" />
                   {feature.label}
                 </div>
               ))}

@@ -10,44 +10,55 @@ import {
   YAxis,
 } from "recharts";
 
-const generateInitialData = () => {
-  const data = [];
-  let price = 67500;
-  for (let i = 0; i < 24; i++) {
-    price += (Math.random() - 0.48) * 500;
-    data.push({
-      time: `${i}:00`,
-      price: Math.round(price),
-    });
-  }
-  return data;
-};
-
 export function TradingChart() {
   const [data, setData] = useState<{time: string, price: number}[]>([]);
   const [currentPrice, setCurrentPrice] = useState<number>(0);
 
   useEffect(() => {
-    const initialData = generateInitialData();
-    setData(initialData);
-    setCurrentPrice(initialData[initialData.length - 1].price);
+    // 1. Fetch real 24h history from Binance (1h intervals)
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch("https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1h&limit=24");
+        const rawData = await res.json();
+        const formatted = rawData.map((d: any) => ({
+          time: new Date(d[0]).getHours() + ":00",
+          price: Math.round(parseFloat(d[4])), // Closing price
+        }));
+        setData(formatted);
+        setCurrentPrice(formatted[formatted.length - 1].price);
+      } catch (e) {
+        console.error("Failed to fetch BTC history", e);
+      }
+    };
 
-    const interval = setInterval(() => {
-      setData((prev) => {
-        const newData = [...prev.slice(1)];
-        const lastPrice = newData[newData.length - 1].price;
-        const newPrice = Math.round(lastPrice + (Math.random() - 0.48) * 200);
-        const hour = parseInt(newData[newData.length - 1].time.split(":")[0]);
-        newData.push({
-          time: `${(hour + 1) % 24}:00`,
-          price: newPrice,
-        });
-        setCurrentPrice(newPrice);
-        return newData;
+    fetchHistory();
+
+    // 2. Subscribe to real-time price updates via WebSocket
+    const ws = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@trade");
+    
+    ws.onmessage = (event) => {
+      const trade = JSON.parse(event.data);
+      const newPrice = Math.round(parseFloat(trade.p));
+      
+      setCurrentPrice(newPrice);
+      
+      // Update the last data point in the chart to reflect the current live price
+      setData(prev => {
+        if (prev.length === 0) return prev;
+        const lastIndex = prev.length - 1;
+        const updated = [...prev];
+        updated[lastIndex] = { ...updated[lastIndex], price: newPrice };
+        return updated;
       });
-    }, 2000);
+    };
 
-    return () => clearInterval(interval);
+    // 3. Fallback: every hour, refresh the history to shift the chart
+    const refreshInterval = setInterval(fetchHistory, 3600000);
+
+    return () => {
+      ws.close();
+      clearInterval(refreshInterval);
+    };
   }, []);
 
   if (data.length === 0) return null;

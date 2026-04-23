@@ -93,7 +93,7 @@ export function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="group relative rounded-2xl border border-border bg-card p-6 transition-all hover:border-primary/50"
+              className="group relative rounded-2xl border border-white/5 bg-card p-6 transition-all hover:border-white/20"
             >
               <Quote className="absolute top-6 right-6 h-8 w-8 text-primary/20" />
 
@@ -141,30 +141,24 @@ export function Testimonials() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-12 flex flex-col items-center gap-4 rounded-2xl border border-primary/30 bg-primary/5 p-8 text-center sm:flex-row sm:justify-between sm:text-left"
+          className="mt-12 flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-8 text-center sm:flex-row sm:justify-between sm:text-left"
         >
           <div>
             <h3 className="text-xl font-bold text-foreground">
               Ready to Start Your Trading Journey?
             </h3>
             <p className="mt-1 text-muted-foreground">
-              Join 50,000+ traders and start learning today
+              Join our community of elite traders and start growing your portfolio today
             </p>
           </div>
-          <button 
-            onClick={() => {
-              const element = document.querySelector("#courses");
-              if (element) {
-                const headerOffset = 120;
-                const elementPosition = element.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-              }
-            }}
-            className="rounded-lg bg-gradient-to-r from-[#F59E0B] to-[#D97706] px-8 py-3 font-semibold text-primary-foreground transition-all hover:opacity-90"
+          <a 
+            href="https://whatsapp.com/channel/your-channel-id"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#2563EB] px-8 py-3 font-semibold text-white transition-all hover:opacity-90 inline-flex items-center"
           >
-            Get Started Free
-          </button>
+            Join WhatsApp Channel
+          </a>
         </motion.div>
       </div>
     </section>

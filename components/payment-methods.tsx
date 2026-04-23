@@ -47,7 +47,20 @@ export function PaymentMethods() {
   const prevStep = () => setStep(s => s - 1);
 
   return (
-    <section id="services" className="relative border-y border-border/50 py-24 overflow-hidden bg-background">
+    <section id="services" className="relative border-y border-border/50 py-24 overflow-hidden bg-zinc-950">
+      {/* Background image 'bg' with entry 'pop' animation */}
+      <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
+        <motion.img 
+          initial={{ opacity: 0, scale: 0.8, filter: "brightness(0) blur(10px)" }}
+          whileInView={{ opacity: 0.4, scale: 1, filter: "brightness(1.2) blur(0px)" }}
+          transition={{ duration: 2, ease: "easeOut" }}
+          viewport={{ once: true }}
+          src="/bg.png"
+          alt="Services Background" 
+          className="h-full w-full object-cover select-none"
+        />
+      </div>
+
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-1/2 -right-20 h-[400px] w-[400px] rounded-full bg-blue-500/5 blur-[100px]" />
@@ -61,13 +74,13 @@ export function PaymentMethods() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-4 py-1.5 mb-6">
-            <Briefcase className="h-4 w-4 text-[#F59E0B]" />
-            <span className="text-xs font-bold text-[#F59E0B] uppercase tracking-widest">SERVICES & PRODUCTS</span>
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 mb-6">
+            <Briefcase className="h-4 w-4 text-blue-500" />
+            <span className="text-xs font-bold text-blue-500 uppercase tracking-widest">SERVICES & PRODUCTS</span>
           </div>
           <h2 className="text-pretty text-4xl font-black tracking-tighter text-foreground sm:text-5xl lg:text-6xl mb-6 uppercase leading-[1.1]">
             Everything you need to trade{" "}
-            <span className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">with an edge</span>
+            <span className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] bg-clip-text text-transparent">with an edge</span>
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground leading-relaxed">
             From live signals to broker funding, Chainforge gives you the full stack to win on Deriv, Weltrade, and beyond.
@@ -80,10 +93,10 @@ export function PaymentMethods() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-[#F59E0B]/30 transition-all group shadow-sm"
+            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-blue-500/30 transition-all group shadow-sm"
           >
-            <div className="h-12 w-12 rounded-2xl bg-[#F59E0B]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <TrendingUp className="h-6 w-6 text-[#F59E0B]" />
+            <div className="h-12 w-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <TrendingUp className="h-6 w-6 text-blue-500" />
             </div>
             <h3 className="text-2xl font-bold text-foreground mb-3 uppercase tracking-tight">Live Trading Signals</h3>
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
@@ -106,10 +119,10 @@ export function PaymentMethods() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-[#F59E0B]/30 transition-all group shadow-sm"
+            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-blue-500/30 transition-all group shadow-sm"
           >
-            <div className="h-12 w-12 rounded-2xl bg-[#F59E0B]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <Wallet className="h-6 w-6 text-[#F59E0B]" />
+            <div className="h-12 w-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Wallet className="h-6 w-6 text-blue-500" />
             </div>
             <h3 className="text-2xl font-bold text-foreground mb-3 uppercase tracking-tight">Broker Funding & Withdrawals</h3>
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
@@ -134,7 +147,7 @@ export function PaymentMethods() {
           </h3>
           <div className="bg-card border border-border rounded-[2.5rem] p-8 md:p-12 backdrop-blur-2xl shadow-2xl relative overflow-hidden transition-colors">
             {/* Background Accent */}
-            <div className="absolute top-0 right-0 h-32 w-32 bg-[#F59E0B]/5 blur-3xl -z-10" />
+            <div className="absolute top-0 right-0 h-32 w-32 bg-blue-500/5 blur-3xl -z-10" />
             
             <AnimatePresence mode="wait">
               {step === 1 && (
@@ -146,8 +159,8 @@ export function PaymentMethods() {
                   className="space-y-8"
                 >
                   <div className="flex items-center gap-4 mb-8">
-                    <div className="h-12 w-12 rounded-2xl bg-[#F59E0B]/10 flex items-center justify-center">
-                      <User className="h-6 w-6 text-[#F59E0B]" />
+                    <div className="h-12 w-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
+                      <User className="h-6 w-6 text-blue-500" />
                     </div>
                     <div>
                       <h3 className="text-2xl font-bold text-foreground uppercase tracking-tight">Client Details</h3>
@@ -159,7 +172,7 @@ export function PaymentMethods() {
                     <div className="space-y-2">
                       <Label className="text-xs uppercase font-bold text-muted-foreground">Full Name</Label>
                       <Input 
-                        className="bg-secondary/30 border-border py-6 rounded-xl focus:border-[#F59E0B]"
+                        className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
                         placeholder="John Doe" 
                         value={formData.name}
                         onChange={(e) => updateForm({ name: e.target.value })}
@@ -168,7 +181,7 @@ export function PaymentMethods() {
                     <div className="space-y-2">
                       <Label className="text-xs uppercase font-bold text-muted-foreground">Email Address</Label>
                       <Input 
-                        className="bg-secondary/30 border-border py-6 rounded-xl focus:border-[#F59E0B]"
+                        className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
                         placeholder="john@example.com"
                         value={formData.email}
                         onChange={(e) => updateForm({ email: e.target.value })}
@@ -177,14 +190,14 @@ export function PaymentMethods() {
                     <div className="space-y-2">
                       <Label className="text-xs uppercase font-bold text-muted-foreground">Phone Number</Label>
                       <Input 
-                        className="bg-secondary/30 border-border py-6 rounded-xl focus:border-[#F59E0B]"
+                        className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
                         placeholder="+263 77 000 000"
                         value={formData.phone}
                         onChange={(e) => updateForm({ phone: e.target.value })}
                       />
                     </div>
                   </div>
-                  <Button onClick={nextStep} className="w-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-primary-foreground font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all">
+                  <Button onClick={nextStep} className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all">
                     Continue to Broker Selection <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </motion.div>
@@ -215,7 +228,7 @@ export function PaymentMethods() {
                         <button 
                           key={t}
                           onClick={() => updateForm({ type: t, gateway: "" })}
-                          className={`py-4 rounded-xl border text-sm font-bold uppercase transition-all ${formData.type === t ? "border-[#F59E0B] bg-[#F59E0B]/10 text-white" : "border-white/5 bg-black/20 text-zinc-500"}`}
+                          className={`py-4 rounded-xl border text-sm font-bold uppercase transition-all ${formData.type === t ? "border-blue-500 bg-blue-500/10 text-white" : "border-white/5 bg-black/20 text-zinc-500"}`}
                         >
                           {t}
                         </button>
@@ -228,7 +241,7 @@ export function PaymentMethods() {
                         <button 
                           key={b}
                           onClick={() => updateForm({ broker: b, brokerId: "" })}
-                          className={`py-4 rounded-xl border text-sm font-bold uppercase transition-all ${formData.broker === b ? "border-[#F59E0B] bg-[#F59E0B]/10 text-white" : "border-white/5 bg-black/20 text-zinc-500"}`}
+                          className={`py-4 rounded-xl border text-sm font-bold uppercase transition-all ${formData.broker === b ? "border-blue-500 bg-blue-500/10 text-white" : "border-white/5 bg-black/20 text-zinc-500"}`}
                         >
                           {b}
                         </button>
@@ -241,7 +254,7 @@ export function PaymentMethods() {
                           {formData.broker === "Deriv" ? "CR Number" : "TRC20 USDT Wallet Address"}
                         </Label>
                         <Input 
-                          className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-[#F59E0B]"
+                          className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500"
                           placeholder={formData.broker === "Deriv" ? "e.g. CR123456" : "Paste your TRC20 address"}
                           value={formData.brokerId}
                           onChange={(e) => updateForm({ brokerId: e.target.value })}
@@ -249,7 +262,7 @@ export function PaymentMethods() {
                       </motion.div>
                     )}
                   </div>
-                  <Button disabled={!formData.broker || !formData.brokerId} onClick={nextStep} className="w-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all">
+                  <Button disabled={!formData.broker || !formData.brokerId} onClick={nextStep} className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all">
                     {formData.type === "deposit" ? "Choose Payment Gateway" : "Withdrawal Methods"} <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </motion.div>
@@ -281,22 +294,22 @@ export function PaymentMethods() {
                         ? [
                             { id: "EcoCash", icon: Smartphone, color: "text-green-500" },
                             { id: "InnBucks", icon: Wallet, color: "text-blue-500" },
-                            { id: "USDT", icon: Bitcoin, color: "text-[#F59E0B]" }
+                            { id: "USDT", icon: Bitcoin, color: "text-blue-500" }
                           ]
                         : [
-                            { id: "Office Cash", icon: Briefcase, color: "text-[#F59E0B]" },
+                            { id: "Office Cash", icon: Briefcase, color: "text-blue-500" },
                             { id: "EcoCash", icon: Smartphone, color: "text-green-500" }
                           ]
                       ).map((g) => (
                         <button 
                           key={g.id}
                           onClick={() => updateForm({ gateway: g.id })}
-                          className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${formData.gateway === g.id ? "border-[#F59E0B] bg-[#F59E0B]/10" : "border-white/5 bg-black/20"}`}
+                          className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${formData.gateway === g.id ? "border-blue-500 bg-blue-500/10" : "border-white/5 bg-black/20"}`}
                         >
                           <div className="relative">
                             <g.icon className={`h-6 w-6 ${g.color}`} />
                             {formData.gateway === g.id && (
-                              <motion.div layoutId="active" className="absolute -top-1 -right-1 h-2 w-2 bg-[#F59E0B] rounded-full shadow-[0_0_10px_#F59E0B]" />
+                              <motion.div layoutId="active" className="absolute -top-1 -right-1 h-2 w-2 bg-blue-500 rounded-full shadow-[0_0_10px_#3B82F6]" />
                             )}
                           </div>
                           <span className={`text-[10px] font-bold uppercase ${formData.gateway === g.id ? "text-white" : "text-zinc-500"}`}>{g.id}</span>
@@ -308,7 +321,7 @@ export function PaymentMethods() {
                       <Label className="text-xs uppercase font-bold text-zinc-400">Amount (USD)</Label>
                       <Input 
                         type="number"
-                        className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-[#F59E0B] text-xl font-bold"
+                        className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500 text-xl font-bold"
                         value={formData.amount}
                         onChange={(e) => updateForm({ amount: e.target.value })}
                       />
@@ -318,7 +331,7 @@ export function PaymentMethods() {
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
                         <Label className="text-xs uppercase font-bold text-zinc-400">{formData.gateway} Number</Label>
                         <Input 
-                          className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-[#F59E0B]"
+                          className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500"
                           placeholder="077..."
                           value={formData.gatewayNumber}
                           onChange={(e) => updateForm({ gatewayNumber: e.target.value })}
@@ -331,7 +344,7 @@ export function PaymentMethods() {
                         <div className="p-6 rounded-2xl bg-white/5 border border-white/5 space-y-4">
                           <div className="flex justify-between items-center">
                             <span className="text-xs font-bold text-zinc-500 uppercase">Scan to Pay (TRC20)</span>
-                            <QrCode className="h-5 w-5 text-[#F59E0B]" />
+                            <QrCode className="h-5 w-5 text-blue-500" />
                           </div>
                           <div className="h-40 w-full bg-white rounded-xl flex items-center justify-center">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=T...AccountLink" alt="USDT QR" className="h-32 w-32" />
@@ -346,7 +359,7 @@ export function PaymentMethods() {
                           <div className="space-y-2">
                             <Label className="text-xs uppercase font-bold text-zinc-400">Your USDT Account</Label>
                             <Input 
-                              className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-[#F59E0B]"
+                              className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500"
                               placeholder="Address you sent from"
                               value={formData.usdtAccount}
                               onChange={(e) => updateForm({ usdtAccount: e.target.value })}
@@ -355,7 +368,7 @@ export function PaymentMethods() {
                           <div className="space-y-2">
                             <Label className="text-xs uppercase font-bold text-zinc-400">Transaction Reference</Label>
                             <Input 
-                              className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-[#F59E0B]"
+                              className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500"
                               placeholder="Paste Hash/Ref Number"
                               value={formData.usdtRef}
                               onChange={(e) => updateForm({ usdtRef: e.target.value })}
@@ -363,7 +376,7 @@ export function PaymentMethods() {
                           </div>
                           <div className="space-y-2">
                             <Label className="text-xs uppercase font-bold text-zinc-400">Proof of Payment</Label>
-                            <div className="relative h-32 w-full border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center hover:border-[#F59E0B]/30 transition-all cursor-pointer bg-black/20">
+                            <div className="relative h-32 w-full border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center hover:border-blue-500/30 transition-all cursor-pointer bg-black/20">
                               <Upload className="h-6 w-6 text-zinc-500 mb-2" />
                               <span className="text-xs text-zinc-500 font-bold uppercase tracking-tight">Upload Screenshot</span>
                               <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => updateForm({ proofName: e.target.files?.[0]?.name || "" })} />
@@ -378,7 +391,7 @@ export function PaymentMethods() {
                   <Button 
                     onClick={nextStep} 
                     disabled={!formData.gateway}
-                    className="w-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all"
+                    className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all"
                   >
                     Confirm & Process Transaction
                   </Button>
@@ -400,7 +413,7 @@ export function PaymentMethods() {
                   </div>
                   <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">Transaction Initiated</h3>
                   <p className="text-zinc-400 text-sm leading-relaxed max-w-sm mx-auto mb-10">
-                    Thank you, <span className="text-white font-bold">{formData.name}</span>. Your <span className="text-[#F59E0B] font-bold uppercase">{formData.type}</span> request via <span className="text-[#F59E0B] font-bold">{formData.gateway}</span> is now being processed.
+                    Thank you, <span className="text-white font-bold">{formData.name}</span>. Your <span className="text-blue-400 font-bold uppercase">{formData.type}</span> request via <span className="text-blue-400 font-bold">{formData.gateway}</span> is now being processed.
                   </p>
                   
                   <div className="bg-black/40 rounded-3xl p-6 border border-white/5 text-left mb-10">
@@ -417,8 +430,8 @@ export function PaymentMethods() {
                         <span className="text-xs text-white">Broker: {formData.broker} ({formData.brokerId})</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="h-2 w-2 rounded-full bg-[#F59E0B] animate-pulse" />
-                        <span className="text-xs text-[#F59E0B] font-bold uppercase">Processing withdrawal/funding...</span>
+                        <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+                        <span className="text-xs text-blue-400 font-bold uppercase">Processing withdrawal/funding...</span>
                       </div>
                     </div>
                   </div>

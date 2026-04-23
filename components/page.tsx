@@ -8,7 +8,7 @@ import Link from "next/link";
 function scrollToSection(href: string) {
   const element = document.querySelector(href);
   if (element) {
-    const headerOffset = 120;
+    const headerOffset = 270;
     const elementPosition = element.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
     window.scrollTo({
@@ -57,11 +57,11 @@ const stats = [
 
 export default function AboutPage() {
   return (
-    <section id="about" className="relative min-h-screen bg-zinc-950 pt-32 pb-20">
+    <section id="about" className="relative min-h-screen bg-zinc-950 pt-72 pb-20">
       {/* Background Decorative Blobs */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-[#F59E0B]/10 blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 h-[500px] w-[500px] rounded-full bg-[#D97706]/5 blur-[120px]" />
+        <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-[#3B82F6]/10 blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 h-[500px] w-[500px] rounded-full bg-[#2563EB]/5 blur-[120px]" />
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -72,17 +72,17 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 mb-6"
           >
-            <Flame className="h-4 w-4 text-[#F59E0B]" />
-            <span className="text-[10px] font-black text-[#F59E0B] uppercase tracking-[0.2em]">ABOUT CHAINFORGE</span>
+            <Flame className="h-4 w-4 text-blue-500" />
+            <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">ABOUT CHAINFORGE</span>
           </motion.div>
           
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-6"
+            className="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-6 uppercase"
           >
-            We are the <span className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">Forex Mafia</span>
+            We are the <span className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] bg-clip-text text-transparent">Forex Mafia</span>
           </motion.h1>
           
           <motion.p 
@@ -104,7 +104,7 @@ export default function AboutPage() {
           >
             <Button 
               size="lg" 
-              className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:scale-105 transition-all text-white hover:text-black font-bold px-8 py-6 rounded-2xl"
+              className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] hover:scale-105 transition-all text-white font-bold px-8 py-6 rounded-2xl"
               onClick={() => scrollToSection("#services")}
             >
               See Our Services

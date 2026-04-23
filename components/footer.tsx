@@ -1,5 +1,8 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 import { Mail, Phone, MapPin, Twitter, Youtube, Linkedin, Instagram, MessageCircle } from "lucide-react";
 
 const footerLinks = {
@@ -12,8 +15,6 @@ const footerLinks = {
   ],
   resources: [
     { label: "Market News", href: "#news" },
-    { label: "Live Market", href: "#market" },
-    { label: "Trading Tools", href: "#market" },
     { label: "FAQ", href: "#contact" },
   ],
   company: [
@@ -21,12 +22,6 @@ const footerLinks = {
     { label: "Testimonials", href: "#testimonials" },
     { label: "Partners", href: "#services" },
     { label: "Contact", href: "#contact" },
-  ],
-  legal: [
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-    { label: "Risk Disclosure", href: "#" },
-    { label: "Refund Policy", href: "#" },
   ],
 };
 
@@ -45,7 +40,7 @@ function scrollToSection(href: string) {
   }
   const element = document.querySelector(href);
   if (element) {
-    const headerOffset = 120;
+    const headerOffset = 270;
     const elementPosition = element.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
     window.scrollTo({
@@ -56,6 +51,13 @@ function scrollToSection(href: string) {
 }
 
 export function Footer() {
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <footer id="contact" className="border-t border-border bg-card">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
@@ -63,20 +65,14 @@ export function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-2">
             <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#F59E0B] via-[#F59E0B] to-[#D97706]">
-                <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-primary-foreground">
-                  <path d="M11.5 11.5v-2h1.75c.55 0 1 .45 1 1s-.45 1-1 1H11.5zm0 1h2.25c.55 0 1 .45 1 1s-.45 1-1 1H11.5v-2z" />
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.75 13.5c0 1.1-.67 2.04-1.62 2.44l.37 1.06h-1.5l-.3-.87H11.5v.87h-1.5v-.87h-1V17.5h1v-7H9V9h1v-.87h1.5V9h1.2l.3-.87h1.5l-.37 1.06c.95.4 1.62 1.34 1.62 2.44 0 .59-.19 1.13-.52 1.57.33.44.52.98.52 1.57V15.5z" />
-                </svg>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold leading-tight text-foreground">
-                  CHAIN<span className="text-primary">FORGE</span>
-                </span>
-                <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                  The Forex Mafia
-                </span>
-              </div>
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="flex h-[150px] w-[150px] lg:h-[200px] lg:w-[200px] items-center justify-center -ml-8"
+              >
+                {mounted && (
+                  <img src={resolvedTheme === "dark" ? "/q.png" : "/q1.png"} alt="ChainForge Logo" className="h-full w-full object-contain" />
+                )}
+              </motion.div>
             </a>
 
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
@@ -115,7 +111,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-secondary text-muted-foreground transition-all hover:border-primary hover:bg-gradient-to-r hover:from-[#F59E0B] hover:to-[#D97706] hover:text-primary-foreground"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-secondary text-muted-foreground transition-all hover:border-blue-500 hover:bg-gradient-to-r hover:from-[#3B82F6] hover:to-[#2563EB] hover:text-white"
                 >
                   <social.icon className="h-5 w-5" />
                 </a>
@@ -174,30 +170,12 @@ export function Footer() {
               ))}
             </ul>
           </div>
-
-          <div>
-            <h3 className="font-semibold text-foreground">Legal</h3>
-            <ul className="mt-4 space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => { e.preventDefault(); alert(`${link.label} - Coming soon!`); }}
-                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
         <div className="mt-12 border-t border-border pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} CHAINFORGE - The Forex Mafia. All rights
-              reserved.
+              &copy; {new Date().getFullYear()} CHAINFORGE. All rights reserved.
             </p>
             <p className="text-xs text-muted-foreground">
               Risk Warning: Trading involves significant risk of loss. Past

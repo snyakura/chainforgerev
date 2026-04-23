@@ -39,7 +39,7 @@ const storyValues = [
 function scrollToSection(href: string) {
   const element = document.querySelector(href);
   if (element) {
-    const headerOffset = 120;
+    const headerOffset = 270;
     const elementPosition = element.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
     window.scrollTo({ top: offsetPosition, behavior: "smooth" });
@@ -54,8 +54,8 @@ export function Courses() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 50,
-    damping: 25,
+    stiffness: 100,
+    damping: 30,
     restDelta: 0.001
   });
 
@@ -76,8 +76,8 @@ export function Courses() {
 
       {/* Background Decorative Blobs */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-1/2 -left-20 h-[600px] w-[600px] rounded-full bg-[#F59E0B]/10 blur-[140px]" />
-        <div className="absolute bottom-0 -right-20 h-[500px] w-[500px] rounded-full bg-[#D97706]/5 blur-[120px]" />
+        <div className="absolute top-1/2 -left-20 h-[600px] w-[600px] rounded-full bg-[#3B82F6]/10 blur-[140px]" />
+        <div className="absolute bottom-0 -right-20 h-[500px] w-[500px] rounded-full bg-[#2563EB]/5 blur-[120px]" />
       </div>
 
       {/* Large Bold Background Label */}
@@ -97,13 +97,13 @@ export function Courses() {
             viewport={{ once: true }}
             className="lg:col-span-3 text-left"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-4 py-1.5 mb-6">
-              <Flame className="h-4 w-4 text-[#F59E0B]" />
-              <span className="text-xs font-bold text-[#F59E0B] uppercase tracking-widest">ABOUT CHAINFORGE</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 mb-6">
+              <Flame className="h-4 w-4 text-blue-500" />
+              <span className="text-xs font-bold text-blue-500 uppercase tracking-widest">ABOUT CHAINFORGE</span>
             </div>
             <h2 className="text-pretty text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl mb-6 uppercase">
               We are the{" "}
-              <span className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] bg-clip-text text-transparent">
                 Forex Mafia
               </span>
             </h2>
@@ -116,7 +116,7 @@ export function Courses() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Button 
                 size="lg" 
-                className="w-full sm:w-auto bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:scale-105 transition-all text-primary-foreground hover:text-black font-bold px-8 py-6 rounded-2xl flex justify-center"
+                className="w-full sm:w-auto bg-gradient-to-r from-[#3B82F6] to-[#2563EB] hover:scale-105 transition-all text-white font-bold px-8 py-6 rounded-2xl flex justify-center"
                 onClick={() => scrollToSection("#services")}
               >
                 See Our Services
@@ -149,7 +149,7 @@ export function Courses() {
               <img 
                 src="/phone.png" 
                 alt="ChainForge Mobile" 
-                className="max-h-[1100px] w-auto drop-shadow-[0_40px_120px_rgba(245,158,11,0.45)] scale-[1.6]"
+                className="max-h-[1100px] w-auto drop-shadow-[0_40px_120px_rgba(59,130,246,0.45)] scale-[1.6] will-change-transform"
               />
             </motion.div>
           </div>
@@ -179,7 +179,7 @@ export function Courses() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {storyValues.map((value, i) => (
-              <div key={i} className="p-5 rounded-2xl bg-card border border-border backdrop-blur-xl hover:border-[#F59E0B]/30 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] hover:scale-[1.02] transition-all duration-300 cursor-default">
+              <div key={i} className="p-5 rounded-2xl bg-card border border-border backdrop-blur-xl hover:border-blue-500/30 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] hover:scale-[1.02] transition-all duration-300 cursor-default">
                 <div className={`h-10 w-10 rounded-xl ${value.bg} flex items-center justify-center mb-4`}>
                   <value.icon className={`h-5 w-5 ${value.color}`} />
                 </div>

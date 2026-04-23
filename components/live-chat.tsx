@@ -16,7 +16,7 @@ export function LiveChat() {
       animate={{ scale: 1 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      className="fixed right-6 bottom-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white shadow-2xl transition-all hover:shadow-[#F59E0B]/40"
+      className="fixed right-6 bottom-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#3B82F6] to-[#2563EB] text-white shadow-2xl transition-all hover:shadow-blue-500/40"
       aria-label="Chat on WhatsApp"
     >
       <svg viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8">
