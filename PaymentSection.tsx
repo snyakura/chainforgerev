@@ -85,9 +85,10 @@ const PaymentSection: React.FC = () => {
       </div>
 
       {/* Glass Card Container */}
-      <div className="relative bg-zinc-900/40 border border-white/10 rounded-[2.5rem] p-8 md:p-10 backdrop-blur-2xl shadow-2xl overflow-hidden">
+      <div className="relative bg-zinc-900/60 border border-blue-500/30 ring-1 ring-blue-500/20 rounded-[2.5rem] p-8 md:p-10 backdrop-blur-2xl shadow-[0_0_50px_rgba(59,130,246,0.15)] overflow-hidden transition-all duration-500 hover:shadow-[0_0_80px_rgba(59,130,246,0.25)]">
         {/* Animated Background Accent */}
-        <div className="absolute -top-24 -right-24 h-48 w-48 bg-blue-500/10 blur-[80px] rounded-full pointer-events-none" />
+        <div className="absolute -top-24 -right-24 h-64 w-64 bg-blue-600/20 blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 h-64 w-64 bg-blue-600/10 blur-[100px] rounded-full pointer-events-none" />
 
         {/* Step Progress Indicator */}
         <div className="flex items-center justify-between mb-10">

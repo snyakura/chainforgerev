@@ -4,7 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Bitcoin, 
-  Smartphone, 
+  Smartphone,
+  FileUp, 
   Wallet, 
   Check, 
   Briefcase, 
@@ -36,7 +37,10 @@ export function PaymentMethods() {
     gatewayNumber: "",
     usdtAccount: "",
     usdtRef: "",
-    proofName: ""
+    proofName: "",
+    idDoc: "",
+    passportDoc: "",
+    binanceQrName: ""
   });
 
   const updateForm = (updates: Partial<typeof formData>) => {
@@ -45,6 +49,52 @@ export function PaymentMethods() {
 
   const nextStep = () => setStep(s => s + 1);
   const prevStep = () => setStep(s => s - 1);
+
+  // Fee calculation logic
+  const calculateFees = (amountStr: string, gateway: string, broker: string, type: string) => {
+    const amount = parseFloat(amountStr);
+    if (isNaN(amount) || amount <= 0) return { brokerFee: 0, gatewayFee: 0, totalDeduction: 0, netAmount: 0 };
+
+    let brokerFee = 0;
+    let gatewayFee = 0;
+
+    // Broker Fee (10% for Weltrade, Deriv, Other deposits)
+    // This fee applies to the broker, not the payment method itself.
+    if (type === "deposit" && (broker === "Weltrade" || broker === "Deriv" || broker === "Other")) {
+      brokerFee = amount * 0.10;
+    }
+
+    // Payment Gateway Fee (only for deposits)
+    if (type === "deposit") {
+      switch (gateway) {
+        case "EcoCash":
+          // EcoCash fee: 2% or minimum $0.10 for small amounts
+          gatewayFee = amount <= 5 ? 0.10 : amount * 0.02;
+          break;
+        case "InnBucks":
+          // InnBucks fee: Flat $0.50
+          gatewayFee = 0.50;
+          break;
+        case "FNB (EFT)":
+          // FNB (EFT) fee: Fixed $4 charge
+          gatewayFee = 4.00;
+          break;
+        // USDT and Cash are assumed to have their processing covered by the broker fee, or no direct gateway fee
+        case "USDT":
+        case "Cash":
+        default:
+          gatewayFee = 0;
+          break;
+      }
+    }
+
+    const totalDeduction = brokerFee + gatewayFee;
+    const netAmount = amount - totalDeduction;
+
+    return { brokerFee, gatewayFee, totalDeduction, netAmount: Math.max(0, netAmount) };
+  };
+
+  const { netAmount, brokerFee, gatewayFee } = calculateFees(formData.amount, formData.gateway, formData.broker, formData.type);
 
   return (
     <section id="services" className="relative border-y border-border/50 py-24 overflow-hidden bg-zinc-950">
@@ -145,10 +195,11 @@ export function PaymentMethods() {
           <h3 className="text-2xl font-bold text-foreground text-center mb-8 uppercase tracking-tight">
             Make a withdrawal or deposit
           </h3>
-          <div className="bg-card border border-border rounded-[2.5rem] p-8 md:p-12 backdrop-blur-2xl shadow-2xl relative overflow-hidden transition-colors">
+          <div className="bg-zinc-900/60 border border-blue-500/30 ring-1 ring-blue-500/20 rounded-[2.5rem] p-8 md:p-12 backdrop-blur-2xl shadow-[0_0_50px_rgba(59,130,246,0.15)] relative overflow-hidden transition-all duration-500 hover:shadow-[0_0_80px_rgba(59,130,246,0.25)] group/form">
             {/* Background Accent */}
-            <div className="absolute top-0 right-0 h-32 w-32 bg-blue-500/5 blur-3xl -z-10" />
-            
+            <div className="absolute -top-24 -right-24 h-64 w-64 bg-blue-600/20 blur-[100px] rounded-full pointer-events-none group-hover/form:bg-blue-600/30 transition-colors duration-500" />
+            <div className="absolute -bottom-24 -left-24 h-64 w-64 bg-blue-600/10 blur-[100px] rounded-full pointer-events-none" />
+
             <AnimatePresence mode="wait">
               {step === 1 && (
                 <motion.div 
@@ -196,8 +247,47 @@ export function PaymentMethods() {
                         onChange={(e) => updateForm({ phone: e.target.value })}
                       />
                     </div>
+
+                    <div className="space-y-3">
+                      <Label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Identity Verification (ID or Passport)</Label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="relative group/id">
+                          <input 
+                            type="file" 
+                            onChange={(e) => updateForm({ idDoc: e.target.files?.[0]?.name || "" })}
+                            className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                          />
+                          <div className="h-20 w-full border border-dashed border-zinc-800 rounded-xl flex flex-col items-center justify-center bg-zinc-950/30 group-hover/id:border-blue-500/50 transition-all">
+                            {formData.idDoc ? (
+                              <span className="text-[10px] text-emerald-400 font-bold px-2 text-center">{formData.idDoc.substring(0, 15)}...</span>
+                            ) : (
+                              <><FileUp className="h-4 w-4 text-zinc-600 mb-1" /><span className="text-[9px] font-bold text-zinc-600 uppercase">National ID</span></>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="relative group/passport">
+                          <input 
+                            type="file" 
+                            onChange={(e) => updateForm({ passportDoc: e.target.files?.[0]?.name || "" })}
+                            className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                          />
+                          <div className="h-20 w-full border border-dashed border-zinc-800 rounded-xl flex flex-col items-center justify-center bg-zinc-950/30 group-hover/passport:border-blue-500/50 transition-all">
+                            {formData.passportDoc ? (
+                              <span className="text-[10px] text-emerald-400 font-bold px-2 text-center">{formData.passportDoc.substring(0, 15)}...</span>
+                            ) : (
+                              <><FileUp className="h-4 w-4 text-zinc-600 mb-1" /><span className="text-[9px] font-bold text-zinc-600 uppercase">Passport</span></>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <Button onClick={nextStep} className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all">
+                  <Button 
+                    onClick={nextStep} 
+                    disabled={!formData.name || !formData.email || !formData.phone || (!formData.idDoc && !formData.passportDoc)}
+                    className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all"
+                  >
                     Continue to Broker Selection <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </motion.div>
@@ -249,20 +339,38 @@ export function PaymentMethods() {
                     </div>
 
                     {formData.broker && (
-                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                        <Label className="text-xs uppercase font-bold text-zinc-400">
-                          {formData.broker === "Deriv" ? "CR Number" : "TRC20 USDT Wallet Address"}
-                        </Label>
-                        <Input 
-                          className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500"
-                          placeholder={formData.broker === "Deriv" ? "e.g. CR123456" : "Paste your TRC20 address"}
-                          value={formData.brokerId}
-                          onChange={(e) => updateForm({ brokerId: e.target.value })}
-                        />
-                      </motion.div>
+                      <>
+                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                          <Label className="text-xs uppercase font-bold text-zinc-400">
+                            {formData.broker === "Deriv" ? "CR Number" : "TRC20 USDT Wallet Address"}
+                          </Label>
+                          <Input 
+                            className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500"
+                            placeholder={formData.broker === "Deriv" ? "e.g. CR123456" : "Paste your TRC20 address"}
+                            value={formData.brokerId}
+                            onChange={(e) => updateForm({ brokerId: e.target.value })}
+                          />
+                        </motion.div>
+
+                        {formData.broker === "Weltrade" && formData.type === "deposit" && (
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                            <Label className="text-xs uppercase font-bold text-zinc-400">Binance Pay QR Code</Label>
+                            <div className="relative h-32 w-full border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center hover:border-blue-500/30 transition-all cursor-pointer bg-black/20">
+                              <Upload className="h-6 w-6 text-zinc-500 mb-2" />
+                              <span className="text-xs text-zinc-500 font-bold uppercase tracking-tight">Upload QR Code Screenshot</span>
+                              <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => updateForm({ binanceQrName: e.target.files?.[0]?.name || "" })} />
+                              {formData.binanceQrName && <span className="mt-2 text-[10px] text-emerald-400 font-bold">{formData.binanceQrName}</span>}
+                            </div>
+                          </motion.div>
+                        )}
+                      </>
                     )}
                   </div>
-                  <Button disabled={!formData.broker || !formData.brokerId} onClick={nextStep} className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all">
+                  <Button 
+                    disabled={!formData.broker || !formData.brokerId || (formData.broker === "Weltrade" && formData.type === "deposit" && !formData.binanceQrName)} 
+                    onClick={nextStep} 
+                    className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all"
+                  >
                     {formData.type === "deposit" ? "Choose Payment Gateway" : "Withdrawal Methods"} <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </motion.div>
@@ -289,12 +397,14 @@ export function PaymentMethods() {
                   </div>
 
                   <div className="space-y-6">
-                    <div className={`grid ${formData.type === "deposit" ? "grid-cols-3" : "grid-cols-2"} gap-4`}>
+                    <div className={`grid ${formData.type === "deposit" ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" : "grid-cols-2"} gap-4`}>
                       {(formData.type === "deposit" 
                         ? [
                             { id: "EcoCash", icon: Smartphone, color: "text-green-500" },
                             { id: "InnBucks", icon: Wallet, color: "text-blue-500" },
-                            { id: "USDT", icon: Bitcoin, color: "text-blue-500" }
+                            { id: "USDT", icon: Bitcoin, color: "text-blue-500" },
+                            { id: "Cash", icon: Briefcase, color: "text-emerald-500" },
+                            { id: "FNB (EFT)", icon: Wallet, color: "text-indigo-500" }
                           ]
                         : [
                             { id: "Office Cash", icon: Briefcase, color: "text-blue-500" },
@@ -304,7 +414,7 @@ export function PaymentMethods() {
                         <button 
                           key={g.id}
                           onClick={() => updateForm({ gateway: g.id })}
-                          className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${formData.gateway === g.id ? "border-blue-500 bg-blue-500/10" : "border-white/5 bg-black/20"}`}
+                          className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${formData.gateway === g.id ? "border-blue-500 bg-blue-500/10" : "border-white/5 bg-black/20 hover:border-blue-500/30"}`}
                         >
                           <div className="relative">
                             <g.icon className={`h-6 w-6 ${g.color}`} />
@@ -318,13 +428,42 @@ export function PaymentMethods() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-xs uppercase font-bold text-zinc-400">Amount (USD)</Label>
+                      <div className="flex justify-between items-center">
+                        <Label className="text-xs uppercase font-bold text-zinc-400">Amount (USD)</Label>
+                        {formData.gateway === "Cash" && (
+                          <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-widest">Min $1</span>
+                        )}
+                      </div>
                       <Input 
                         type="number"
                         className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500 text-xl font-bold"
                         value={formData.amount}
                         onChange={(e) => updateForm({ amount: e.target.value })}
                       />
+                      
+                      {formData.type === "deposit" && parseFloat(formData.amount) > 0 && (
+                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-4 p-4 rounded-xl bg-blue-500/5 border border-blue-500/20">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-[10px] text-zinc-500 uppercase font-bold">Funds to be Received</span>
+                            <span className="text-lg font-black text-blue-500">
+                              ${netAmount.toFixed(2)}
+                            </span>
+                          </div>
+                          <p className="text-[9px] text-zinc-500 leading-tight">
+                            {brokerFee > 0 && `A 10% processing fee ($${brokerFee.toFixed(2)})`}
+                            {brokerFee > 0 && gatewayFee > 0 && " and "}
+                            {gatewayFee > 0 && 
+                              (formData.gateway === "EcoCash" 
+                                ? `an EcoCash fee of $${gatewayFee.toFixed(2)}` 
+                                : formData.gateway === "InnBucks" 
+                                  ? `an InnBucks fee of $${gatewayFee.toFixed(2)}` 
+                                  : formData.gateway === "FNB (EFT)" 
+                                    ? `an FNB (EFT) fee of $${gatewayFee.toFixed(2)}` 
+                                    : "")}
+                            {(brokerFee > 0 || gatewayFee > 0) ? ` will be deducted from your deposit to ${formData.broker}.` : "No additional fees for this transaction."}
+                          </p>
+                        </motion.div>
+                      )}
                     </div>
 
                     {formData.gateway === "EcoCash" && (
@@ -390,7 +529,7 @@ export function PaymentMethods() {
 
                   <Button 
                     onClick={nextStep} 
-                    disabled={!formData.gateway}
+                    disabled={!formData.gateway || (formData.gateway === "Cash" && (parseFloat(formData.amount) < 1 || !formData.amount))}
                     className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all"
                   >
                     Confirm & Process Transaction
