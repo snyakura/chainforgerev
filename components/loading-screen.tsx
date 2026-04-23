@@ -46,7 +46,7 @@ export function LoadingScreen() {
          // className="relative flex h-96 w-96 items-center justify-center"
           className="relative flex h-[200px] w-[200px] items-center justify-center"
         >
-          {mounted && (
+          {mounted ? ( // Conditionally render the image or a placeholder
             <motion.img
               src={resolvedTheme === "dark" ? "/q.png" : "/q1.png"}
               alt="ChainForge Loading..."
@@ -60,6 +60,8 @@ export function LoadingScreen() {
                 ease: "easeInOut"
               }}
             />
+          ) : (
+            <div className="h-full w-full" /> // Placeholder to prevent layout shift
           )}
         </motion.div>
       </div>

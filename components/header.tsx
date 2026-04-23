@@ -61,8 +61,10 @@ export function Header() {
               whileHover={{ scale: 1.05 }}
               className="flex h-[150px] w-[150px] lg:h-[200px] lg:w-[200px] items-center justify-center"
             >
-              {mounted && (
+              {mounted ? ( // Conditionally render the image or a placeholder
                 <img src={resolvedTheme === "dark" ? "/q.png" : "/q1.png"} alt="ChainForge Logo" className="h-full w-full object-contain" />
+              ) : (
+                <div className="h-full w-full" /> // Placeholder to prevent layout shift
               )}
             </motion.div>
           </Link>

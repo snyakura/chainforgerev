@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { LoadingScreen } from "./loading-screen";
+import { Header } from "./header";
+import { Footer } from "./footer";
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +43,9 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
               className="absolute bottom-[-10%] right-[-10%] w-[100vw] h-[100vh] bg-blue-500/10 blur-[150px] rounded-full"
             />
           </div>
-          {children}
+          <Header />
+          <main>{children}</main>
+          <Footer />
         </div>
       )}
     </>

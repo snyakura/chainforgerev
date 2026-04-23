@@ -67,10 +67,12 @@ export function Footer() {
             <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center justify-center lg:justify-start gap-2">
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="flex h-[150px] w-[150px] lg:h-[200px] lg:w-[200px] items-center justify-center lg:-ml-8"
+                className="flex h-[150px] w-[150px] lg:h-[200px] lg:w-[200px] items-center justify-center lg:-ml-8" // This div always renders to reserve space
               >
-                {mounted && (
+                {mounted ? ( // Conditionally render the image or a placeholder
                   <img src={resolvedTheme === "dark" ? "/q.png" : "/q1.png"} alt="ChainForge Logo" className="h-full w-full object-contain" />
+                ) : (
+                  <div className="h-full w-full" /> // Placeholder to prevent layout shift
                 )}
               </motion.div>
             </a>
