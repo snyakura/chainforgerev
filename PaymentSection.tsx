@@ -13,7 +13,8 @@ import {
   Info,
   Copy,
   Check
-} from "lucide-react";
+} from "lucide-react"; // Assuming Upload icon is sufficient for general file upload
+import { FileUp } from "lucide-react"; // Using FileUp for document specific upload
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,6 +43,8 @@ const PaymentSection: React.FC = () => {
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
   const [proof, setProof] = useState<File | null>(null);
   const [refId, setRefId] = useState("");
+  const [idDocument, setIdDocument] = useState<File | null>(null);
+  const [passportDocument, setPassportDocument] = useState<File | null>(null);
   const [copied, setCopied] = useState(false);
 
   const resetFlow = () => {
@@ -49,6 +52,8 @@ const PaymentSection: React.FC = () => {
     setSelectedMethod(null);
     setProof(null);
     setRefId("");
+    setIdDocument(null);
+    setPassportDocument(null);
   };
 
   const handleNext = () => setStep((s) => s + 1);
@@ -110,22 +115,59 @@ const PaymentSection: React.FC = () => {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-6"
             >
-              <div className="space-y-2">
-                <Label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Enter {activeTab} Amount</Label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl font-bold text-blue-500">$</span>
-                  <Input 
-                    type="number" 
-                    value={amount} 
-                    onChange={(e) => setAmount(e.target.value)} 
-                    placeholder="0.00"
-                    className="pl-10 bg-zinc-950/50 border-white/5 h-16 text-2xl font-bold rounded-2xl focus:border-blue-500 transition-all"
-                  />
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Enter {activeTab} Amount</Label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl font-bold text-blue-500">$</span>
+                    <Input 
+                      type="number" 
+                      value={amount} 
+                      onChange={(e) => setAmount(e.target.value)} 
+                      placeholder="0.00"
+                      className="pl-10 bg-zinc-950/50 border-white/5 h-16 text-2xl font-bold rounded-2xl focus:border-blue-500 transition-all"
+                    />
+                  </div>
+                  <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-tight px-1">Min: $10.00 | Max: $5,000.00</p>
                 </div>
-                <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-tight px-1">Min: $10.00 | Max: $5,000.00</p>
+
+                <div className="space-y-3">
+                  <Label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Identity Verification (ID or Passport)</Label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="relative group">
+                      <input 
+                        type="file" 
+                        onChange={(e) => setIdDocument(e.target.files ? e.target.files[0] : null)}
+                        className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                      />
+                      <div className="h-20 w-full border border-dashed border-zinc-800 rounded-xl flex flex-col items-center justify-center bg-zinc-950/30 group-hover:border-blue-500/50 transition-all">
+                        {idDocument ? (
+                          <span className="text-[10px] text-emerald-400 font-bold px-2 text-center">{idDocument.name.substring(0, 15)}...</span>
+                        ) : (
+                          <><FileUp className="h-4 w-4 text-zinc-600 mb-1" /><span className="text-[9px] font-bold text-zinc-600 uppercase">National ID</span></>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="relative group">
+                      <input 
+                        type="file" 
+                        onChange={(e) => setPassportDocument(e.target.files ? e.target.files[0] : null)}
+                        className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                      />
+                      <div className="h-20 w-full border border-dashed border-zinc-800 rounded-xl flex flex-col items-center justify-center bg-zinc-950/30 group-hover:border-blue-500/50 transition-all">
+                        {passportDocument ? (
+                          <span className="text-[10px] text-emerald-400 font-bold px-2 text-center">{passportDocument.name.substring(0, 15)}...</span>
+                        ) : (
+                          <><FileUp className="h-4 w-4 text-zinc-600 mb-1" /><span className="text-[9px] font-bold text-zinc-600 uppercase">Passport</span></>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <Button 
-                disabled={!amount || Number(amount) <= 0} 
+                disabled={!amount || Number(amount) <= 0 || (!idDocument && !passportDocument)} 
                 onClick={handleNext} 
                 className="w-full h-16 bg-gradient-to-r from-blue-600 to-blue-500 hover:scale-[1.02] transition-all rounded-2xl text-lg font-bold"
               >
