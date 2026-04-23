@@ -64,7 +64,7 @@ export function Courses() {
   const phoneX = useTransform(smoothProgress, [0, 1], [150, 450]);
 
   return (
-    <section id="courses" ref={containerRef} className="relative py-24 overflow-hidden bg-background transition-colors duration-500">
+    <section id="about" ref={containerRef} className="relative py-24 overflow-hidden bg-background transition-colors duration-500">
       {/* Bitcoin Background Image */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
         <img 

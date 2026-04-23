@@ -18,10 +18,10 @@ const footerLinks = {
     { label: "FAQ", href: "#contact" },
   ],
   company: [
-    { label: "About Us", href: "#courses" },
+    { label: "About Us", href: "#about" },
     { label: "Testimonials", href: "#testimonials" },
     { label: "Partners", href: "#services" },
-    { label: "Contact", href: "#contact" },
+    { label: "Contact", href: "#news" },
   ],
 };
 
@@ -42,7 +42,7 @@ function scrollToSection(href: string) {
   if (element) {
     const headerOffset = 270;
     const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    const offsetPosition = elementPosition + window.scrollY - headerOffset;
     window.scrollTo({
       top: offsetPosition,
       behavior: "smooth",
@@ -64,7 +64,7 @@ export function Footer() {
         <div className="grid gap-8 lg:grid-cols-6">
           {/* Brand column */}
           <div className="lg:col-span-2">
-            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center justify-center lg:justify-start gap-2">
+            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center justify-end lg:justify-start gap-2">
               <motion.div 
                 whileHover={{ scale: 1.05 }}
                 className="flex h-[150px] w-[150px] lg:h-[200px] lg:w-[200px] items-center justify-center lg:-ml-8" // This div always renders to reserve space

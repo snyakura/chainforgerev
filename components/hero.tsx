@@ -81,7 +81,7 @@ export function Hero() {
                 size="lg"
                 variant="outline"
                 className="w-full border-border text-zinc-400 hover:text-white hover:bg-secondary flex justify-center hover:scale-105 transition-all sm:w-auto"
-                onClick={() => scrollToSection("#courses")}
+                onClick={() => scrollToSection("#about")}
               >
                 <Bitcoin className="mr-2 h-5 w-5 -rotate-12" />
                 Know About the Mafia

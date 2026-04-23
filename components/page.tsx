@@ -57,7 +57,7 @@ const stats = [
 
 export default function AboutPage() {
   return (
-    <section id="about" className="relative min-h-screen bg-zinc-950 pt-72 pb-20">
+    <section id="about-stats" className="relative min-h-screen bg-zinc-950 pt-72 pb-20">
       {/* Background Decorative Blobs */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-[#3B82F6]/10 blur-[120px]" />
