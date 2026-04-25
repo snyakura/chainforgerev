@@ -97,19 +97,9 @@ export function PaymentMethods() {
   const { netAmount, brokerFee, gatewayFee } = calculateFees(formData.amount, formData.gateway, formData.broker, formData.type);
 
   return (
-    <section id="services" className="relative border-y border-border/50 py-24 overflow-hidden bg-zinc-950">
-      {/* Background image 'bg' with entry 'pop' animation */}
-      <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
-        <motion.img 
-          initial={{ opacity: 0, scale: 0.8, filter: "brightness(0) blur(10px)" }}
-          whileInView={{ opacity: 0.4, scale: 1, filter: "brightness(1.2) blur(0px)" }}
-          transition={{ duration: 2, ease: "easeOut" }}
-          viewport={{ once: true }}
-          src="/bg.png"
-          alt="Services Background" 
-          className="h-full w-full object-cover select-none"
-        />
-      </div>
+    <section id="services" className="relative border-y border-border/50 py-24 overflow-hidden bg-zinc-950 isolate">
+      {/* Replaced bg.png with a dynamic gradient to prevent 404 */}
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] from-blue-500/5 to-transparent opacity-50" />
 
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">

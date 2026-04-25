@@ -67,6 +67,8 @@ const testimonials = [
 ];
 
 export function Testimonials() {
+  return null;
+  /*
   return (
     <section className="py-20" id="testimonials" data-section="community">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -163,4 +165,5 @@ export function Testimonials() {
       </div>
     </section>
   );
+  */
 }

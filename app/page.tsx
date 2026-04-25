@@ -12,17 +12,15 @@ import { LiveChat } from "@/components/live-chat";
 export default function Home() {
   return (
     <AppWrapper>
-      <main className="min-h-screen">
         <MarketTicker />
-        <Header />
+        {/* Header is already in AppWrapper, removing duplicate */}
         <Hero />
         <Courses />
         <PaymentMethods />
         <NewsFeed />
         <Testimonials />
-        <Footer />
+        {/* Footer is already in AppWrapper, removing duplicate */}
         <LiveChat />
-      </main>
     </AppWrapper>
   );
 }

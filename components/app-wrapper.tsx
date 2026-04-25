@@ -7,22 +7,24 @@ import { Header } from "./header";
 import { Footer } from "./footer";
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate initial loading
+    setHasMounted(true);
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      setShowLoading(false);
     }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
 
+  if (!hasMounted) return <div className="bg-background min-h-screen" />;
+
   return (
     <>
-      <AnimatePresence>{isLoading && <LoadingScreen />}</AnimatePresence>
-      {!isLoading && (
-        <div className="relative min-h-screen">
+      <AnimatePresence>{showLoading && <LoadingScreen />}</AnimatePresence>
+      <div className="relative min-h-screen isolate">
           {/* Global Page Background Effect */}
           <div className="fixed inset-0 -z-50 bg-background" />
           <div className="fixed inset-0 -z-40 overflow-hidden pointer-events-none opacity-40">
@@ -44,10 +46,9 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
             />
           </div>
           <Header />
-          <main>{children}</main>
+          <main className="relative flex-1">{children}</main>
           <Footer />
         </div>
-      )}
     </>
   );
 }

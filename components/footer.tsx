@@ -19,9 +19,9 @@ const footerLinks = {
   ],
   company: [
     { label: "About Us", href: "#about" },
-    { label: "Testimonials", href: "#testimonials" },
+    // { label: "Testimonials", href: "#testimonials" },
     { label: "Partners", href: "#services" },
-    { label: "Contact", href: "#news" },
+    { label: "Contact", href: "#contact" },
   ],
 };
 
@@ -40,9 +40,9 @@ function scrollToSection(href: string) {
   }
   const element = document.querySelector(href);
   if (element) {
-    const headerOffset = 270;
+    const headerOffset = 120;
     const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.scrollY - headerOffset;
+    const offsetPosition = elementPosition + (window.scrollY || window.pageYOffset) - headerOffset;
     window.scrollTo({
       top: offsetPosition,
       behavior: "smooth",
@@ -89,15 +89,6 @@ export function Footer() {
               >
                 <Mail className="h-4 w-4" />
                 support@chainforge.trade
-              </a>
-              <a
-                href="https://wa.me/message"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
-              >
-                <MessageCircle className="h-4 w-4" />
-                WhatsApp Support
               </a>
               <p className="flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />

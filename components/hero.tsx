@@ -14,9 +14,9 @@ const features = [
 function scrollToSection(href: string) {
   const element = document.querySelector(href);
   if (element) {
-    const headerOffset = 120;
+    const headerOffset = 100;
     const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    const offsetPosition = elementPosition + (window.scrollY || window.pageYOffset) - headerOffset;
     window.scrollTo({
       top: offsetPosition,
       behavior: "smooth",
