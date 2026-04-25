@@ -64,7 +64,7 @@ export function Footer() {
         <div className="grid gap-8 lg:grid-cols-6">
           {/* Brand column */}
           <div className="lg:col-span-2">
-            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center justify-end lg:justify-start gap-2">
+            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center justify-center lg:justify-start gap-2">
               <motion.div 
                 whileHover={{ scale: 1.05 }}
                 className="flex h-[150px] w-[150px] lg:h-[200px] lg:w-[200px] items-center justify-center lg:-ml-8" // This div always renders to reserve space
@@ -77,12 +77,12 @@ export function Footer() {
               </motion.div>
             </a>
 
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground text-center lg:text-left mx-auto lg:mx-0">
               Signal provision and seamless transactions for traders 18+. We assist in funding 
               and withdrawing from Deriv, Weltrade, and other brokers.
             </p>
 
-            <div className="mt-6 space-y-3">
+            <div className="mt-6 space-y-3 flex flex-col items-center lg:items-start">
               <a
                 href="mailto:support@chainforge.trade"
                 className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
@@ -96,7 +96,7 @@ export function Footer() {
               </p>
             </div>
 
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex justify-center lg:justify-start gap-3">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
