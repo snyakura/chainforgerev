@@ -97,7 +97,7 @@ export function PaymentMethods() {
   const { netAmount, brokerFee, gatewayFee } = calculateFees(formData.amount, formData.gateway, formData.broker, formData.type);
 
   return (
-    <section id="services" className="relative border-y border-border/50 py-24 overflow-hidden bg-zinc-950 isolate">
+    <section id="services" className="relative border-y border-border/50 py-24 overflow-hidden bg-background isolate transition-colors duration-500">
       {/* Replaced bg.png with a dynamic gradient to prevent 404 */}
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] from-blue-500/5 to-transparent opacity-50" />
 
@@ -133,7 +133,7 @@ export function PaymentMethods() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-blue-500/30 transition-all group shadow-sm"
+            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-blue-500/30 transition-all group shadow-sm hover:shadow-md"
           >
             <div className="h-12 w-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <TrendingUp className="h-6 w-6 text-blue-500" />
@@ -159,7 +159,7 @@ export function PaymentMethods() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-blue-500/30 transition-all group shadow-sm"
+            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-blue-500/30 transition-all group shadow-sm hover:shadow-md"
           >
             <div className="h-12 w-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Wallet className="h-6 w-6 text-blue-500" />
@@ -185,9 +185,9 @@ export function PaymentMethods() {
           <h3 className="text-2xl font-bold text-foreground text-center mb-8 uppercase tracking-tight">
             Make a withdrawal or deposit
           </h3>
-          <div className="bg-zinc-900/60 border border-blue-500/30 ring-1 ring-blue-500/20 rounded-[2.5rem] p-8 md:p-12 backdrop-blur-2xl shadow-[0_0_50px_rgba(59,130,246,0.15)] relative overflow-hidden transition-all duration-500 hover:shadow-[0_0_80px_rgba(59,130,246,0.25)] group/form">
+          <div className="bg-card/60 dark:bg-zinc-900/60 border border-border dark:border-blue-500/30 ring-1 ring-blue-500/10 dark:ring-blue-500/20 rounded-[2.5rem] p-8 md:p-12 backdrop-blur-2xl shadow-[0_0_50px_rgba(59,130,246,0.1)] dark:shadow-[0_0_50px_rgba(59,130,246,0.15)] relative overflow-hidden transition-all duration-500 hover:shadow-[0_0_80px_rgba(59,130,246,0.2)] dark:hover:shadow-[0_0_80px_rgba(59,130,246,0.25)] group/form">
             {/* Background Accent */}
-            <div className="absolute -top-24 -right-24 h-64 w-64 bg-blue-600/20 blur-[100px] rounded-full pointer-events-none group-hover/form:bg-blue-600/30 transition-colors duration-500" />
+            <div className="absolute -top-24 -right-24 h-64 w-64 bg-blue-600/10 dark:bg-blue-600/20 blur-[100px] rounded-full pointer-events-none group-hover/form:bg-blue-600/20 dark:group-hover/form:bg-blue-600/30 transition-colors duration-500" />
             <div className="absolute -bottom-24 -left-24 h-64 w-64 bg-blue-600/10 blur-[100px] rounded-full pointer-events-none" />
 
             <AnimatePresence mode="wait">
@@ -239,7 +239,7 @@ export function PaymentMethods() {
                     </div>
 
                     <div className="space-y-3">
-                      <Label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Identity Verification (ID or Passport)</Label>
+                      <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Identity Verification (ID or Passport)</Label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="relative group/id">
                           <input 
@@ -247,11 +247,11 @@ export function PaymentMethods() {
                             onChange={(e) => updateForm({ idDoc: e.target.files?.[0]?.name || "" })}
                             className="absolute inset-0 opacity-0 cursor-pointer z-10"
                           />
-                          <div className="h-20 w-full border border-dashed border-zinc-800 rounded-xl flex flex-col items-center justify-center bg-zinc-950/30 group-hover/id:border-blue-500/50 transition-all">
+                          <div className="h-20 w-full border border-dashed border-border rounded-xl flex flex-col items-center justify-center bg-secondary/30 group-hover/id:border-blue-500/50 transition-all">
                             {formData.idDoc ? (
                               <span className="text-[10px] text-emerald-400 font-bold px-2 text-center">{formData.idDoc.substring(0, 15)}...</span>
                             ) : (
-                              <><FileUp className="h-4 w-4 text-zinc-600 mb-1" /><span className="text-[9px] font-bold text-zinc-600 uppercase">National ID</span></>
+                              <><FileUp className="h-4 w-4 text-muted-foreground mb-1" /><span className="text-[9px] font-bold text-muted-foreground uppercase">National ID</span></>
                             )}
                           </div>
                         </div>
@@ -262,11 +262,11 @@ export function PaymentMethods() {
                             onChange={(e) => updateForm({ passportDoc: e.target.files?.[0]?.name || "" })}
                             className="absolute inset-0 opacity-0 cursor-pointer z-10"
                           />
-                          <div className="h-20 w-full border border-dashed border-zinc-800 rounded-xl flex flex-col items-center justify-center bg-zinc-950/30 group-hover/passport:border-blue-500/50 transition-all">
+                          <div className="h-20 w-full border border-dashed border-border rounded-xl flex flex-col items-center justify-center bg-secondary/30 group-hover/passport:border-blue-500/50 transition-all">
                             {formData.passportDoc ? (
                               <span className="text-[10px] text-emerald-400 font-bold px-2 text-center">{formData.passportDoc.substring(0, 15)}...</span>
                             ) : (
-                              <><FileUp className="h-4 w-4 text-zinc-600 mb-1" /><span className="text-[9px] font-bold text-zinc-600 uppercase">Passport</span></>
+                              <><FileUp className="h-4 w-4 text-muted-foreground mb-1" /><span className="text-[9px] font-bold text-muted-foreground uppercase">Passport</span></>
                             )}
                           </div>
                         </div>
@@ -292,36 +292,36 @@ export function PaymentMethods() {
                   className="space-y-8"
                 >
                   <div className="flex items-center gap-4 mb-8">
-                    <button onClick={prevStep} className="h-10 w-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
-                      <ArrowLeft className="h-4 w-4 text-zinc-400" />
+                    <button onClick={prevStep} className="h-10 w-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors">
+                      <ArrowLeft className="h-4 w-4 text-muted-foreground" />
                     </button>
                     <div>
-                      <h3 className="text-2xl font-bold text-white uppercase tracking-tight">Broker Info</h3>
-                      <p className="text-zinc-500 text-xs uppercase tracking-widest font-bold">Step 02 / 04</p>
+                      <h3 className="text-2xl font-bold text-foreground uppercase tracking-tight">Broker Info</h3>
+                      <p className="text-muted-foreground text-xs uppercase tracking-widest font-bold">Step 02 / 04</p>
                     </div>
                   </div>
 
                   <div className="space-y-6">
-                    <Label className="text-xs uppercase font-bold text-zinc-400">Transaction Type</Label>
+                    <Label className="text-xs uppercase font-bold text-muted-foreground">Transaction Type</Label>
                     <div className="grid grid-cols-2 gap-4">
                       {["deposit", "withdrawal"].map((t) => (
                         <button 
                           key={t}
                           onClick={() => updateForm({ type: t, gateway: "" })}
-                          className={`py-4 rounded-xl border text-sm font-bold uppercase transition-all ${formData.type === t ? "border-blue-500 bg-blue-500/10 text-white" : "border-white/5 bg-black/20 text-zinc-500"}`}
+                          className={`py-4 rounded-xl border text-sm font-bold uppercase transition-all ${formData.type === t ? "border-blue-500 bg-blue-500/10 text-blue-600 dark:text-blue-400" : "border-border bg-secondary/50 text-muted-foreground"}`}
                         >
                           {t}
                         </button>
                       ))}
                     </div>
 
-                    <Label className="text-xs uppercase font-bold text-zinc-400">Select Broker</Label>
+                    <Label className="text-xs uppercase font-bold text-muted-foreground">Select Broker</Label>
                     <div className="grid grid-cols-3 gap-4">
                       {["Weltrade", "Deriv", "Other"].map((b) => (
                         <button 
                           key={b}
                           onClick={() => updateForm({ broker: b, brokerId: "" })}
-                          className={`py-4 rounded-xl border text-sm font-bold uppercase transition-all ${formData.broker === b ? "border-blue-500 bg-blue-500/10 text-white" : "border-white/5 bg-black/20 text-zinc-500"}`}
+                          className={`py-4 rounded-xl border text-sm font-bold uppercase transition-all ${formData.broker === b ? "border-blue-500 bg-blue-500/10 text-blue-600 dark:text-blue-400" : "border-border bg-secondary/50 text-muted-foreground"}`}
                         >
                           {b}
                         </button>
@@ -344,10 +344,10 @@ export function PaymentMethods() {
 
                         {formData.broker === "Weltrade" && formData.type === "deposit" && (
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                            <Label className="text-xs uppercase font-bold text-zinc-400">Binance Pay QR Code</Label>
-                            <div className="relative h-32 w-full border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center hover:border-blue-500/30 transition-all cursor-pointer bg-black/20">
-                              <Upload className="h-6 w-6 text-zinc-500 mb-2" />
-                              <span className="text-xs text-zinc-500 font-bold uppercase tracking-tight">Upload QR Code Screenshot</span>
+                            <Label className="text-xs uppercase font-bold text-muted-foreground">Binance Pay QR Code</Label>
+                            <div className="relative h-32 w-full border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center hover:border-blue-500/30 transition-all cursor-pointer bg-secondary/30">
+                              <Upload className="h-6 w-6 text-muted-foreground mb-2" />
+                              <span className="text-xs text-muted-foreground font-bold uppercase tracking-tight">Upload QR Code Screenshot</span>
                               <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => updateForm({ binanceQrName: e.target.files?.[0]?.name || "" })} />
                               {formData.binanceQrName && <span className="mt-2 text-[10px] text-emerald-400 font-bold">{formData.binanceQrName}</span>}
                             </div>
@@ -375,14 +375,14 @@ export function PaymentMethods() {
                   className="space-y-8"
                 >
                   <div className="flex items-center gap-4 mb-8">
-                    <button onClick={prevStep} className="h-10 w-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
-                      <ArrowLeft className="h-4 w-4 text-zinc-400" />
+                    <button onClick={prevStep} className="h-10 w-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors">
+                      <ArrowLeft className="h-4 w-4 text-muted-foreground" />
                     </button>
                     <div>
-                      <h3 className="text-2xl font-bold text-white uppercase tracking-tight">
+                      <h3 className="text-2xl font-bold text-foreground uppercase tracking-tight">
                         {formData.type === "deposit" ? "Deposit Details" : "Withdrawal Details"}
                       </h3>
-                      <p className="text-zinc-500 text-xs uppercase tracking-widest font-bold">Step 03 / 04</p>
+                      <p className="text-muted-foreground text-xs uppercase tracking-widest font-bold">Step 03 / 04</p>
                     </div>
                   </div>
 
@@ -404,7 +404,7 @@ export function PaymentMethods() {
                         <button 
                           key={g.id}
                           onClick={() => updateForm({ gateway: g.id })}
-                          className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${formData.gateway === g.id ? "border-blue-500 bg-blue-500/10" : "border-white/5 bg-black/20 hover:border-blue-500/30"}`}
+                          className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${formData.gateway === g.id ? "border-blue-500 bg-blue-500/10" : "border-border bg-secondary/50 hover:border-blue-500/30"}`}
                         >
                           <div className="relative">
                             <g.icon className={`h-6 w-6 ${g.color}`} />
@@ -412,21 +412,21 @@ export function PaymentMethods() {
                               <motion.div layoutId="active" className="absolute -top-1 -right-1 h-2 w-2 bg-blue-500 rounded-full shadow-[0_0_10px_#3B82F6]" />
                             )}
                           </div>
-                          <span className={`text-[10px] font-bold uppercase ${formData.gateway === g.id ? "text-white" : "text-zinc-500"}`}>{g.id}</span>
+                          <span className={`text-[10px] font-bold uppercase ${formData.gateway === g.id ? "text-foreground" : "text-muted-foreground"}`}>{g.id}</span>
                         </button>
                       ))}
                     </div>
 
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <Label className="text-xs uppercase font-bold text-zinc-400">Amount (USD)</Label>
+                        <Label className="text-xs uppercase font-bold text-muted-foreground">Amount (USD)</Label>
                         {formData.gateway === "Cash" && (
                           <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-widest">Min $1</span>
                         )}
                       </div>
                       <Input 
                         type="number"
-                        className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500 text-xl font-bold"
+                        className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500 text-xl font-bold"
                         value={formData.amount}
                         onChange={(e) => updateForm({ amount: e.target.value })}
                       />
@@ -434,12 +434,12 @@ export function PaymentMethods() {
                       {formData.type === "deposit" && parseFloat(formData.amount) > 0 && (
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-4 p-4 rounded-xl bg-blue-500/5 border border-blue-500/20">
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-[10px] text-zinc-500 uppercase font-bold">Funds to be Received</span>
+                            <span className="text-[10px] text-muted-foreground uppercase font-bold">Funds to be Received</span>
                             <span className="text-lg font-black text-blue-500">
                               ${netAmount.toFixed(2)}
                             </span>
                           </div>
-                          <p className="text-[9px] text-zinc-500 leading-tight">
+                          <p className="text-[9px] text-muted-foreground leading-tight">
                             {brokerFee > 0 && `A 10% processing fee ($${brokerFee.toFixed(2)})`}
                             {brokerFee > 0 && gatewayFee > 0 && " and "}
                             {gatewayFee > 0 && 
@@ -470,15 +470,15 @@ export function PaymentMethods() {
 
                     {formData.gateway === "USDT" && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                        <div className="p-6 rounded-2xl bg-white/5 border border-white/5 space-y-4">
+                        <div className="p-6 rounded-2xl bg-card border border-border space-y-4">
                           <div className="flex justify-between items-center">
-                            <span className="text-xs font-bold text-zinc-500 uppercase">Scan to Pay (TRC20)</span>
+                            <span className="text-xs font-bold text-muted-foreground uppercase">Scan to Pay (TRC20)</span>
                             <QrCode className="h-5 w-5 text-blue-500" />
                           </div>
                           <div className="h-40 w-full bg-white rounded-xl flex items-center justify-center">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=T...AccountLink" alt="USDT QR" className="h-32 w-32" />
                           </div>
-                          <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400 truncate bg-black/40 p-3 rounded-lg">
+                          <div className="flex items-center justify-between text-[10px] font-mono text-muted-foreground truncate bg-muted p-3 rounded-lg">
                             T-Account-Link-Placeholder-Text-123...
                             <ExternalLink className="h-3 w-3 shrink-0" />
                           </div>
@@ -486,28 +486,28 @@ export function PaymentMethods() {
 
                         <div className="space-y-4">
                           <div className="space-y-2">
-                            <Label className="text-xs uppercase font-bold text-zinc-400">Your USDT Account</Label>
+                            <Label className="text-xs uppercase font-bold text-muted-foreground">Your USDT Account</Label>
                             <Input 
-                              className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500"
+                              className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
                               placeholder="Address you sent from"
                               value={formData.usdtAccount}
                               onChange={(e) => updateForm({ usdtAccount: e.target.value })}
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-xs uppercase font-bold text-zinc-400">Transaction Reference</Label>
+                            <Label className="text-xs uppercase font-bold text-muted-foreground">Transaction Reference</Label>
                             <Input 
-                              className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500"
+                              className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
                               placeholder="Paste Hash/Ref Number"
                               value={formData.usdtRef}
                               onChange={(e) => updateForm({ usdtRef: e.target.value })}
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-xs uppercase font-bold text-zinc-400">Proof of Payment</Label>
-                            <div className="relative h-32 w-full border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center hover:border-blue-500/30 transition-all cursor-pointer bg-black/20">
-                              <Upload className="h-6 w-6 text-zinc-500 mb-2" />
-                              <span className="text-xs text-zinc-500 font-bold uppercase tracking-tight">Upload Screenshot</span>
+                            <Label className="text-xs uppercase font-bold text-muted-foreground">Proof of Payment</Label>
+                            <div className="relative h-32 w-full border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center hover:border-blue-500/30 transition-all cursor-pointer bg-secondary/30">
+                              <Upload className="h-6 w-6 text-muted-foreground mb-2" />
+                              <span className="text-xs text-muted-foreground font-bold uppercase tracking-tight">Upload Screenshot</span>
                               <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => updateForm({ proofName: e.target.files?.[0]?.name || "" })} />
                               {formData.proofName && <span className="mt-2 text-[10px] text-emerald-400">{formData.proofName}</span>}
                             </div>
@@ -540,36 +540,36 @@ export function PaymentMethods() {
                       <CheckCircle2 className="h-12 w-12 text-emerald-500" />
                     </div>
                   </div>
-                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">Transaction Initiated</h3>
-                  <p className="text-zinc-400 text-sm leading-relaxed max-w-sm mx-auto mb-10">
-                    Thank you, <span className="text-white font-bold">{formData.name}</span>. Your <span className="text-blue-400 font-bold uppercase">{formData.type}</span> request via <span className="text-blue-400 font-bold">{formData.gateway}</span> is now being processed.
+                  <h3 className="text-3xl font-black text-foreground uppercase tracking-tighter mb-4">Transaction Initiated</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed max-w-sm mx-auto mb-10">
+                    Thank you, <span className="text-foreground font-bold">{formData.name}</span>. Your <span className="text-blue-500 font-bold uppercase">{formData.type}</span> request via <span className="text-blue-500 font-bold">{formData.gateway}</span> is now being processed.
                   </p>
                   
-                  <div className="bg-black/40 rounded-3xl p-6 border border-white/5 text-left mb-10">
-                    <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase text-zinc-500">
+                  <div className="bg-muted rounded-3xl p-6 border border-border text-left mb-10">
+                    <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase text-muted-foreground">
                       <History className="h-3 w-3" /> Status Tracking
                     </div>
                     <div className="space-y-4">
                       <div className="flex items-center gap-3">
                         <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span className="text-xs text-white">Validation successful</span>
+                        <span className="text-xs text-foreground">Validation successful</span>
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                        <span className="text-xs text-white">Broker: {formData.broker} ({formData.brokerId})</span>
+                        <span className="text-xs text-foreground">Broker: {formData.broker} ({formData.brokerId})</span>
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-                        <span className="text-xs text-blue-400 font-bold uppercase">Processing withdrawal/funding...</span>
+                        <span className="text-xs text-blue-500 font-bold uppercase">Processing withdrawal/funding...</span>
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-xs text-zinc-500 mb-8 italic">
+                  <p className="text-xs text-muted-foreground mb-8 italic">
                     A confirmation will be sent to {formData.email}. Our team will get back to you within 2-4 hours.
                   </p>
                   
-                  <Button onClick={() => setStep(1)} variant="outline" className="border-white/10 text-zinc-400 hover:text-white px-8 rounded-xl font-bold uppercase text-[10px] tracking-widest">
+                  <Button onClick={() => setStep(1)} variant="outline" className="border-border text-muted-foreground hover:text-foreground px-8 rounded-xl font-bold uppercase text-[10px] tracking-widest">
                     Make Another Transfer
                   </Button>
                 </motion.div>
