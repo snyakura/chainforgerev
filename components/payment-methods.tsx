@@ -331,11 +331,11 @@ export function PaymentMethods() {
                     {formData.broker && (
                       <>
                         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                          <Label className="text-xs uppercase font-bold text-zinc-400">
+                          <Label className="text-xs uppercase font-bold text-muted-foreground">
                             {formData.broker === "Deriv" ? "CR Number" : "TRC20 USDT Wallet Address"}
                           </Label>
                           <Input 
-                            className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500"
+                            className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
                             placeholder={formData.broker === "Deriv" ? "e.g. CR123456" : "Paste your TRC20 address"}
                             value={formData.brokerId}
                             onChange={(e) => updateForm({ brokerId: e.target.value })}
@@ -458,9 +458,9 @@ export function PaymentMethods() {
 
                     {formData.gateway === "EcoCash" && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                        <Label className="text-xs uppercase font-bold text-zinc-400">{formData.gateway} Number</Label>
+                        <Label className="text-xs uppercase font-bold text-muted-foreground">{formData.gateway} Number</Label>
                         <Input 
-                          className="bg-black/20 border-white/5 py-6 rounded-xl focus:border-blue-500"
+                          className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
                           placeholder="077..."
                           value={formData.gatewayNumber}
                           onChange={(e) => updateForm({ gatewayNumber: e.target.value })}

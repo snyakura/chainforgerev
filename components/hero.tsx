@@ -26,7 +26,7 @@ function scrollToSection(href: string) {
 
 export function Hero() {
   return (
-    <section id="home" className="relative min-h-screen overflow-hidden pt-32 bg-zinc-950">
+    <section id="home" className="relative min-h-screen overflow-hidden pt-32 bg-background transition-colors duration-500">
       {/* Background effects */}
       <video
         autoPlay
@@ -54,7 +54,7 @@ export function Hero() {
               Premium Trading Signals Available
             </div>
 
-            <h1 className="text-pretty text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="text-pretty text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               Forge your wealth{" "}
               <span className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] bg-clip-text text-transparent">
                 with The Forex 
@@ -62,7 +62,7 @@ export function Hero() {
               Mafia
             </h1>
 
-            <p className="mt-6 text-lg leading-relaxed text-zinc-400">
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               Signal provision and seamless transactions for traders. We assist in funding and 
               withdrawing from Deriv, Weltrade, and other brokers. Join the CHAINFORGE family and 
               elevate your trading game.
@@ -80,7 +80,7 @@ export function Hero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-border text-zinc-400 hover:text-white hover:bg-secondary flex justify-center hover:scale-105 transition-all sm:w-auto"
+                className="w-full border-border text-muted-foreground hover:text-foreground hover:bg-secondary flex justify-center hover:scale-105 transition-all sm:w-auto"
                 onClick={() => scrollToSection("#about")}
               >
                 <Bitcoin className="mr-2 h-5 w-5 -rotate-12" />
@@ -92,7 +92,7 @@ export function Hero() {
               {features.map((feature) => (
                 <div
                   key={feature.label}
-                  className="flex items-center gap-2 text-sm text-zinc-400"
+                  className="flex items-center gap-2 text-sm text-muted-foreground"
                 >
                   <feature.icon className="h-4 w-4 text-blue-500" />
                   {feature.label}

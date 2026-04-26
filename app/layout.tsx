@@ -49,7 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body className={`${poppins.variable} font-sans antialiased`}>
+      <body className={`${poppins.variable} font-sans antialiased min-h-screen bg-background selection:bg-blue-500/30`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
