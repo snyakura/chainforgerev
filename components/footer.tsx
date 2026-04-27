@@ -70,7 +70,7 @@ export function Footer() {
         <div className="grid gap-8 lg:grid-cols-6">
           {/* Brand column */}
           <div className="lg:col-span-2">
-            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center justify-center lg:justify-start gap-2">
+            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center justify-center lg:justify-start gap-2" suppressHydrationWarning>
               <motion.div 
                 whileHover={{ scale: 1.05 }}
                 className="flex h-[150px] w-[150px] lg:h-[200px] lg:w-[200px] items-center justify-center lg:-ml-8" // This div always renders to reserve space
@@ -92,6 +92,7 @@ export function Footer() {
               <a
                 href="mailto:support@chainforge.trade"
                 className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
+                suppressHydrationWarning
               >
                 <Mail className="h-4 w-4" />
                 support@chainforge.trade
@@ -109,6 +110,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  suppressHydrationWarning
                   aria-label={social.label}
                   className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-secondary text-muted-foreground transition-all hover:border-blue-500 hover:bg-gradient-to-r hover:from-[#3B82F6] hover:to-[#2563EB] hover:text-white"
                 >
@@ -127,6 +129,7 @@ export function Footer() {
                   <a
                     href={link.href}
                     onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
+                    suppressHydrationWarning
                     className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {link.label}
@@ -144,6 +147,7 @@ export function Footer() {
                   <a
                     href={link.href}
                     onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
+                    suppressHydrationWarning
                     className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {link.label}
@@ -161,6 +165,7 @@ export function Footer() {
                   <a
                     href={link.href}
                     onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
+                    suppressHydrationWarning
                     className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {link.label}

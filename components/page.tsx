@@ -120,6 +120,7 @@ export default function AboutPage() {
               href="https://whatsapp.com/channel/0029VaVnVETC6ZvgsD8foc3E"
               target="_blank"
               rel="noopener noreferrer"
+              suppressHydrationWarning
               className="inline-flex items-center justify-center border border-border text-muted-foreground hover:text-foreground hover:bg-secondary hover:scale-105 transition-all font-bold px-8 py-6 rounded-2xl bg-card"
             >
               <WhatsAppIcon className="mr-2 h-5 w-5" />

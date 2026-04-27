@@ -100,6 +100,7 @@ const scrollToSection = (href: string) => {
                 key={item.label}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
+                suppressHydrationWarning
                 className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground cursor-pointer"
               >
                 {item.label}
@@ -110,17 +111,18 @@ const scrollToSection = (href: string) => {
           {/* Right side actions */}
           <div className="flex items-center gap-2">
             {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-all hover:bg-secondary hover:text-foreground"
-              aria-label="Toggle theme"
-            >
-              {mounted ? (
-                resolvedTheme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />
-              ) : (
-                <div className="h-4 w-4" />
-              )}
-            </button>
+            {!mounted ? (
+              <div className="h-9 w-9" />
+            ) : (
+              <button
+                onClick={toggleTheme}
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-all hover:bg-secondary hover:text-foreground"
+                aria-label="Toggle theme"
+                suppressHydrationWarning
+              >
+                {resolvedTheme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              </button>
+            )}
 
             {/* Desktop CTA */}
             <div className="hidden items-center gap-2 lg:flex">
@@ -128,6 +130,7 @@ const scrollToSection = (href: string) => {
                 size="sm"
                 className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white hover:opacity-90"
                 onClick={() => scrollToSection("#services")}
+                suppressHydrationWarning
               >
                 Get Started
               </Button>
@@ -138,6 +141,7 @@ const scrollToSection = (href: string) => {
               className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground lg:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
+              suppressHydrationWarning
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -160,6 +164,7 @@ const scrollToSection = (href: string) => {
                   key={item.label}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
+                  suppressHydrationWarning
                   className="block rounded-lg px-3 py-3 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                 >
                   {item.label}
@@ -172,6 +177,7 @@ const scrollToSection = (href: string) => {
                     scrollToSection("#services");
                     setMobileMenuOpen(false);
                   }}
+                  suppressHydrationWarning
                 >
                   Get Started
                 </Button>

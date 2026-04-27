@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar } from "lucide-react";
 import EconomicCalendarWidget from "./economic-calendar-widget";
@@ -12,6 +13,11 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 
 
 export function NewsFeed() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <section className="py-24 bg-card/10 relative overflow-hidden" id="news" data-section="community">
@@ -39,12 +45,13 @@ export function NewsFeed() {
               </h3>
               <button 
                 onClick={() => window.open("https://www.forexfactory.com/calendar", "_blank")}
+                suppressHydrationWarning
                 className="flex items-center gap-1 text-sm text-blue-500 hover:underline"
               >
                 Full Calendar <ArrowRight className="h-4 w-4" />
               </button>
             </div>
-            <EconomicCalendarWidget />
+            {mounted ? <EconomicCalendarWidget /> : <div className="h-[600px] w-full bg-card/40 animate-pulse rounded-2xl" />}
           </div>
 
           <div>
@@ -66,6 +73,7 @@ export function NewsFeed() {
                 href="https://whatsapp.com/channel/0029VaVnVETC6ZvgsD8foc3E" 
                 target="_blank" 
                 rel="noopener noreferrer"
+                suppressHydrationWarning
                 className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#2563EB] px-6 py-4 text-sm font-bold text-white transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-primary/20"
               >
                 <WhatsAppIcon className="h-4 w-4" /> Join Channel

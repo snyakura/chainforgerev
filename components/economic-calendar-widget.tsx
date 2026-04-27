@@ -42,7 +42,7 @@ function EconomicCalendarWidget() {
         <div id="economicCalendarWidget"></div>
       </div>
       <div className="ecw-copyright p-4 text-center text-[10px] text-muted-foreground opacity-50">
-        <a href="https://www.mql5.com/?utm_source=calendar.widget&utm_medium=link&utm_term=economic.calendar&utm_content=visit.mql5.calendar&utm_campaign=202.calendar.widget" rel="noopener nofollow" target="_blank" className="hover:underline">MQL5 Algo Trading Community</a>
+        <a href="https://www.mql5.com/?utm_source=calendar.widget&utm_medium=link&utm_term=economic.calendar&utm_content=visit.mql5.calendar&utm_campaign=202.calendar.widget" rel="noopener nofollow" target="_blank" className="hover:underline" suppressHydrationWarning>MQL5 Algo Trading Community</a>
       </div>
     </div>
   );
