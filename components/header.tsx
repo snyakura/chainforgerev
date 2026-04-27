@@ -11,7 +11,7 @@ const navItems = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" }, 
   { label: "Services", href: "#services" },
-  // { label: "Testimonials", href: "#testimonials" },
+  // { label: "Testimonials", href: "#testimonials" }, // Keeping consistent with footer, currently commented out
   { label: "Contact", href: "#contact" },
 ];
 

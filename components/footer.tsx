@@ -25,7 +25,7 @@ const footerLinks = {
   ],
   company: [
     { label: "About Us", href: "#about" },
-    // { label: "Testimonials", href: "#testimonials" },
+    // { label: "Testimonials", href: "#testimonials" }, // Keeping consistent with header, currently commented out
     { label: "Partners", href: "#services" },
     { label: "Contact", href: "#contact" },
   ],
@@ -64,8 +64,8 @@ export function Footer() {
     setMounted(true);
   }, []);
 
-  return (
-    <footer id="contact" className="border-t border-border bg-card">
+  return ( // Changed ID from "contact" to "footer-section" to avoid conflict with the new ContactSection
+    <footer id="footer-section" className="border-t border-border bg-card">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid gap-8 lg:grid-cols-6">
           {/* Brand column */}

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { LoadingScreen } from "./loading-screen";
 import { Header } from "./header";
+import { ContactSection } from "./contact-section";
 import { Footer } from "./footer";
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
@@ -57,6 +58,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
 
         <Header />
         <main className="relative flex-1">{children}</main>
+        <ContactSection />
         <Footer />
       </div> {/* Added this missing closing div - this was line 62's problem! */}
     </div>
