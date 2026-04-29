@@ -28,16 +28,16 @@ export const metadata: Metadata = {
   generator: "v0.app",
   icons: {
     icon: [
-      {
-        url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23F7931A'/><text y='65' x='50' text-anchor='middle' fill='white' font-size='50' font-weight='bold'>₿</text></svg>",
-        type: "image/svg+xml",
-      },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", sizes: "512*512", type: "image/png" },
     ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F7931A",
+  themeColor: "#3B82F6",
   width: "device-width",
   initialScale: 1,
 };
