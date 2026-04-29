@@ -26,32 +26,18 @@ function scrollToSection(href: string) {
 
 const values = [
   {
-    title: "Trust First",
-    description: "Every signal, every transaction — transparent and accountable.",
-    icon: Shield,
+    title: "VISION",
+    description: "To become the world's most trusted and ubiquitous payment gateway for the global trading community.",
+    icon: Target,
     color: "text-blue-400",
     bg: "bg-blue-400/10",
   },
   {
-    title: "Precision",
-    description: "Data-driven setups with clearly defined entries, stops, and targets.",
-    icon: Target,
+    title: "MISSION",
+    description: "To provide a frictionless, secure, and rapid financial infrastructure that enables traders to execute their strategies with speed and precision, 24/7.",
+    icon: Zap,
     color: "text-emerald-400",
     bg: "bg-emerald-400/10",
-  },
-  {
-    title: "Community",
-    description: "An 18+ family of traders learning, winning, and growing together.",
-    icon: Users,
-    color: "text-purple-400",
-    bg: "bg-purple-400/10",
-  },
-  {
-    title: "Speed",
-    description: "Fast funding and withdrawals across Deriv, Weltrade and more.",
-    icon: Zap,
-    color: "text-amber-400",
-    bg: "bg-amber-400/10",
   },
 ];
 
@@ -97,9 +83,13 @@ export default function AboutPage() {
             transition={{ delay: 0.2 }}
             className="mx-auto max-w-3xl text-lg text-muted-foreground leading-relaxed"
           >
-            Chainforge is a signal provision and brokerage facilitation service for serious 18+ traders. 
-            We help our community fund and withdraw from Deriv, Weltrade and other major brokers — 
-            and deliver the live signals, mentorship, and tools you need to trade with an edge.
+            CHAINFORGE is a cutting-edge financial technology platform dedicated to empowering forex 
+            and cryptocurrency traders. We eliminate the friction between your capital and your trading 
+            strategy by providing instant, secure, and hassle-free deposit and withdrawal solutions.
+            We bridge the gap between traditional finance and the digital asset world, allowing traders to 
+            move funds seamlessly between their bank accounts, trading accounts, and digital wallets. 
+            Our mission is to ensure that your focus remains on the markets, not on the logistics of moving 
+            your money.
           </motion.p>
 
           <motion.div 
@@ -130,28 +120,12 @@ export default function AboutPage() {
         </div>
 
         {/* Story Section */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-32">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl mb-6 uppercase">Our story</h2>
-            <div className="space-y-6 text-muted-foreground text-base leading-relaxed">
-              <p>
-                Chainforge started as a small circle of Zimbabwean traders frustrated by the lack of local payment options and trustworthy signal providers. We built what we couldn't find: a service that bridges global brokers like Deriv and Weltrade with local rails like EcoCash, InnBucks and Ozow.
-              </p>
-              <p>
-                Today we serve a fast-growing community of traders across Southern Africa and beyond — funding accounts, processing withdrawals, and delivering live signals that keep our members on the right side of the market.
-              </p>
-            </div>
-          </motion.div>
-          
+        <div className="mb-32">
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto"
           >
             {stats.map((stat, i) => (
               <div key={i} className="p-6 rounded-[2rem] bg-card/50 border border-border backdrop-blur-xl text-center flex flex-col justify-center">
@@ -163,7 +137,7 @@ export default function AboutPage() {
         </div>
 
         {/* Values Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {values.map((value, i) => (
             <motion.div
               key={i}

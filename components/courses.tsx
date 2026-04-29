@@ -13,32 +13,18 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 
 const storyValues = [
   {
-    title: "Trust First",
-    description: "Every signal, every transaction — transparent and accountable.",
-    icon: Shield,
+    title: "Vision",
+    description: "To become the world's most trusted and ubiquitous payment gateway for the global trading community.",
+    icon: Target,
     color: "text-blue-400",
     bg: "bg-blue-400/10",
   },
   {
-    title: "Precision",
-    description: "Data-driven setups with clearly defined entries, stops, and targets.",
-    icon: Target,
+    title: "Mission",
+    description: "To provide a frictionless, secure, and rapid financial infrastructure that enables traders to execute their strategies with speed and precision, 24/7.",
+    icon: Zap,
     color: "text-emerald-400",
     bg: "bg-emerald-400/10",
-  },
-  {
-    title: "Community",
-    description: "An 18+ family of traders learning, winning, and growing together.",
-    icon: Users,
-    color: "text-purple-400",
-    bg: "bg-purple-400/10",
-  },
-  {
-    title: "Speed",
-    description: "Fast funding and withdrawals across Deriv, Weltrade and more.",
-    icon: Zap,
-    color: "text-amber-400",
-    bg: "bg-amber-400/10",
   },
 ];
 
@@ -114,9 +100,13 @@ export function Courses() {
               </span>
             </h2>
             <p className="max-w-2xl text-lg text-muted-foreground leading-relaxed transition-colors">
-              Chainforge is a signal provision and brokerage facilitation service for serious 18+ traders. 
-              We help our community fund and withdraw from Deriv, Weltrade and other major brokers — 
-              and deliver the live signals, mentorship, and tools you need to trade with an edge.
+              CHAINFORGE is a cutting-edge financial technology platform dedicated to empowering forex 
+              and cryptocurrency traders. We eliminate the friction between your capital and your trading 
+              strategy by providing instant, secure, and hassle-free deposit and withdrawal solutions.
+              We bridge the gap between traditional finance and the digital asset world, allowing traders to 
+              move funds seamlessly between their bank accounts, trading accounts, and digital wallets. 
+              Our mission is to ensure that your focus remains on the markets, not on the logistics of moving 
+              your money.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
@@ -166,24 +156,9 @@ export function Courses() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="grid lg:grid-cols-2 gap-12 items-start mt-24 mb-16"
+          className="mt-24 mb-16"
         >
-          <div>
-            <h2 className="text-pretty text-3xl font-bold tracking-tight text-foreground mb-6 uppercase">
-              Our story
-            </h2>
-            <div className="space-y-6 text-muted-foreground text-base leading-relaxed transition-colors">
-              <p>
-                Chainforge started as a small circle of Zimbabwean traders frustrated by the lack of local payment options and trustworthy signal providers. 
-                We built what we couldn't find: a service that bridges global brokers like Deriv and Weltrade with local rails like EcoCash, InnBucks and Ozow.
-              </p>
-              <p>
-                Today we serve a fast-growing community of traders across Southern Africa and beyond — funding accounts, 
-                processing withdrawals, and delivering live signals that keep our members on the right side of the market.
-              </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {storyValues.map((value, i) => (
               <div key={i} className="p-5 rounded-2xl bg-card border border-border backdrop-blur-xl hover:border-blue-500/30 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] hover:scale-[1.02] transition-all duration-300 cursor-default">
                 <div className={`h-10 w-10 rounded-xl ${value.bg} flex items-center justify-center mb-4`}>

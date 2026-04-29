@@ -11,7 +11,8 @@ import {
   Briefcase, 
   TrendingUp, 
   User, 
-  ArrowRight, 
+  ArrowRight,
+  Zap,
   ArrowLeft, 
   Upload, 
   QrCode, 
@@ -332,7 +333,7 @@ export function PaymentMethods() {
         <div className="absolute bottom-0 -left-20 h-[300px] w-[300px] rounded-full bg-blue-600/5 blur-[80px]" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-none px-4 sm:px-10 lg:px-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -344,65 +345,85 @@ export function PaymentMethods() {
             <span className="text-xs font-bold text-blue-500 uppercase tracking-widest">SERVICES & PRODUCTS</span>
           </div>
           <h2 className="text-pretty text-4xl font-black tracking-tighter text-foreground sm:text-5xl lg:text-6xl mb-6 uppercase leading-[1.1]">
-            Everything you need to trade{" "}
-            <span className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] bg-clip-text text-transparent">with an edge</span>
+            Our Core Service <span className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] bg-clip-text text-transparent">The Bridge</span>
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground leading-relaxed">
-            From live signals to broker funding, Chainforge gives you the full stack to win on Deriv, Weltrade, and beyond.
+           We specialize in one thing and we do it perfectly: moving your Money where you need it,
+when you need it.
           </p>
         </motion.div>
 
         {/* Service Highlight Cards */}
-        <div className="mt-12 grid md:grid-cols-2 gap-6 mb-20">
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-10 mb-24">
+          {/* Forex Traders Card - Blue Neon Theme */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-blue-500/30 transition-all group shadow-sm hover:shadow-md"
+            className="relative p-10 rounded-[3rem] bg-card/60 dark:bg-zinc-900/40 border border-border dark:border-white/5 backdrop-blur-3xl hover:border-blue-500/50 transition-all duration-500 group shadow-[0_0_50px_-12px_rgba(59,130,246,0.1)] overflow-hidden"
           >
-            <div className="h-12 w-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <TrendingUp className="h-6 w-6 text-blue-500" />
+            <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 bg-blue-500/10 blur-[100px] rounded-full group-hover:bg-blue-500/20 transition-colors duration-700" />
+            
+            <div className="h-14 w-14 rounded-2xl bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center mb-8 border border-blue-500/20 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-500">
+              <TrendingUp className="h-7 w-7 text-blue-500 dark:text-blue-400" />
             </div>
-            <h3 className="text-2xl font-bold text-foreground mb-3 uppercase tracking-tight">Live Trading Signals</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-              Daily forex, indices and synthetic indices signals with entry, stop, and take-profit levels. Delivered via Telegram & WhatsApp.
-            </p>
-            <ul className="space-y-3">
-              {["Forex majors & minors", "Deriv synthetic indices", "Risk-managed setups"].map((item, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
-                    <Check className="h-3 w-3 text-emerald-500" />
+            <h3 className="text-3xl font-black text-foreground mb-8 uppercase tracking-tighter">
+              FOR FOREX <span className="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">TRADERS</span>
+            </h3>
+            
+            <div className="space-y-8">
+              {[
+                { title: "Instant Deposits", desc: "Fund your MT4, MT5, cTrader, and other brokerage accounts without delays." },
+                { title: "Fast Withdrawals", desc: "Access your profits quickly with streamlined withdrawal processing." },
+                { title: "Multiple Currencies", desc: "Support for major fiat currencies (USD, EUR, GBP, etc.) with competitive exchange rates." }
+              ].map((item, i) => (
+                <div key={i} className="flex gap-5 group/item">
+                  <CheckCircle2 className="h-6 w-6 text-blue-500 shrink-0 mt-0.5 transition-transform group-hover/item:scale-110" />
+                  <div>
+                    <h4 className="text-base font-bold text-foreground uppercase tracking-tight">{item.title}</h4>
+                    <p className="mt-1 text-muted-foreground text-sm leading-relaxed font-medium">
+                      {item.desc}
+                    </p>
                   </div>
-                  {item}
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </motion.div>
 
+          {/* Crypto Traders Card - Purple Neon Theme */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="p-8 rounded-[2.5rem] bg-card border border-border backdrop-blur-2xl hover:border-blue-500/30 transition-all group shadow-sm hover:shadow-md"
+            className="relative p-10 rounded-[3rem] bg-card/60 dark:bg-zinc-900/40 border border-border dark:border-white/5 backdrop-blur-3xl hover:border-purple-500/50 transition-all duration-500 group shadow-[0_0_50px_-12px_rgba(168,85,247,0.1)] overflow-hidden"
           >
-            <div className="h-12 w-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <Wallet className="h-6 w-6 text-blue-500" />
+            <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 bg-purple-500/10 blur-[100px] rounded-full group-hover:bg-purple-500/20 transition-colors duration-700" />
+
+            <div className="h-14 w-14 rounded-2xl bg-purple-500/10 dark:bg-purple-500/20 flex items-center justify-center mb-8 border border-purple-500/20 group-hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all duration-500">
+              <Bitcoin className="h-7 w-7 text-purple-500 dark:text-purple-400" />
             </div>
-            <h3 className="text-2xl font-bold text-foreground mb-3 uppercase tracking-tight">Broker Funding & Withdrawals</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-              We deposit and withdraw to/from Deriv, Weltrade and other major brokers using local payment rails.
-            </p>
-            <ul className="space-y-3">
-              {["Deriv, Weltrade & more", "EcoCash, InnBucks, Ozow, crypto", "Same-day processing"].map((item, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
-                    <Check className="h-3 w-3 text-emerald-500" />
+            <h3 className="text-3xl font-black text-foreground mb-8 uppercase tracking-tighter">
+              FOR CRYPTO <span className="bg-gradient-to-r from-purple-500 to-purple-700 dark:from-purple-400 dark:to-purple-600 bg-clip-text text-transparent">TRADERS</span>
+            </h3>
+            
+            <div className="space-y-8">
+              {[
+                { title: "One-Click Transfers", desc: "Easily deposit crypto from your personal wallet to any major exchange (Binance, Coinbase, Bybit, etc.)." },
+                { title: "Direct to Wallet", desc: "Withdraw your trading gains directly back to your secure cold storage wallet." },
+                { title: "Multi-Chain Support", desc: "Seamless transactions across various blockchain networks with optimized gas fees." }
+              ].map((item, i) => (
+                <div key={i} className="flex gap-5 group/item">
+                  <CheckCircle2 className="h-6 w-6 text-purple-500 shrink-0 mt-0.5 transition-transform group-hover/item:scale-110" />
+                  <div>
+                    <h4 className="text-base font-bold text-foreground uppercase tracking-tight">{item.title}</h4>
+                    <p className="mt-1 text-muted-foreground text-sm leading-relaxed font-medium">
+                      {item.desc}
+                    </p>
                   </div>
-                  {item}
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </motion.div>
         </div>
 
