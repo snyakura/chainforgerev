@@ -90,16 +90,16 @@ export function Footer() {
 
             <div className="mt-6 space-y-3 flex flex-col items-center lg:items-start">
               <a
-                href="mailto:support@chainforge.trade"
+                href="mailto:chainforge@gmail.com"
                 className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
                 suppressHydrationWarning
               >
                 <Mail className="h-4 w-4" />
-                support@chainforge.trade
+                chainforge@gmail.com
               </a>
               <p className="flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />
-                Global Service
+                4th Floor Right Wing Zimdef Bulawayo
               </p>
             </div>
 

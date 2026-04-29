@@ -23,8 +23,8 @@ const storyValues = [
     title: "Mission",
     description: "To provide a frictionless, secure, and rapid financial infrastructure that enables traders to execute their strategies with speed and precision, 24/7.",
     icon: Zap,
-    color: "text-emerald-400",
-    bg: "bg-emerald-400/10",
+    color: "text-blue-400",
+    bg: "bg-blue-400/10",
   },
 ];
 

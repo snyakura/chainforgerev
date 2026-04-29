@@ -93,12 +93,12 @@ export function TradingChart() {
               <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
-                  stopColor={isPositive ? "#22c55e" : "#ef4444"}
+                  stopColor={isPositive ? "#3b82f6" : "#ef4444"}
                   stopOpacity={0.3}
                 />
                 <stop
                   offset="95%"
-                  stopColor={isPositive ? "#22c55e" : "#ef4444"}
+                  stopColor={isPositive ? "#3b82f6" : "#ef4444"}
                   stopOpacity={0}
                 />
               </linearGradient>
@@ -130,7 +130,7 @@ export function TradingChart() {
             <Area
               type="monotone"
               dataKey="price"
-              stroke={isPositive ? "#22c55e" : "#ef4444"}
+              stroke={isPositive ? "#3b82f6" : "#ef4444"}
               strokeWidth={2}
               fill="url(#colorPrice)"
             />

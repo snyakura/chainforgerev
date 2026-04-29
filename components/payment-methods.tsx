@@ -516,7 +516,7 @@ when you need it.
                           />
                           <div className="h-20 w-full border border-dashed border-border rounded-xl flex flex-col items-center justify-center bg-secondary/30 group-hover/id:border-blue-500/50 transition-all">
                             {formData.idDoc ? (
-                              <span className="text-[10px] text-emerald-400 font-bold px-2 text-center">{formData.idDoc.substring(0, 15)}...</span>
+                              <span className="text-[10px] text-blue-400 font-bold px-2 text-center">{formData.idDoc.substring(0, 15)}...</span>
                             ) : (
                               <><FileUp className="h-4 w-4 text-muted-foreground mb-1" /><span className="text-[9px] font-bold text-muted-foreground uppercase">National ID</span></>
                             )}
@@ -532,7 +532,7 @@ when you need it.
                           />
                           <div className="h-20 w-full border border-dashed border-border rounded-xl flex flex-col items-center justify-center bg-secondary/30 group-hover/passport:border-blue-500/50 transition-all">
                             {formData.passportDoc ? (
-                              <span className="text-[10px] text-emerald-400 font-bold px-2 text-center">{formData.passportDoc.substring(0, 15)}...</span>
+                              <span className="text-[10px] text-blue-400 font-bold px-2 text-center">{formData.passportDoc.substring(0, 15)}...</span>
                             ) : (
                               <><FileUp className="h-4 w-4 text-muted-foreground mb-1" /><span className="text-[9px] font-bold text-muted-foreground uppercase">Passport</span></>
                             )}
@@ -618,7 +618,7 @@ when you need it.
                               <Upload className="h-6 w-6 text-muted-foreground mb-2" />
                               <span className="text-xs text-muted-foreground font-bold uppercase tracking-tight">Upload QR Code Screenshot</span>
                               <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => updateForm({ binanceQrName: e.target.files?.[0]?.name || "" })} />
-                              {formData.binanceQrName && <span className="mt-2 text-[10px] text-emerald-400 font-bold">{formData.binanceQrName}</span>}
+                              {formData.binanceQrName && <span className="mt-2 text-[10px] text-blue-400 font-bold">{formData.binanceQrName}</span>}
                             </div>
                           </motion.div>
                         )}
@@ -662,7 +662,7 @@ when you need it.
                             { id: "EcoCash", icon: Smartphone, color: "text-green-500" },
                             { id: "InnBucks", icon: Wallet, color: "text-blue-500" },
                             { id: "USDT", icon: Bitcoin, color: "text-blue-500" },
-                            { id: "Cash", icon: Briefcase, color: "text-emerald-500" },
+                            { id: "Cash", icon: Briefcase, color: "text-blue-500" },
                             { id: "FNB (EFT)", icon: Wallet, color: "text-indigo-500" }
                           ]
                         : [
@@ -690,7 +690,7 @@ when you need it.
                       <div className="flex justify-between items-center">
                         <Label className="text-xs uppercase font-bold text-muted-foreground">Amount (USD)</Label>
                         {formData.gateway === "Cash" && (
-                          <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-widest">Min $1</span>
+                          <span className="text-[10px] text-blue-500 font-bold uppercase tracking-widest">Min $1</span>
                         )}
                       </div>
                       <Input 
@@ -778,7 +778,7 @@ when you need it.
                               <Upload className="h-6 w-6 text-muted-foreground mb-2" />
                               <span className="text-xs text-muted-foreground font-bold uppercase tracking-tight">Upload Screenshot</span>
                               <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => updateForm({ proofName: e.target.files?.[0]?.name || "" })} />
-                              {formData.proofName && <span className="mt-2 text-[10px] text-emerald-400">{formData.proofName}</span>}
+                              {formData.proofName && <span className="mt-2 text-[10px] text-blue-400">{formData.proofName}</span>}
                             </div>
                           </div>
                         </div>
@@ -804,9 +804,9 @@ when you need it.
                   className="text-center py-10"
                 >
                   <div className="relative inline-block mb-8">
-                    <div className="absolute inset-0 bg-emerald-500/20 blur-3xl rounded-full" />
-                    <div className="h-24 w-24 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center relative">
-                      <CheckCircle2 className="h-12 w-12 text-emerald-500" />
+                    <div className="absolute inset-0 bg-blue-500/20 blur-3xl rounded-full" />
+                    <div className="h-24 w-24 bg-blue-500/10 border border-blue-500/30 rounded-full flex items-center justify-center relative">
+                      <CheckCircle2 className="h-12 w-12 text-blue-500" />
                     </div>
                   </div>
                   <h3 className="text-3xl font-black text-foreground uppercase tracking-tighter mb-4">Transaction Initiated</h3>
@@ -820,11 +820,11 @@ when you need it.
                     </div>
                     <div className="space-y-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
                         <span className="text-xs text-foreground">Validation successful</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                        <div className="h-2 w-2 rounded-full bg-blue-500" />
                         <span className="text-xs text-foreground">Broker: {formData.broker} ({formData.brokerId})</span>
                       </div>
                       <div className="flex items-center gap-3">

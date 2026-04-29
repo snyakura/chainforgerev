@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Send, CheckCircle2, XCircle } from "lucide-react";
+import { Mail, Send, CheckCircle2, XCircle, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -56,8 +56,8 @@ export function ContactSection() {
     setErrors({}); // Clear previous errors
 
     try {
-      // Using FormSubmit.co AJAX to send the message to snyakura22@gmail.com
-      const response = await fetch("https://formsubmit.co/ajax/snyakura22@gmail.com", {
+      // Using FormSubmit.co AJAX to send the message to chainforge@gmail.com
+      const response = await fetch("https://formsubmit.co/ajax/chainforge@gmail.com", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
@@ -83,168 +83,156 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative border-y border-border/50 py-24 overflow-hidden bg-background isolate transition-colors duration-500">
-      {/* Background Decorative Elements */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 h-[500px] w-[500px] rounded-full bg-blue-500/5 blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-blue-600/5 blur-[100px]" />
+    <section id="contact" className="relative min-h-screen border-y border-white/5 py-32 overflow-hidden bg-[#080808] isolate transition-colors duration-500">
+      {/* Futuristic Background Elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        {/* Emerald Radial Glows */}
+        <div className="absolute top-1/4 left-1/4 h-[600px] w-[600px] rounded-full bg-blue-500/10 blur-[140px]" />
+        <div className="absolute bottom-1/4 right-1/4 h-[500px] w-[500px] rounded-full bg-blue-600/5 blur-[120px]" />
+        
+        {/* Glowing Circuit Lines */}
+        <div className="absolute top-[10%] left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent shadow-[0_0_15px_rgba(59,130,246,0.3)]" />
+        <div className="absolute bottom-[20%] right-0 w-1/2 h-px bg-gradient-to-l from-transparent via-blue-500/20 to-transparent shadow-[0_0_15px_rgba(59,130,246,0.3)]" />
+        <div className="absolute top-0 right-[15%] w-px h-full bg-gradient-to-b from-transparent via-blue-500/10 to-transparent" />
+
+        {/* Ghost Typography */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none">
+          <span className="text-[22vw] font-black tracking-tighter uppercase leading-none text-blue-500">
+            CONTACT
+          </span>
+        </div>
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 mb-6">
-            <Mail className="h-4 w-4 text-blue-500" />
-            <span className="text-xs font-bold text-blue-500 uppercase tracking-widest">GET IN TOUCH</span>
-          </div>
-          <h2 className="text-pretty text-4xl font-black tracking-tighter text-foreground sm:text-5xl lg:text-6xl mb-6 uppercase leading-[1.1]">
-            Have a question? <span className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] bg-clip-text text-transparent">Contact Us</span>
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground leading-relaxed">
-            We're here to help! Send us a message and we'll get back to you as soon as possible.
-          </p>
-        </motion.div>
-
-        <motion.form
-          onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="max-w-3xl mx-auto mt-12 bg-card/60 dark:bg-zinc-900/60 border border-border dark:border-blue-500/30 ring-1 ring-blue-500/10 dark:ring-blue-500/20 rounded-[2.5rem] p-8 md:p-12 backdrop-blur-2xl shadow-[0_0_50px_rgba(59,130,246,0.1)] dark:shadow-[0_0_50px_rgba(59,130,246,0.15)] relative overflow-hidden transition-all duration-500 hover:shadow-[0_0_80px_rgba(59,130,246,0.2)] dark:hover:shadow-[0_0_80px_rgba(59,130,246,0.25)] group/form"
-        >
-          <div className="absolute -top-24 -right-24 h-64 w-64 bg-blue-600/10 dark:bg-blue-600/20 blur-[100px] rounded-full pointer-events-none group-hover/form:bg-blue-600/20 dark:group-hover/form:bg-blue-600/30 transition-colors duration-500" />
-          <div className="absolute -bottom-24 -left-24 h-64 w-64 bg-blue-600/10 blur-[100px] rounded-full pointer-events-none" />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest ml-1">Your Name</Label>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="John Doe"
-                value={formData.name}
-                onChange={handleChange}
-                className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
-                aria-invalid={errors.name ? "true" : "false"}
-                aria-describedby={errors.name ? "name-error" : undefined}
-              />
-              {errors.name && <p id="name-error" className="text-[10px] text-destructive font-bold uppercase ml-1">{errors.name}</p>}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest ml-1">Your Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="john@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
-                aria-invalid={errors.email ? "true" : "false"}
-                aria-describedby={errors.email ? "email-error" : undefined}
-              />
-              {errors.email && <p id="email-error" className="text-[10px] text-destructive font-bold uppercase ml-1">{errors.email}</p>}
-            </div>
-          </div>
-
-          <div className="space-y-2 mb-6">
-            <Label htmlFor="subject" className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest ml-1">Subject</Label>
-            <Input
-              id="subject"
-              name="subject"
-              type="text"
-              placeholder="Regarding a service inquiry..."
-              value={formData.subject}
-              onChange={handleChange}
-              className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
-              aria-invalid={errors.subject ? "true" : "false"}
-              aria-describedby={errors.subject ? "subject-error" : undefined}
-            />
-            {errors.subject && <p id="subject-error" className="text-[10px] text-destructive font-bold uppercase ml-1">{errors.subject}</p>}
-          </div>
-
-          <div className="space-y-2 mb-8">
-            <Label htmlFor="message" className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest ml-1">Your Message</Label>
-            <Textarea
-              id="message"
-              name="message"
-              placeholder="Type your message here..."
-              rows={5}
-              value={formData.message}
-              onChange={handleChange}
-              className="bg-secondary/30 border-border py-4 rounded-xl focus:border-blue-500"
-              aria-invalid={errors.message ? "true" : "false"}
-              aria-describedby={errors.message ? "message-error" : undefined}
-            />
-            {errors.message && <p id="message-error" className="text-[10px] text-destructive font-bold uppercase ml-1">{errors.message}</p>}
-          </div>
-
-          <Button
-            type="submit"
-            className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all"
-            disabled={status === "loading"}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          
+          {/* Left Side: Get In Touch */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-10"
           >
-            <AnimatePresence mode="wait">
-              {status === "loading" && (
-                <motion.span
-                  key="loading"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex items-center gap-2"
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5">
+                <div className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
+                <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">GET IN TOUCH</span>
+              </div>
+              <h2 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter leading-tight">
+                Let&apos;s Build <br />
+                <span className="text-blue-500">The Future.</span>
+              </h2>
+              <p className="text-zinc-500 text-lg max-w-md leading-relaxed">
+                Have inquiries about our signals or transactions? Our elite support team is ready to assist you in navigating the markets.
+              </p>
+            </div>
+
+            <div className="space-y-4 max-w-sm">
+              {[
+                { icon: Mail, label: "Email", value: "chainforge@gmail.com" },
+                { icon: Phone, label: "Phone", value: "+263 78 429 3089" },
+                { icon: MapPin, label: "Location", value: "4th floor right wing zimdef bulawayo" },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  whileHover={{ x: 8 }}
+                  className="group flex items-center gap-5 p-5 rounded-2xl bg-zinc-900/40 border border-white/5 backdrop-blur-md transition-all hover:bg-zinc-800/50 hover:border-blue-500/20"
                 >
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Sending Message...
-                </motion.span>
-              )}
-              {status === "success" && (
-                <motion.span
-                  key="success"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex items-center gap-2"
-                >
-                  <CheckCircle2 className="h-5 w-5" /> Message Sent!
-                </motion.span>
-              )}
-              {status === "error" && (
-                <motion.span
-                  key="error"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex items-center gap-2"
-                >
-                  <XCircle className="h-5 w-5" /> Failed to Send
-                </motion.span>
-              )}
-              {status === "idle" && (
-                <motion.span
-                  key="idle"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex items-center gap-2"
-                >
-                  Send Message <Send className="ml-2 h-5 w-5" />
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </Button>
-          {status === "error" && Object.keys(errors).length === 0 && (
-            <p className="text-[10px] text-destructive font-bold uppercase text-center mt-4">Please correct the errors above.</p>
-          )}
-        </motion.form>
+                  <div className="h-12 w-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-blue-500/10 transition-colors">
+                    <item.icon className="h-5 w-5 text-white group-hover:text-blue-500 transition-colors" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">{item.label}</p>
+                    <p className="text-sm font-bold text-zinc-300">{item.value}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right Side: Sleek Contact Form */}
+          <motion.form
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="bg-zinc-900/60 border border-blue-500/20 rounded-[3rem] p-8 md:p-12 backdrop-blur-3xl shadow-2xl relative overflow-hidden group/form"
+          >
+            <div className="absolute -top-24 -right-24 h-64 w-64 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div className="space-y-3">
+                <Label htmlFor="name" className="text-[10px] uppercase font-black text-zinc-500 tracking-[0.2em] ml-2">Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Full Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="bg-black/40 border-white/5 h-16 rounded-2xl focus:border-blue-500/50 focus:ring-blue-500/20 transition-all placeholder:text-zinc-700"
+                  aria-invalid={errors.name ? "true" : "false"}
+                />
+                {errors.name && <p className="text-[10px] text-red-500 font-bold uppercase ml-2">{errors.name}</p>}
+              </div>
+              <div className="space-y-3">
+                <Label htmlFor="email" className="text-[10px] uppercase font-black text-zinc-500 tracking-[0.2em] ml-2">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Email Address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="bg-black/40 border-white/5 h-16 rounded-2xl focus:border-blue-500/50 focus:ring-blue-500/20 transition-all placeholder:text-zinc-700"
+                  aria-invalid={errors.email ? "true" : "false"}
+                />
+                {errors.email && <p className="text-[10px] text-red-500 font-bold uppercase ml-2">{errors.email}</p>}
+              </div>
+            </div>
+
+            <div className="space-y-3 mb-10">
+              <Label htmlFor="message" className="text-[10px] uppercase font-black text-zinc-500 tracking-[0.2em] ml-2">Message</Label>
+              <Textarea
+                id="message"
+                name="message"
+                placeholder="Type your message here..."
+                rows={6}
+                value={formData.message}
+                onChange={handleChange}
+                className="bg-black/40 border-white/5 rounded-[2rem] p-6 focus:border-blue-500/50 focus:ring-blue-500/20 transition-all placeholder:text-zinc-700 resize-none"
+                aria-invalid={errors.message ? "true" : "false"}
+              />
+              {errors.message && <p className="text-[10px] text-red-500 font-bold uppercase ml-2">{errors.message}</p>}
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-white text-black hover:bg-zinc-200 h-16 rounded-2xl font-black text-lg uppercase tracking-widest transition-all hover:scale-[1.01] active:scale-[0.98] shadow-[0_10px_30px_rgba(255,255,255,0.1)]"
+              disabled={status === "loading"}
+            >
+              <AnimatePresence mode="wait">
+                {status === "loading" ? (
+                  <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3">
+                    <div className="h-4 w-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                    Sending...
+                  </motion.div>
+                ) : status === "success" ? (
+                  <motion.div key="success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5" /> Sent Successfully
+                  </motion.div>
+                ) : (
+                  <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2">
+                    Submit Message <Send className="ml-2 h-5 w-5" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </Button>
+            {status === "error" && (
+               <p className="text-[10px] text-red-500 font-bold uppercase text-center mt-4">Transmission Failed. Please check inputs.</p>
+            )}
+          </motion.form>
+        </div>
       </div>
     </section>
   );

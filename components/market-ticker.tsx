@@ -92,7 +92,7 @@ export function MarketTicker() {
           <div key={index} className="flex items-center gap-2.5 text-[11px] font-semibold tracking-wide">
             <span className="text-muted-foreground uppercase">{item.symbol}</span>
             <span className="text-foreground tabular-nums">{item.price}</span>
-            <span className={`flex items-center gap-0.5 ${item.isUp ? "text-emerald-500" : "text-rose-500"}`}>
+            <span className={`flex items-center gap-0.5 ${item.isUp ? "text-blue-500" : "text-rose-500"}`}>
               {item.isUp ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
               {item.change}
             </span>
