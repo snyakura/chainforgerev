@@ -21,12 +21,10 @@ const footerLinks = {
   ],
   resources: [
     { label: "Market News", href: "#news" },
-    { label: "FAQ", href: "#contact" },
   ],
   company: [
     { label: "About Us", href: "#about" },
     // { label: "Testimonials", href: "#testimonials" }, // Keeping consistent with header, currently commented out
-    { label: "Partners", href: "#services" },
     { label: "Contact", href: "#contact" },
   ],
 };
@@ -112,7 +110,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   suppressHydrationWarning
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-secondary text-muted-foreground transition-all hover:border-blue-500 hover:bg-gradient-to-r hover:from-[#3B82F6] hover:to-[#2563EB] hover:text-white"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-secondary text-muted-foreground transition-all hover:border-blue-500 hover:bg-gradient-to-br hover:from-[#3B82F6] hover:to-[#2563EB] hover:text-white shadow-sm hover:shadow-blue-500/20"
                 >
                   <social.icon className="h-5 w-5" />
                 </a>
@@ -130,7 +128,7 @@ export function Footer() {
                     href={link.href}
                     onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
                     suppressHydrationWarning
-                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                    className="text-sm text-muted-foreground transition-colors hover:text-blue-500 font-medium"
                   >
                     {link.label}
                   </a>
@@ -148,7 +146,7 @@ export function Footer() {
                     href={link.href}
                     onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
                     suppressHydrationWarning
-                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                    className="text-sm text-muted-foreground transition-colors hover:text-blue-500 font-medium"
                   >
                     {link.label}
                   </a>
@@ -166,7 +164,7 @@ export function Footer() {
                     href={link.href}
                     onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
                     suppressHydrationWarning
-                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                    className="text-sm text-muted-foreground transition-colors hover:text-blue-500 font-medium"
                   >
                     {link.label}
                   </a>

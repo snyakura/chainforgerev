@@ -18,13 +18,14 @@ import {
   QrCode, 
   ExternalLink, 
   CheckCircle2,
-  History
+  History,
+  Copy
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const countryCodes = ([
+const countryCodes = [
   { code: "+93", name: "Afghanistan", flag: "🇦🇫" },
   { code: "+355", name: "Albania", flag: "🇦🇱" },
   { code: "+213", name: "Algeria", flag: "🇩🇿" },
@@ -240,7 +241,7 @@ const countryCodes = ([
   { code: "+967", name: "Yemen", flag: "🇾🇪" },
   { code: "+260", name: "Zambia", flag: "🇿🇲" },
   { code: "+263", name: "Zimbabwe", flag: "🇿🇼" },
-]).sort((a, b) => a.name.localeCompare(b.name));
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const isValidPhone = (phone: string, countryCode?: string) => {
@@ -250,6 +251,15 @@ const isValidPhone = (phone: string, countryCode?: string) => {
 
 export function PaymentMethods() {
   const [step, setStep] = useState(1);
+  const [copied, setCopied] = useState(false);
+  const chainforgeUSDT = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"; // Standard TRC20 USDT Format
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(chainforgeUSDT);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -273,6 +283,19 @@ export function PaymentMethods() {
     setFormData(prev => ({ ...prev, ...updates }));
   };
 
+  type GatewayOption = {
+    id: string;
+    icon: typeof Smartphone;
+    color: string;
+  };
+
+  const gatewayOptions: GatewayOption[] = [
+    { id: "EcoCash", icon: Smartphone, color: "text-green-500" },
+    { id: "InnBucks", icon: Wallet, color: "text-blue-500" },
+    { id: "Cash", icon: Briefcase, color: "text-blue-500" },
+    { id: "FNB (EFT)", icon: Wallet, color: "text-indigo-500" }
+  ];
+
   const nextStep = () => setStep(s => s + 1);
   const prevStep = () => setStep(s => s - 1);
 
@@ -284,34 +307,32 @@ export function PaymentMethods() {
     let brokerFee = 0;
     let gatewayFee = 0;
 
-    // Broker Fee (10% for Weltrade, Deriv, Other deposits)
+    // Broker Fee (10% for Weltrade, Deriv, Other)
     // This fee applies to the broker, not the payment method itself.
-    if (type === "deposit" && (broker === "Weltrade" || broker === "Deriv" || broker === "Other")) {
+    if (broker === "Weltrade" || broker === "Deriv" || broker === "Other") {
       brokerFee = amount * 0.10;
     }
 
-    // Payment Gateway Fee (only for deposits)
-    if (type === "deposit") {
-      switch (gateway) {
-        case "EcoCash":
-          // EcoCash fee: 2% or minimum $0.10 for small amounts
-          gatewayFee = amount <= 5 ? 0.10 : amount * 0.02;
-          break;
-        case "InnBucks":
-          // InnBucks fee: Flat $0.50
-          gatewayFee = 0.50;
-          break;
-        case "FNB (EFT)":
-          // FNB (EFT) fee: Fixed $4 charge
-          gatewayFee = 4.00;
-          break;
-        // USDT and Cash are assumed to have their processing covered by the broker fee, or no direct gateway fee
-        case "USDT":
-        case "Cash":
-        default:
-          gatewayFee = 0;
-          break;
-      }
+    // Payment Gateway Fee
+    switch (gateway) {
+      case "EcoCash":
+        // EcoCash fee: 2% or minimum $0.10 for small amounts
+        gatewayFee = amount <= 5 ? 0.10 : amount * 0.02;
+        break;
+      case "InnBucks":
+        // InnBucks fee: Flat $0.50
+        gatewayFee = 0.50;
+        break;
+      case "FNB (EFT)":
+        // FNB (EFT) fee: Fixed $4 charge
+        gatewayFee = 4.00;
+        break;
+      // USDT and Cash are assumed to have their processing covered by the broker fee, or no direct gateway fee
+      case "USDT":
+      case "Cash":
+      default:
+        gatewayFee = 0;
+        break;
     }
 
     const totalDeduction = brokerFee + gatewayFee;
@@ -599,34 +620,58 @@ when you need it.
 
                     {formData.broker && (
                       <>
-                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                          <Label className="text-xs uppercase font-bold text-muted-foreground">
-                            {formData.broker === "Deriv" ? "CR Number" : "TRC20 USDT Wallet Address"}
-                          </Label>
-                          <Input 
-                            className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
-                            placeholder={formData.broker === "Deriv" ? "e.g. CR123456" : "Paste your TRC20 address"}
-                            value={formData.brokerId}
-                            onChange={(e) => updateForm({ brokerId: e.target.value })}
-                          />
-                        </motion.div>
-
-                        {formData.broker === "Weltrade" && formData.type === "deposit" && (
-                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                            <Label className="text-xs uppercase font-bold text-muted-foreground">Binance Pay QR Code</Label>
-                            <div className="relative h-32 w-full border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center hover:border-blue-500/30 transition-all cursor-pointer bg-secondary/30">
-                              <Upload className="h-6 w-6 text-muted-foreground mb-2" />
-                              <span className="text-xs text-muted-foreground font-bold uppercase tracking-tight">Upload QR Code Screenshot</span>
-                              <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => updateForm({ binanceQrName: e.target.files?.[0]?.name || "" })} />
-                              {formData.binanceQrName && <span className="mt-2 text-[10px] text-blue-400 font-bold">{formData.binanceQrName}</span>}
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+                        {(formData.broker === "Weltrade" || formData.broker === "Other") && (
+                          <div className="p-6 rounded-[2rem] bg-blue-500/5 border border-blue-500/20 space-y-4">
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest">ChainForge Deposit Address (TRC20)</span>
+                              <QrCode className="h-4 w-4 text-blue-500" />
                             </div>
-                          </motion.div>
+                            <div className="flex flex-col items-center gap-4">
+                              <div className="bg-white p-2 rounded-xl">
+                                <img 
+                                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${chainforgeUSDT}`} 
+                                  alt="ChainForge QR" 
+                                  className="h-32 w-32"
+                                />
+                              </div>
+                              <div 
+                                onClick={handleCopy}
+                                className="w-full flex items-center justify-between text-[10px] font-mono text-muted-foreground bg-background/50 backdrop-blur-sm border border-border p-3 rounded-xl cursor-pointer hover:bg-secondary/80 transition-all group"
+                              >
+                                <span className="truncate mr-2">{chainforgeUSDT}</span>
+                                {copied ? (
+                                  <Check className="h-3 w-3 text-green-500" />
+                                ) : (
+                                  <Copy className="h-3 w-3 shrink-0 group-hover:text-blue-500" />
+                                )}
+                              </div>
+                              <p className="text-[9px] text-muted-foreground text-center font-bold uppercase tracking-tighter">
+                                Copy this address for your {formData.broker} transfer
+                              </p>
+                            </div>
+                          </div>
                         )}
+                        
+                        {formData.type === "deposit" && (
+                          <div className="space-y-2">
+                            <Label className="text-xs uppercase font-bold text-muted-foreground">
+                              {formData.broker === "Deriv" ? "CR Number" : "Broker Account ID (e.g. MT4/MT5 Login)"}
+                            </Label>
+                            <Input 
+                              className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
+                              placeholder={formData.broker === "Deriv" ? "e.g. CR123456" : "Enter your account number"}
+                              value={formData.brokerId}
+                              onChange={(e) => updateForm({ brokerId: e.target.value })}
+                            />
+                          </div>
+                        )}
+                      </motion.div>
                       </>
                     )}
                   </div>
                   <Button 
-                    disabled={!formData.broker || !formData.brokerId || (formData.broker === "Weltrade" && formData.type === "deposit" && !formData.binanceQrName)} 
+                    disabled={!formData.broker || (formData.type === "deposit" && !formData.brokerId)} 
                     onClick={nextStep} 
                     className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all"
                   >
@@ -656,20 +701,8 @@ when you need it.
                   </div>
 
                   <div className="space-y-6">
-                    <div className={`grid ${formData.type === "deposit" ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" : "grid-cols-2"} gap-4`}>
-                      {(formData.type === "deposit" 
-                        ? [
-                            { id: "EcoCash", icon: Smartphone, color: "text-green-500" },
-                            { id: "InnBucks", icon: Wallet, color: "text-blue-500" },
-                            { id: "USDT", icon: Bitcoin, color: "text-blue-500" },
-                            { id: "Cash", icon: Briefcase, color: "text-blue-500" },
-                            { id: "FNB (EFT)", icon: Wallet, color: "text-indigo-500" }
-                          ]
-                        : [
-                            { id: "Office Cash", icon: Briefcase, color: "text-blue-500" },
-                            { id: "EcoCash", icon: Smartphone, color: "text-green-500" }
-                          ]
-                      ).map((g) => (
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      {gatewayOptions.map((g) => (
                         <button 
                           key={g.id}
                           onClick={() => updateForm({ gateway: g.id })}
@@ -700,10 +733,12 @@ when you need it.
                         onChange={(e) => updateForm({ amount: e.target.value })}
                       />
                       
-                      {formData.type === "deposit" && parseFloat(formData.amount) > 0 && (
+                      {parseFloat(formData.amount) > 0 && (
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-4 p-4 rounded-xl bg-blue-500/5 border border-blue-500/20">
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-[10px] text-muted-foreground uppercase font-bold">Funds to be Received</span>
+                            <span className="text-[10px] text-muted-foreground uppercase font-bold">
+                              {formData.type === "deposit" ? "Funds to be Received" : "Net Payout Amount"}
+                            </span>
                             <span className="text-lg font-black text-blue-500">
                               ${netAmount.toFixed(2)}
                             </span>
@@ -719,7 +754,9 @@ when you need it.
                                   : formData.gateway === "FNB (EFT)" 
                                     ? `an FNB (EFT) fee of $${gatewayFee.toFixed(2)}` 
                                     : "")}
-                            {(brokerFee > 0 || gatewayFee > 0) ? ` will be deducted from your deposit to ${formData.broker}.` : "No additional fees for this transaction."}
+                            {(brokerFee > 0 || gatewayFee > 0) 
+                              ? ` will be deducted from your ${formData.type} ${formData.type === 'deposit' ? 'to' : 'from'} ${formData.broker}.` 
+                              : "No additional fees for this transaction."}
                           </p>
                         </motion.div>
                       )}
@@ -734,54 +771,6 @@ when you need it.
                           value={formData.gatewayNumber}
                           onChange={(e) => updateForm({ gatewayNumber: e.target.value })}
                         />
-                      </motion.div>
-                    )}
-
-                    {formData.gateway === "USDT" && (
-                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                        <div className="p-6 rounded-2xl bg-card border border-border space-y-4">
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs font-bold text-muted-foreground uppercase">Scan to Pay (TRC20)</span>
-                            <QrCode className="h-5 w-5 text-blue-500" />
-                          </div>
-                          <div className="h-40 w-full bg-white rounded-xl flex items-center justify-center">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=T...AccountLink" alt="USDT QR" className="h-32 w-32" />
-                          </div>
-                          <div className="flex items-center justify-between text-[10px] font-mono text-muted-foreground truncate bg-muted p-3 rounded-lg">
-                            T-Account-Link-Placeholder-Text-123...
-                            <ExternalLink className="h-3 w-3 shrink-0" />
-                          </div>
-                        </div>
-
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <Label className="text-xs uppercase font-bold text-muted-foreground">Your USDT Account</Label>
-                            <Input 
-                              className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
-                              placeholder="Address you sent from"
-                              value={formData.usdtAccount}
-                              onChange={(e) => updateForm({ usdtAccount: e.target.value })}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label className="text-xs uppercase font-bold text-muted-foreground">Transaction Reference</Label>
-                            <Input 
-                              className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
-                              placeholder="Paste Hash/Ref Number"
-                              value={formData.usdtRef}
-                              onChange={(e) => updateForm({ usdtRef: e.target.value })}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label className="text-xs uppercase font-bold text-muted-foreground">Proof of Payment</Label>
-                            <div className="relative h-32 w-full border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center hover:border-blue-500/30 transition-all cursor-pointer bg-secondary/30">
-                              <Upload className="h-6 w-6 text-muted-foreground mb-2" />
-                              <span className="text-xs text-muted-foreground font-bold uppercase tracking-tight">Upload Screenshot</span>
-                              <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => updateForm({ proofName: e.target.files?.[0]?.name || "" })} />
-                              {formData.proofName && <span className="mt-2 text-[10px] text-blue-400">{formData.proofName}</span>}
-                            </div>
-                          </div>
-                        </div>
                       </motion.div>
                     )}
                   </div>
@@ -825,7 +814,7 @@ when you need it.
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="h-2 w-2 rounded-full bg-blue-500" />
-                        <span className="text-xs text-foreground">Broker: {formData.broker} ({formData.brokerId})</span>
+                        <span className="text-xs text-foreground">Broker: {formData.broker} {formData.type === "deposit" && `(${formData.brokerId})`}</span>
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
