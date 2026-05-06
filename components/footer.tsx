@@ -65,9 +65,9 @@ export function Footer() {
   return ( // Changed ID from "contact" to "footer-section" to avoid conflict with the new ContactSection
     <footer id="footer-section" className="border-t border-border bg-card">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="grid gap-8 lg:grid-cols-6">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
           {/* Brand column */}
-          <div className="lg:col-span-2">
+          <div className="sm:col-span-2 md:col-span-3 lg:col-span-2">
             <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center justify-center lg:justify-start gap-2" suppressHydrationWarning>
               <motion.div 
                 whileHover={{ scale: 1.05 }}
@@ -119,8 +119,8 @@ export function Footer() {
           </div>
 
           {/* Links columns */}
-          <div>
-            <h3 className="font-semibold text-foreground">Services</h3>
+          <div className="text-center lg:text-left">
+            <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">Services</h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
@@ -137,8 +137,8 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold text-foreground">Resources</h3>
+          <div className="text-center lg:text-left">
+            <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">Resources</h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.label}>
@@ -155,8 +155,8 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold text-foreground">Company</h3>
+          <div className="text-center lg:text-left">
+            <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">Company</h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>

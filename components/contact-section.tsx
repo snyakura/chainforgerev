@@ -83,7 +83,7 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative min-h-screen border-y border-white/5 py-32 overflow-hidden bg-[#080808] isolate transition-colors duration-500">
+    <section id="contact" className="relative min-h-screen border-y border-border py-32 overflow-hidden bg-background isolate transition-colors duration-500">
       {/* Futuristic Background Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         {/* Emerald Radial Glows */}
@@ -97,7 +97,7 @@ export function ContactSection() {
 
         {/* Ghost Typography */}
         <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none">
-          <span className="text-[22vw] font-black tracking-tighter uppercase leading-none text-blue-500">
+          <span className="text-[22vw] font-black tracking-tighter uppercase leading-none text-blue-500 dark:text-blue-500">
             CONTACT
           </span>
         </div>
@@ -118,11 +118,11 @@ export function ContactSection() {
                 <div className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
                 <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">GET IN TOUCH</span>
               </div>
-              <h2 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter leading-tight">
+              <h2 className="text-5xl md:text-7xl font-black text-foreground uppercase tracking-tighter leading-tight">
                 Let&apos;s Build <br />
                 <span className="text-blue-500">The Future.</span>
               </h2>
-              <p className="text-zinc-500 text-lg max-w-md leading-relaxed">
+              <p className="text-muted-foreground text-lg max-w-md leading-relaxed">
                 Have inquiries about our signals or transactions? Our elite support team is ready to assist you in navigating the markets.
               </p>
             </div>
@@ -137,13 +137,13 @@ export function ContactSection() {
                   key={i}
                   whileHover={{ x: 8 }}
                   className="group flex items-center gap-5 p-5 rounded-2xl bg-zinc-900/40 border border-white/5 backdrop-blur-md transition-all hover:bg-zinc-800/50 hover:border-blue-500/20"
-                >
-                  <div className="h-12 w-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-blue-500/10 transition-colors">
-                    <item.icon className="h-5 w-5 text-white group-hover:text-blue-500 transition-colors" />
+                > {/* Changed bg-zinc-900/40 to bg-card/60, border-white/5 to border-border, hover:bg-zinc-800/50 to hover:bg-secondary/50 */}
+                  <div className="h-12 w-12 rounded-xl bg-secondary/30 flex items-center justify-center group-hover:bg-blue-500/10 transition-colors">
+                    <item.icon className="h-5 w-5 text-foreground group-hover:text-blue-500 transition-colors" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">{item.label}</p>
-                    <p className="text-sm font-bold text-zinc-300">{item.value}</p>
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{item.label}</p>
+                    <p className="text-sm font-bold text-foreground">{item.value}</p>
                   </div>
                 </motion.div>
               ))}
@@ -156,7 +156,7 @@ export function ContactSection() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-zinc-900/60 border border-blue-500/20 rounded-[3rem] p-8 md:p-12 backdrop-blur-3xl shadow-2xl relative overflow-hidden group/form"
+            className="bg-card/60 border border-blue-500/20 rounded-[3rem] p-8 md:p-12 backdrop-blur-3xl shadow-2xl relative overflow-hidden group/form"
           >
             <div className="absolute -top-24 -right-24 h-64 w-64 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
             
@@ -170,7 +170,7 @@ export function ContactSection() {
                   placeholder="Full Name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="bg-black/40 border-white/5 h-16 rounded-2xl focus:border-blue-500/50 focus:ring-blue-500/20 transition-all placeholder:text-zinc-700"
+                  className="bg-secondary/30 border-border h-16 rounded-2xl focus:border-blue-500/50 focus:ring-blue-500/20 transition-all placeholder:text-muted-foreground"
                   aria-invalid={errors.name ? "true" : "false"}
                 />
                 {errors.name && <p className="text-[10px] text-red-500 font-bold uppercase ml-2">{errors.name}</p>}
@@ -184,7 +184,7 @@ export function ContactSection() {
                   placeholder="Email Address"
                   value={formData.email}
                   onChange={handleChange}
-                  className="bg-black/40 border-white/5 h-16 rounded-2xl focus:border-blue-500/50 focus:ring-blue-500/20 transition-all placeholder:text-zinc-700"
+                  className="bg-secondary/30 border-border h-16 rounded-2xl focus:border-blue-500/50 focus:ring-blue-500/20 transition-all placeholder:text-muted-foreground"
                   aria-invalid={errors.email ? "true" : "false"}
                 />
                 {errors.email && <p className="text-[10px] text-red-500 font-bold uppercase ml-2">{errors.email}</p>}
@@ -200,7 +200,7 @@ export function ContactSection() {
                 rows={6}
                 value={formData.message}
                 onChange={handleChange}
-                className="bg-black/40 border-white/5 rounded-[2rem] p-6 focus:border-blue-500/50 focus:ring-blue-500/20 transition-all placeholder:text-zinc-700 resize-none"
+                className="bg-secondary/30 border-border rounded-[2rem] p-6 focus:border-blue-500/50 focus:ring-blue-500/20 transition-all placeholder:text-muted-foreground resize-none"
                 aria-invalid={errors.message ? "true" : "false"}
               />
               {errors.message && <p className="text-[10px] text-red-500 font-bold uppercase ml-2">{errors.message}</p>}
@@ -208,13 +208,13 @@ export function ContactSection() {
 
             <Button
               type="submit"
-              className="w-full bg-white text-black hover:bg-zinc-200 h-16 rounded-2xl font-black text-lg uppercase tracking-widest transition-all hover:scale-[1.01] active:scale-[0.98] shadow-[0_10px_30px_rgba(255,255,255,0.1)]"
+              className="w-full bg-foreground text-background hover:bg-foreground/90 h-16 rounded-2xl font-black text-lg uppercase tracking-widest transition-all hover:scale-[1.01] active:scale-[0.98]"
               disabled={status === "loading"}
             >
               <AnimatePresence mode="wait">
                 {status === "loading" ? (
-                  <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3">
-                    <div className="h-4 w-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                  <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 text-background">
+                    <div className="h-4 w-4 border-2 border-foreground/20 border-t-foreground rounded-full animate-spin" />
                     Sending...
                   </motion.div>
                 ) : status === "success" ? (
