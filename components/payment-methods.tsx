@@ -276,7 +276,8 @@ export function PaymentMethods() {
     proofName: "",
     idDoc: "",
     passportDoc: "",
-    binanceQrName: ""
+    binanceQrName: "",
+    derivAccountName: ""
   });
 
   const updateForm = (updates: Partial<typeof formData>) => {
@@ -619,59 +620,80 @@ when you need it.
                     </div>
 
                     {formData.broker && (
-                      <>
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                        {(formData.broker === "Weltrade" || formData.broker === "Other") && (
-                          <div className="p-6 rounded-[2rem] bg-blue-500/5 border border-blue-500/20 space-y-4">
-                            <div className="flex justify-between items-center">
-                              <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest">ChainForge Deposit Address (TRC20)</span>
-                              <QrCode className="h-4 w-4 text-blue-500" />
-                            </div>
-                            <div className="flex flex-col items-center gap-4">
-                              <div className="bg-white p-2 rounded-xl">
-                                <img 
-                                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${chainforgeUSDT}`} 
-                                  alt="ChainForge QR" 
-                                  className="h-32 w-32"
-                                />
-                              </div>
-                              <div 
-                                onClick={handleCopy}
-                                className="w-full flex items-center justify-between text-[10px] font-mono text-muted-foreground bg-background/50 backdrop-blur-sm border border-border p-3 rounded-xl cursor-pointer hover:bg-secondary/80 transition-all group"
-                              >
-                                <span className="truncate mr-2">{chainforgeUSDT}</span>
-                                {copied ? (
-                                  <Check className="h-3 w-3 text-green-500" />
-                                ) : (
-                                  <Copy className="h-3 w-3 shrink-0 group-hover:text-blue-500" />
-                                )}
-                              </div>
-                              <p className="text-[9px] text-muted-foreground text-center font-bold uppercase tracking-tighter">
-                                Copy this address for your {formData.broker} transfer
-                              </p>
-                            </div>
-                          </div>
-                        )}
+                        {/* ChainForge Deposit Info - Always shown for Weltrade/Other context */}
                         
                         {formData.type === "deposit" && (
-                          <div className="space-y-2">
-                            <Label className="text-xs uppercase font-bold text-muted-foreground">
-                              {formData.broker === "Deriv" ? "CR Number" : "Broker Account ID (e.g. MT4/MT5 Login)"}
-                            </Label>
-                            <Input 
-                              className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
-                              placeholder={formData.broker === "Deriv" ? "e.g. CR123456" : "Enter your account number"}
-                              value={formData.brokerId}
-                              onChange={(e) => updateForm({ brokerId: e.target.value })}
-                            />
+                          <div className="space-y-6">
+                            {(formData.broker === "Weltrade" || formData.broker === "Other") && (
+                              <>
+                                <div className="space-y-2">
+                                  <Label className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest flex justify-between">
+                                    Your USDT Account Link
+                                    <span className="text-blue-500 font-black">TRC20 (Tron)</span>
+                                  </Label>
+                                  <Input 
+                                    className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
+                                    placeholder="Enter your TRC20 wallet address"
+                                    value={formData.usdtAccount}
+                                    onChange={(e) => updateForm({ usdtAccount: e.target.value })}
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Upload Binance Pay QR</Label>
+                                  <div className="relative group/binance">
+                                    <input 
+                                      type="file" 
+                                      onChange={(e) => updateForm({ binanceQrName: e.target.files?.[0]?.name || "" })}
+                                      className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                                    />
+                                    <div className="h-20 w-full border border-dashed border-border rounded-xl flex flex-col items-center justify-center bg-secondary/30 group-hover/binance:border-blue-500/50 transition-all">
+                                      {formData.binanceQrName ? (
+                                        <span className="text-[10px] text-blue-400 font-bold px-2 text-center">{formData.binanceQrName.substring(0, 20)}...</span>
+                                      ) : (
+                                        <><FileUp className="h-4 w-4 text-muted-foreground mb-1" /><span className="text-[9px] font-bold text-muted-foreground uppercase">Choose Binance Pay Image</span></>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </>
+                            )}
+
+                            {formData.broker === "Deriv" && (
+                              <>
+                                <div className="space-y-2">
+                                  <Label className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">CR Number</Label>
+                                  <Input 
+                                    className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
+                                    placeholder="e.g. CR123456"
+                                    value={formData.brokerId}
+                                    onChange={(e) => updateForm({ brokerId: e.target.value })}
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Account Holder Name</Label>
+                                  <Input 
+                                    className="bg-secondary/30 border-border py-6 rounded-xl focus:border-blue-500"
+                                    placeholder="Full name linked to CR number"
+                                    value={formData.derivAccountName}
+                                    onChange={(e) => updateForm({ derivAccountName: e.target.value })}
+                                  />
+                                </div>
+                              </>
+                            )}
                           </div>
                         )}
                       </motion.div>
-                      </>
                     )}
                   </div>
                   <Button 
-                    disabled={!formData.broker || (formData.type === "deposit" && !formData.brokerId)} 
+                    disabled={
+                      !formData.broker || 
+                      (formData.type === "deposit" && (
+                        (formData.broker === "Deriv" && (!formData.brokerId || !formData.derivAccountName)) ||
+                        ((formData.broker === "Weltrade" || formData.broker === "Other") && (!formData.usdtAccount || !formData.binanceQrName))
+                      ))
+                    } 
                     onClick={nextStep} 
                     className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all"
                   >
@@ -814,7 +836,7 @@ when you need it.
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="h-2 w-2 rounded-full bg-blue-500" />
-                        <span className="text-xs text-foreground">Broker: {formData.broker} {formData.type === "deposit" && `(${formData.brokerId})`}</span>
+                        <span className="text-xs text-foreground">Broker: {formData.broker} {formData.brokerId && `(${formData.brokerId})`}</span>
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
