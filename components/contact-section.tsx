@@ -130,7 +130,7 @@ export function ContactSection() {
             <div className="space-y-4 max-w-sm">
               {[
                 { icon: Mail, label: "Email", value: "chainforge@gmail.com" },
-                { icon: Phone, label: "Phone", value: "+263 78 429 3089" },
+                { icon: Phone, label: "Phone", value: "+263 71 055 4856" },
                 { icon: MapPin, label: "Location", value: "4th floor right wing zimdef bulawayo" },
               ].map((item, i) => (
                 <motion.div

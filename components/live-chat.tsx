@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export function LiveChat() {
   // Replace with your actual WhatsApp number and desired message
-  const whatsappNumber = "+263784293089"; 
+  const whatsappNumber = "+263710554856"; 
   const message = "Hello ChainForge Team, I'm interested in your services.";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 

@@ -19,7 +19,8 @@ import {
   ExternalLink, 
   CheckCircle2,
   History,
-  Copy
+  Copy,
+  MapPin
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -249,10 +250,38 @@ const isValidPhone = (phone: string, countryCode?: string) => {
   return /^\d{7,15}$/.test(digits) && !/^(.)\1+$/.test(digits); // Length 7-15, not repeating dummy digits
 };
 
+const generateBookingId = () => `CF-${Math.floor(Math.random() * 9000) + 1000}`;
+
 export function PaymentMethods() {
   const [step, setStep] = useState(1);
   const [copied, setCopied] = useState(false);
+  const [bookingId] = useState(generateBookingId());
   const chainforgeUSDT = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"; // Standard TRC20 USDT Format
+
+  const whatsappNumber = "+263710554856";
+
+  const generateWhatsAppMessage = (fees: any) => {
+    const accountDetails = formData.broker === "Deriv" 
+      ? `CR Number: ${formData.brokerId}\nDeriv Name: ${formData.derivAccountName}` 
+      : `USDT Wallet: ${formData.usdtAccount}`;
+      
+    const qrInfo = (formData.broker !== "Deriv" && formData.binanceQrName) 
+      ? `\nBinance QR: ${formData.binanceQrName}` 
+      : "";
+
+    const text = `--- NEW ${formData.type.toUpperCase()} ---
+Name: ${formData.name}
+Type: ${formData.type.toUpperCase()}
+Method: ${formData.gateway}
+Requested Amount: ${formData.gateway === "Cash" ? "To be paid in person" : `$${formData.amount}`}
+Total Fees: $${fees.totalDeduction.toFixed(2)}
+Net Amount to be ${formData.type === 'deposit' ? 'Credited' : 'Paid'}: $${fees.netAmount.toFixed(2)}
+Broker: ${formData.broker}
+${accountDetails}${qrInfo}
+Ref: ${formData.gateway === "Cash" ? bookingId : formData.usdtRef || "Pending"}
+Status: Proof Attached (PLEASE ATTACH ALL RELEVANT SCREENSHOTS BELOW)`;
+    return encodeURIComponent(text);
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(chainforgeUSDT);
@@ -340,6 +369,13 @@ export function PaymentMethods() {
     const netAmount = amount - totalDeduction;
 
     return { brokerFee, gatewayFee, totalDeduction, netAmount: Math.max(0, netAmount) };
+  };
+
+  const handleSubmitForVerification = () => {
+    const fees = calculateFees(formData.amount, formData.gateway, formData.broker, formData.type);
+    const message = generateWhatsAppMessage(fees);
+    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+    setStep(5); // Move to final success screen
   };
 
   const { netAmount, brokerFee, gatewayFee } = calculateFees(formData.amount, formData.gateway, formData.broker, formData.type);
@@ -799,10 +835,10 @@ when you need it.
 
                   <Button 
                     onClick={nextStep} 
-                    disabled={!formData.gateway || (formData.gateway === "Cash" && (parseFloat(formData.amount) < 1 || !formData.amount))}
+                    disabled={!formData.gateway || (formData.gateway !== "Cash" && (parseFloat(formData.amount) < 1 || !formData.amount))}
                     className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all"
                   >
-                    Confirm & Process Transaction
+                    {formData.gateway === "Cash" ? "Get Booking ID & Directions" : "Confirm & Process Transaction"}
                   </Button>
                 </motion.div>
               )}
@@ -810,6 +846,110 @@ when you need it.
               {step === 4 && (
                 <motion.div 
                   key="step4"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-10"
+                >
+                  {formData.gateway === "Cash" ? (
+                    <div className="space-y-8 text-left">
+                      <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2">
+                        <MapPin className="h-4 w-4 text-blue-500" />
+                        <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest">Office Directions</span>
+                      </div>
+
+                      <div className="p-8 rounded-[2rem] bg-blue-500/5 border border-blue-500/20 text-center">
+                        <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em]">Your Booking ID</span>
+                        <div className="text-4xl font-black text-foreground my-2 tracking-tighter">{bookingId}</div>
+                        <p className="text-base text-foreground font-bold mt-4 uppercase">ZIMDEF HOUSE OFFICE 408, 4TH FLOOR</p>
+                        <p className="text-xs text-muted-foreground leading-relaxed mt-2">
+                          Please present this ID to the teller to complete your cash transaction at our Bulawayo branch.
+                        </p>
+                      </div>
+
+                      <div className="w-full h-56 rounded-2xl overflow-hidden border border-border bg-muted/30 backdrop-blur-md relative">
+                        <iframe 
+                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3714.7176472421864!2d28.5832!3d-20.1545!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1eb5540300000001%3A0x0!2zWklNREVGIEhPVVNFLCBCdWxhd2F5bw!5e0!3m2!1sen!2szw!4v1710000000000" 
+                          width="100%" 
+                          height="100%" 
+                          style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) contrast(90%) brightness(0.9)' }} 
+                          allowFullScreen 
+                          loading="lazy"
+                        ></iframe>
+                      </div>
+                      <Button onClick={() => window.location.reload()} variant="outline" className="w-full border-border text-muted-foreground hover:text-foreground px-8 rounded-xl font-bold uppercase text-[10px] tracking-widest py-6 mt-4">
+                        Start New Transaction
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-6 text-left">
+                      <div className="flex items-center gap-4 mb-4">
+                        <button onClick={prevStep} className="h-10 w-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors">
+                          <ArrowLeft className="h-4 w-4 text-muted-foreground" />
+                        </button>
+                        <div>
+                          <h3 className="text-xl font-bold text-foreground uppercase tracking-tight">Verify Payment</h3>
+                          <p className="text-muted-foreground text-[10px] uppercase tracking-widest font-bold">Step 04 / 04</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        {formData.gateway === "FNB (EFT)" && (
+                          <Button 
+                            variant="outline" 
+                            className="w-full border-blue-500/50 text-blue-500 hover:bg-blue-500/10 font-bold py-6 rounded-xl"
+                            onClick={() => window.open("https://www.fnb.co.za", "_blank")}
+                          >
+                            Go to FNB Banking Site <ExternalLink className="ml-2 h-4 w-4" />
+                          </Button>
+                        )}
+
+                        {(formData.gateway === "EcoCash" || formData.gateway === "InnBucks") && (
+                          <div className="p-4 rounded-xl bg-secondary/30 border border-border">
+                            <p className="text-[10px] text-muted-foreground uppercase font-bold mb-1">Payment Number</p>
+                            <p className="text-lg font-black text-blue-500">+263 78 429 3089</p>
+                          </div>
+                        )}
+
+                        <div className="space-y-2">
+                          <Label className="text-[10px] uppercase font-bold text-muted-foreground">Transaction ID / Ref</Label>
+                          <Input 
+                            className="bg-secondary/30 border-border py-6 rounded-xl"
+                            placeholder="Enter receipt reference"
+                            value={formData.usdtRef}
+                            onChange={(e) => updateForm({ usdtRef: e.target.value })}
+                          />
+                        </div>
+
+                        <div className="relative group/proof">
+                          <input type="file" className="absolute inset-0 opacity-0 cursor-pointer z-10" onChange={(e) => updateForm({ proofName: e.target.files?.[0]?.name || "" })} />
+                          <div className="h-24 w-full border border-dashed border-border rounded-xl flex flex-col items-center justify-center bg-secondary/30 group-hover/proof:border-blue-500/50 transition-all">
+                            <Upload className="h-5 w-5 text-muted-foreground mb-1" />
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase">{formData.proofName || "Upload Payment Screenshot"}</span>
+                          </div>
+                        </div>
+
+                        <div className="p-4 rounded-xl bg-orange-500/5 border border-orange-500/20">
+                          <p className="text-[10px] text-orange-500 font-bold leading-tight">
+                            The WhatsApp chat will open; please attach the screenshot you just uploaded to the message.
+                          </p>
+                        </div>
+
+                        <Button 
+                          onClick={handleSubmitForVerification}
+                          disabled={!formData.usdtRef || !formData.proofName}
+                          className="w-full bg-foreground text-background font-bold py-7 rounded-2xl hover:scale-[1.02] transition-all"
+                        >
+                          Submit for Verification <Zap className="ml-2 h-5 w-5 fill-current" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              {step === 5 && (
+                <motion.div 
+                  key="step5"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-10"
@@ -849,8 +989,8 @@ when you need it.
                     A confirmation will be sent to {formData.email}. Our team will get back to you within 2-4 hours.
                   </p>
                   
-                  <Button onClick={() => setStep(1)} variant="outline" className="border-border text-muted-foreground hover:text-foreground px-8 rounded-xl font-bold uppercase text-[10px] tracking-widest">
-                    Make Another Transfer
+                  <Button onClick={() => window.location.reload()} variant="outline" className="border-border text-muted-foreground hover:text-foreground px-8 rounded-xl font-bold uppercase text-[10px] tracking-widest py-6">
+                    Start New Transaction
                   </Button>
                 </motion.div>
               )}
