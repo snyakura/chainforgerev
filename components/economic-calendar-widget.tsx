@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect, useRef, memo } from 'react';
+import { useEffect, useRef, memo, useState } from 'react';
 
 function EconomicCalendarWidget() {
   const container = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!container.current) return;
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || !container.current) return;
     
     // Prevent duplicate script injection
     if (container.current.querySelector('script[data-type="calendar-widget"]')) {
@@ -30,7 +35,7 @@ function EconomicCalendarWidget() {
         container.current.innerHTML = '';
       }
     };
-  }, []);
+  }, [mounted]);
 
   return (
     <div className="w-full h-[600px] overflow-hidden rounded-2xl border border-border/50 bg-card/40 backdrop-blur-md flex flex-col shadow-2xl transition-all duration-500">

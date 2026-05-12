@@ -136,8 +136,8 @@ export function ContactSection() {
                 <motion.div
                   key={i}
                   whileHover={{ x: 8 }}
-                  className="group flex items-center gap-5 p-5 rounded-2xl bg-zinc-900/40 border border-white/5 backdrop-blur-md transition-all hover:bg-zinc-800/50 hover:border-blue-500/20"
-                > {/* Changed bg-zinc-900/40 to bg-card/60, border-white/5 to border-border, hover:bg-zinc-800/50 to hover:bg-secondary/50 */}
+                  className="group flex items-center gap-5 p-5 rounded-2xl bg-card/60 border border-border backdrop-blur-md transition-all hover:bg-secondary/50 hover:border-blue-500/20"
+                >
                   <div className="h-12 w-12 rounded-xl bg-secondary/30 flex items-center justify-center group-hover:bg-blue-500/10 transition-colors">
                     <item.icon className="h-5 w-5 text-foreground group-hover:text-blue-500 transition-colors" />
                   </div>
