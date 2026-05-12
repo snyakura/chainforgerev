@@ -12,8 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-// Import the server action (adjust path based on your file structure)
-import { sendTransactionEmail } from "@/app/actions/emailActions";
 
 export function PaymentMethods() {
   const [step, setStep] = useState(0); 
@@ -60,27 +58,24 @@ export function PaymentMethods() {
     setIsSubmitting(true);
 
     try {
-      const submissionData = new FormData();
-      submissionData.append("firstName", formData.firstName);
-      submissionData.append("surname", formData.surname);
-      submissionData.append("email", formData.email);
-      submissionData.append("phone", formData.phone);
-      submissionData.append("mode", mode || "");
-      submissionData.append("broker", formData.broker);
-      submissionData.append("brokerId", formData.brokerId);
-      submissionData.append("gateway", formData.gateway);
-      submissionData.append("amount", formData.amount);
-      submissionData.append("txid", formData.txid);
-      submissionData.append("netReceive", netReceive.toFixed(2));
-      submissionData.append("proofFile", formData.proofFile);
+      const message = `*CHAINFORGE BRIDGE TRANSACTION*
+Mode: ${mode?.toUpperCase()}
+---
+Client: ${formData.firstName} ${formData.surname}
+Email: ${formData.email}
+Phone: ${formData.phone}
+---
+Broker: ${formData.broker} (${formData.brokerId})
+Gateway: ${formData.gateway} (${formData.gatewayNumber})
+Amount: $${formData.amount}
+Net Receive: $${netReceive.toFixed(2)}
+TXID: ${formData.txid || 'N/A'}
+---
+_Please attach my proof of payment image to this message._`;
 
-      const result = await sendTransactionEmail(submissionData);
-
-      if (result.success) {
-        nextStep();
-      } else {
-        alert("Failed to send request. Please check your connection or Resend API key.");
-      }
+      const whatsappUrl = `https://wa.me/263710554856?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank");
+      nextStep();
     } catch (error) {
       console.error("Submission Error:", error);
       alert("An unexpected error occurred.");
