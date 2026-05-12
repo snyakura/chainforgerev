@@ -3,6 +3,7 @@ import { MarketTicker } from "@/components/market-ticker";
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
 import { Courses } from "@/components/courses";
+import { ServicesSection } from "@/components/services-section";
 import { PaymentMethods } from "@/components/payment-methods";
 import { NewsFeed } from "@/components/news-feed";
 import { Testimonials } from "@/components/testimonials";
@@ -16,6 +17,7 @@ export default function Home() {
         {/* Header is already in AppWrapper, removing duplicate */}
         <Hero />
         <Courses />
+        <ServicesSection />
         <PaymentMethods />
         <NewsFeed />
         <Testimonials />

@@ -12,7 +12,6 @@ const navItems = [
   { label: "About", href: "#about" }, 
   { label: "Services", href: "#services" },
   // { label: "Testimonials", href: "#testimonials" }, // Keeping consistent with footer, currently commented out
-  { label: "Contact", href: "#contact" },
 ];
 
 export function Header() {

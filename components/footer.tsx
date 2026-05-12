@@ -25,7 +25,6 @@ const footerLinks = {
   company: [
     { label: "About Us", href: "#about" },
     // { label: "Testimonials", href: "#testimonials" }, // Keeping consistent with header, currently commented out
-    { label: "Contact", href: "#contact" },
   ],
 };
 

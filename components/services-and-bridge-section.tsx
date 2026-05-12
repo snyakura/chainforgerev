@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 // Import the server action (adjust path based on your file structure)
 import { sendTransactionEmail } from "@/app/actions/emailActions";
 
-export function PaymentMethods() {
+export function ServicesAndBridgeSection() {
   const [step, setStep] = useState(0); 
   const [mode, setMode] = useState<"deposit" | "withdrawal" | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -90,7 +90,7 @@ export function PaymentMethods() {
   };
 
   return (
-    <section id="bridge" className="relative py-24 bg-background text-foreground isolate font-sans">
+    <section className="relative py-24 bg-background text-foreground isolate font-sans">
       <div className="max-w-3xl mx-auto px-4">
         
         {/* STEP 0: SELECTION */}
