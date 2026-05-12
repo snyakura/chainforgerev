@@ -59,6 +59,21 @@ const PaymentSection: React.FC = () => {
   const handleNext = () => setStep((s) => s + 1);
   const handleBack = () => setStep((s) => s - 1);
 
+  const handleSubmit = () => {
+    const message = `*CHAINFORGE BRIDGE TRANSACTION*
+Mode: ${activeTab.toUpperCase()}
+Amount: $${amount}
+Method: ${selectedMethod?.name}
+Ref ID: ${refId}
+---
+_Please find my documents and proof of payment attached to this chat._`;
+
+    const whatsappUrl = `https://wa.me/263784293089?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+    // Optionally move to a success state or reset
+    alert('Redirecting to WhatsApp for final verification...');
+  };
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
@@ -308,7 +323,7 @@ const PaymentSection: React.FC = () => {
 
               <Button 
                 disabled={!refId || !proof} 
-                onClick={() => alert('Request Submitted for review!')}
+                onClick={handleSubmit}
                 className="w-full h-16 bg-emerald-600 hover:bg-emerald-500 rounded-2xl font-bold shadow-[0_0_20px_rgba(16,185,129,0.2)]"
               >
                 Complete {activeTab}

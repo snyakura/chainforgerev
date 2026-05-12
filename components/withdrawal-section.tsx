@@ -125,7 +125,7 @@ Net Total: $${netResult.toFixed(2)}
 ---
 _Please attach my proof of transfer image to this message._`;
 
-      const whatsappUrl = `https://wa.me/263710554856?text=${encodeURIComponent(message)}`;
+      const whatsappUrl = `https://wa.me/263784293089?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, "_blank");
       nextStep();
     } catch (error) {
