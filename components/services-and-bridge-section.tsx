@@ -18,6 +18,7 @@ export function ServicesAndBridgeSection() {
   const [mode, setMode] = useState<"deposit" | "withdrawal" | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -31,11 +32,17 @@ export function ServicesAndBridgeSection() {
     gatewayNumber: "",
     amount: "10",
     proofFile: null as File | null,
-    txid: "",
   });
 
   const updateForm = (updates: Partial<typeof formData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
+    // Clear error for the field being typed in
+    const keys = Object.keys(updates);
+    setErrors(prev => {
+      const next = { ...prev };
+      keys.forEach(k => delete next[k]);
+      return next;
+    });
   };
 
   const amountValue = parseFloat(formData.amount) || 0;
@@ -43,18 +50,43 @@ export function ServicesAndBridgeSection() {
   let providerFee = formData.gateway === "EcoCash" ? 1.00 : formData.gateway === "InnBucks" ? 0.50 : 4.00;
   const netReceive = Math.max(0, amountValue - adminFee - providerFee);
 
-  const nextStep = () => setStep(s => s + 1);
+  const validateStep = () => {
+    const newErrors: Record<string, string> = {};
+    const phoneRegex = /^(07[1378]\d{7}|\+2637[1378]\d{7})$/;
+    const crRegex = /^CR\d+$/i;
+
+    if (step === 1) {
+      if (!formData.firstName) newErrors.firstName = "First name is required";
+      if (!formData.surname) newErrors.surname = "Surname is required";
+      if (!formData.email || !formData.email.includes("@")) newErrors.email = "Valid email is required";
+      if (!formData.phone || !phoneRegex.test(formData.phone)) newErrors.phone = "Use format: 07XXXXXXXX";
+      
+      if (formData.broker === "Deriv") {
+        if (!formData.brokerId || !crRegex.test(formData.brokerId)) newErrors.brokerId = "Must start with 'CR'";
+      } else {
+        if (!formData.brokerId) newErrors.brokerId = "Broker ID is required";
+      }
+    }
+
+    if (step === 2) {
+      if (!formData.amount || parseFloat(formData.amount) <= 0) newErrors.amount = "Enter a valid amount";
+      if (!formData.gatewayNumber || !phoneRegex.test(formData.gatewayNumber)) newErrors.gatewayNumber = "Invalid gateway number";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const nextStep = () => {
+    if (validateStep()) setStep(s => s + 1);
+  };
+
   const prevStep = () => {
     if (step === 1) { setStep(0); setMode(null); }
     else setStep(s => s - 1);
   };
 
   const handleSubmit = async () => {
-    if (!formData.proofFile) {
-      alert("Please upload your proof of payment image.");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -69,7 +101,6 @@ Broker: ${formData.broker} (${formData.brokerId})
 Gateway: ${formData.gateway} (${formData.gatewayNumber})
 Amount: $${formData.amount}
 Net Receive: $${netReceive.toFixed(2)}
-TXID: ${formData.txid || 'N/A'}
 ---
 _Please attach my proof of payment image to this message._`;
 
@@ -126,10 +157,22 @@ _Please attach my proof of payment image to this message._`;
                 <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                   <h3 className="text-2xl font-black uppercase tracking-tighter border-l-4 border-blue-500 pl-4">Client Identification</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input placeholder="First Name" value={formData.firstName} onChange={(e) => updateForm({ firstName: e.target.value })} className="bg-secondary/30 h-14 border-border" />
-                    <Input placeholder="Surname" value={formData.surname} onChange={(e) => updateForm({ surname: e.target.value })} className="bg-secondary/30 h-14 border-border" />
-                    <Input placeholder="Email Address" value={formData.email} onChange={(e) => updateForm({ email: e.target.value })} className="bg-secondary/30 h-14 border-border" />
-                    <Input placeholder="WhatsApp Number" value={formData.phone} onChange={(e) => updateForm({ phone: e.target.value })} className="bg-secondary/30 h-14 border-border" />
+                    <div className="space-y-1">
+                      <Input placeholder="First Name" value={formData.firstName} onChange={(e) => updateForm({ firstName: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.firstName ? "border-red-500" : ""}`} />
+                      {errors.firstName && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.firstName}</p>}
+                    </div>
+                    <div className="space-y-1">
+                      <Input placeholder="Surname" value={formData.surname} onChange={(e) => updateForm({ surname: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.surname ? "border-red-500" : ""}`} />
+                      {errors.surname && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.surname}</p>}
+                    </div>
+                    <div className="space-y-1">
+                      <Input placeholder="Email Address" value={formData.email} onChange={(e) => updateForm({ email: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.email ? "border-red-500" : ""}`} />
+                      {errors.email && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.email}</p>}
+                    </div>
+                    <div className="space-y-1">
+                      <Input placeholder="WhatsApp Number" value={formData.phone} onChange={(e) => updateForm({ phone: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.phone ? "border-red-500" : ""}`} />
+                      {errors.phone && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.phone}</p>}
+                    </div>
                   </div>
                   <div className="space-y-4">
                     <Label className="text-[10px] font-black uppercase text-muted-foreground ml-1">Target Trading Platform</Label>
@@ -140,11 +183,17 @@ _Please attach my proof of payment image to this message._`;
                     </div>
                     {formData.broker === "Deriv" ? (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2">
-                        <Input placeholder="Deriv CR Number" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className="bg-secondary/30 h-14 border-border" />
+                        <div className="space-y-1">
+                          <Input placeholder="Deriv CR Number" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.brokerId ? "border-red-500" : ""}`} />
+                          {errors.brokerId && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.brokerId}</p>}
+                        </div>
                         <Input placeholder="Full Name on Deriv" value={formData.derivAccountName} onChange={(e) => updateForm({ derivAccountName: e.target.value })} className="bg-secondary/30 h-14 border-border" />
                       </div>
                     ) : (
-                      <Input placeholder="USDT (TRC20) Wallet Address" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className="bg-secondary/30 h-14 border-border" />
+                      <div className="space-y-1">
+                        <Input placeholder="Broker Account ID / Number" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.brokerId ? "border-red-500" : ""}`} />
+                        {errors.brokerId && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.brokerId}</p>}
+                      </div>
                     )}
                   </div>
                   <Button onClick={nextStep} className="w-full bg-blue-600 py-8 rounded-2xl font-black uppercase tracking-widest">Next: Payment Details</Button>
@@ -170,7 +219,8 @@ _Please attach my proof of payment image to this message._`;
                   </div>
                   <div className="space-y-2">
                     <Label className="text-[10px] font-black uppercase">Transaction Amount (USD)</Label>
-                    <Input type="number" value={formData.amount} onChange={(e) => updateForm({ amount: e.target.value })} className="bg-secondary/30 py-8 text-4xl font-black text-blue-500 border-none focus:ring-0" />
+                    <Input type="number" value={formData.amount} onChange={(e) => updateForm({ amount: e.target.value })} className={`bg-secondary/30 py-8 text-4xl font-black text-blue-500 border-none focus:ring-0 ${errors.amount ? "ring-2 ring-red-500" : ""}`} />
+                    {errors.amount && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.amount}</p>}
                   </div>
                   <div className="p-8 rounded-[2.5rem] bg-secondary/20 border border-border space-y-4 text-xs font-bold uppercase tracking-widest">
                     <div className="flex justify-between text-muted-foreground"><span>Service Fee (10%)</span><span className="text-foreground">-${adminFee.toFixed(2)}</span></div>
@@ -182,7 +232,8 @@ _Please attach my proof of payment image to this message._`;
                   </div>
                   <div className="space-y-2">
                       <Label className="text-[10px] font-black uppercase ml-1">{formData.gateway} Number</Label>
-                      <Input placeholder="07XXXXXXXX" value={formData.gatewayNumber} onChange={(e) => updateForm({ gatewayNumber: e.target.value })} className="bg-secondary/30 h-14 border-border" />
+                      <Input placeholder="07XXXXXXXX" value={formData.gatewayNumber} onChange={(e) => updateForm({ gatewayNumber: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.gatewayNumber ? "border-red-500" : ""}`} />
+                      {errors.gatewayNumber && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.gatewayNumber}</p>}
                   </div>
                   <Button onClick={nextStep} className="w-full bg-blue-600 py-8 rounded-2xl font-black uppercase tracking-widest">Continue to Verification</Button>
                 </motion.div>
@@ -207,10 +258,10 @@ _Please attach my proof of payment image to this message._`;
                             <p>3. RECEIPT: Save your transaction screenshot.</p>
                         </div>
                       </div>
-                      <div className="space-y-4">
-                          <Label className="text-[10px] font-black uppercase ml-1">Upload Receipt (POP)</Label>
-                          <Input type="file" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} className="bg-secondary/30 h-16 pt-6" />
-                          <Input placeholder="Transaction Reference (TXID)" value={formData.txid} onChange={(e) => updateForm({ txid: e.target.value })} className="bg-secondary/30 h-14 border-border" />
+                      <div className="p-6 border-2 border-blue-500 bg-blue-500/10 rounded-[2rem] animate-pulse">
+                        <p className="text-sm font-black text-blue-500 text-center uppercase tracking-widest">
+                          IMPORTANT: Don't forget to attach your proof of payment image once redirected to WhatsApp!
+                        </p>
                       </div>
                       <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-blue-600 py-8 font-black uppercase rounded-2xl tracking-widest">{isSubmitting ? "Uploading..." : "Submit Proof"}</Button>
                     </div>
@@ -227,59 +278,15 @@ _Please attach my proof of payment image to this message._`;
                           </div>
                           <div className="space-y-4">
                               <Input value={formData.brokerId} readOnly className="bg-secondary/30 border-border h-14 opacity-50" />
-                              <div className="space-y-2">
-                                  <Label className="text-[10px] font-black uppercase text-muted-foreground ml-1">Upload Proof of Agent Transfer</Label>
-                                  <Input type="file" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} className="bg-secondary/30 h-16 pt-6" />
-                              </div>
+                          </div>
+                          <div className="p-6 border-2 border-green-500 bg-green-500/10 rounded-[2rem] animate-pulse">
+                            <p className="text-sm font-black text-green-500 text-center uppercase tracking-widest">
+                              IMPORTANT: Don't forget to attach your proof of transfer image once redirected to WhatsApp!
+                            </p>
                           </div>
                           <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-green-600 py-8 font-black uppercase tracking-widest">{isSubmitting ? "Verifying..." : "Confirm Withdrawal"}</Button>
                       </div>
-                    ) : (
-                      <div className="space-y-8">
-                        <div className="rounded-[2.5rem] border border-red-500/50 bg-red-500/5 p-6 md:p-8">
-                            <div className="flex items-center gap-3 mb-4 text-red-500">
-                                <ShieldAlert className="h-6 w-6" />
-                                <h4 className="text-lg font-black uppercase">Mandatory Security Protocol</h4>
-                            </div>
-                            <p className="text-xs font-bold text-red-200/80 mb-6 uppercase tracking-wider">
-                                Direct transfers from broker wallets are strictly prohibited to prevent AML flags.
-                            </p>
-                            <div className="space-y-4">
-                                <div className="flex gap-4 items-center bg-background/40 p-4 rounded-2xl border border-border">
-                                    <span className="text-xl font-black text-red-500/40">01</span>
-                                    <h5 className="text-[11px] font-black uppercase text-foreground">Withdraw funds from broker to your private wallet.</h5>
-                                </div>
-                                <div className="flex gap-4 items-center bg-background/40 p-4 rounded-2xl border border-border">
-                                    <span className="text-xl font-black text-red-500/40">02</span>
-                                    <h5 className="text-[11px] font-black uppercase text-foreground">Send USDT (TRC20) from your wallet to our address.</h5>
-                                </div>
-                                <div className="flex gap-4 items-center bg-background/40 p-4 rounded-2xl border border-border">
-                                    <span className="text-xl font-black text-red-500/40">03</span>
-                                    <h5 className="text-[11px] font-black uppercase text-foreground">Submit your private transaction hash below for verification.</h5>
-                                </div>
-                            </div>
-                        </div>
-
-                          <div className="bg-secondary/20 p-8 rounded-[2.5rem] border border-border flex flex-col items-center">
-                              <img src="/QR.png" alt="TRC20 QR Code" className="h-40 w-40 mb-6 object-contain rounded-xl" />
-                              <div className="flex items-center gap-3 bg-background/60 px-4 py-3 rounded-xl border border-border mb-4">
-                                  <code className="text-[10px] text-blue-400 font-mono">TPvTAj6W8AZQzsnu27TsPjUMR7tNJ9CHgP</code>
-                                  <button onClick={() => {navigator.clipboard.writeText("TPvTAj6W8AZQzsnu27TsPjUMR7tNJ9CHgP"); setCopied(true); setTimeout(()=>setCopied(false), 2000)}} className="text-blue-500">
-                                      {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                                  </button>
-                              </div>
-                              <div className="text-center">
-                                <p className="text-[10px] font-black text-yellow-500 uppercase tracking-widest">Binance ID: 848180225 • Parexsibanda@icloud.com</p>
-                                <p className="text-[9px] text-muted-foreground font-bold uppercase">MARC ANTHONY(THEFOREXMAFIA) (Paradise Sibanda)</p>
-                              </div>
-                          </div>
-                          <div className="space-y-4">
-                              <Input type="file" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} className="bg-secondary/30 h-16 pt-6" />
-                              <Input placeholder="USDT Transaction Hash (TXID)" value={formData.txid} onChange={(e) => updateForm({ txid: e.target.value })} className="bg-secondary/30 h-14 border-border" />
-                          </div>
-                          <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-blue-600 py-8 font-black uppercase tracking-widest">Finalize Transaction</Button>
-                      </div>
-                    )
+                    ) : null
                   )}
                 </motion.div>
               )}
