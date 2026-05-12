@@ -104,7 +104,7 @@ export function PaymentMethods() {
               <button onClick={() => { setMode("deposit"); setStep(1); }} className="group p-10 rounded-[2.5rem] border border-border bg-secondary/30 hover:border-blue-500/50 transition-all hover:bg-blue-500/5">
                 <ShieldCheck className="h-12 w-12 text-blue-500 mx-auto mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-xl font-black uppercase tracking-tight">Deposit Funds</h3>
-                <p className="text-[10px] text-muted-foreground mt-2 font-bold uppercase tracking-widest">ZWL/USD to Global Broker</p>
+                <p className="text-[10px] text-muted-foreground mt-2 font-bold uppercase tracking-widest">USD to Global Broker</p>
               </button>
               <button onClick={() => { setMode("withdrawal"); setStep(1); }} className="group p-10 rounded-[2.5rem] border border-border bg-secondary/30 hover:border-green-500/50 transition-all hover:bg-green-500/5">
                 <Wallet className="h-12 w-12 text-green-500 mx-auto mb-4 group-hover:scale-110 transition-transform" />
