@@ -18,7 +18,7 @@ export function PaymentMethods() {
   const [mode, setMode] = useState<"deposit" | "withdrawal" | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -31,13 +31,20 @@ export function PaymentMethods() {
     gateway: "EcoCash",
     gatewayNumber: "",
     amount: "10",
+    bankName: "",
+    bankAccount: "",
+    bankAccountName: "",
     proofFile: null as File | null,
   });
 
   const updateForm = (updates: Partial<typeof formData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
     const keys = Object.keys(updates);
-    setErrors(prev => prev.filter(err => !keys.includes(err)));
+    setErrors(prev => {
+      const next = { ...prev };
+      keys.forEach(k => delete next[k]);
+      return next;
+    });
   };
 
   const amountValue = parseFloat(formData.amount) || 0;
@@ -46,30 +53,35 @@ export function PaymentMethods() {
   const netReceive = Math.max(0, amountValue - adminFee - providerFee);
 
   const validateStep = () => {
-    const newErrors: string[] = [];
-    const phoneRegex = /^(07[1378]\d{7}|\+2637[1378]\d{7})$/;
+    const newErrors: Record<string, string> = {};
+    const phoneRegex = /^(07\d{8}|\+2637\d{8})$/;
     const crRegex = /^CR\d+$/i;
 
     if (step === 1) {
-      if (!formData.firstName) newErrors.push("firstName");
-      if (!formData.surname) newErrors.push("surname");
-      if (!formData.email) newErrors.push("email");
-      if (!formData.phone || !phoneRegex.test(formData.phone)) newErrors.push("phone");
+      if (!formData.firstName) newErrors.firstName = "First name is required";
+      if (!formData.surname) newErrors.surname = "Surname is required";
+      if (!formData.email || !formData.email.includes("@")) newErrors.email = "Valid email is required";
+      if (!formData.phone || !phoneRegex.test(formData.phone)) newErrors.phone = "Use format: 07XXXXXXXX";
       
-      if (formData.broker === "Deriv") {
-        if (!formData.brokerId || !crRegex.test(formData.brokerId)) newErrors.push("brokerId");
-      } else {
-        if (!formData.brokerId) newErrors.push("brokerId");
-      }
+      if (formData.broker === "Deriv" && (!formData.brokerId || !crRegex.test(formData.brokerId))) newErrors.brokerId = "Must start with 'CR'";
+      else if (!formData.brokerId) newErrors.brokerId = "Broker ID is required";
     }
 
     if (step === 2) {
-      if (!formData.amount || parseFloat(formData.amount) <= 0) newErrors.push("amount");
-      if (!formData.gatewayNumber || !phoneRegex.test(formData.gatewayNumber)) newErrors.push("gatewayNumber");
+      if (!formData.amount || parseFloat(formData.amount) <= 0) newErrors.amount = "Enter a valid amount";
+      if (mode === "deposit" || formData.gateway !== "FNB (EFT)") {
+        if (!formData.gatewayNumber || !phoneRegex.test(formData.gatewayNumber)) newErrors.gatewayNumber = "Invalid gateway number";
+      }
+    }
+
+    if (step === 3 && mode === "withdrawal") {
+      if (!formData.bankName) newErrors.bankName = "Bank name is required";
+      if (!formData.bankAccountName) newErrors.bankAccountName = "Account holder name required";
+      if (!formData.bankAccount) newErrors.bankAccount = "Account number is required";
     }
 
     setErrors(newErrors);
-    return newErrors.length === 0;
+    return Object.keys(newErrors).length === 0;
   };
 
   const nextStep = () => {
@@ -94,6 +106,9 @@ Phone: ${formData.phone}
 ---
 Broker: ${formData.broker} (${formData.brokerId})
 Gateway: ${formData.gateway} (${formData.gatewayNumber})
+${mode === 'withdrawal' ? `Bank: ${formData.bankName}
+Acc Name: ${formData.bankAccountName}
+Acc Number: ${formData.bankAccount}` : ''}
 Amount: $${formData.amount}
 Net Receive: $${netReceive.toFixed(2)}
 ---
@@ -152,10 +167,22 @@ _Please attach my proof of payment image to this message._`;
                 <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                   <h3 className="text-2xl font-black uppercase tracking-tighter border-l-4 border-blue-500 pl-4">Client Identification</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input placeholder="First Name" value={formData.firstName} onChange={(e) => updateForm({ firstName: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.includes("firstName") ? "border-red-500" : ""}`} />
-                    <Input placeholder="Surname" value={formData.surname} onChange={(e) => updateForm({ surname: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.includes("surname") ? "border-red-500" : ""}`} />
-                    <Input placeholder="Email Address" value={formData.email} onChange={(e) => updateForm({ email: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.includes("email") ? "border-red-500" : ""}`} />
-                    <Input placeholder="WhatsApp Number" value={formData.phone} onChange={(e) => updateForm({ phone: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.includes("phone") ? "border-red-500" : ""}`} />
+                    <div className="space-y-1">
+                      <Input placeholder="First Name" value={formData.firstName} onChange={(e) => updateForm({ firstName: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.firstName ? "border-red-500" : ""}`} />
+                      {errors.firstName && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.firstName}</p>}
+                    </div>
+                    <div className="space-y-1">
+                      <Input placeholder="Surname" value={formData.surname} onChange={(e) => updateForm({ surname: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.surname ? "border-red-500" : ""}`} />
+                      {errors.surname && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.surname}</p>}
+                    </div>
+                    <div className="space-y-1">
+                      <Input placeholder="Email Address" value={formData.email} onChange={(e) => updateForm({ email: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.email ? "border-red-500" : ""}`} />
+                      {errors.email && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.email}</p>}
+                    </div>
+                    <div className="space-y-1">
+                      <Input placeholder="WhatsApp Number" value={formData.phone} onChange={(e) => updateForm({ phone: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.phone ? "border-red-500" : ""}`} />
+                      {errors.phone && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.phone}</p>}
+                    </div>
                   </div>
                   <div className="space-y-4">
                     <Label className="text-[10px] font-black uppercase text-muted-foreground ml-1">Target Trading Platform</Label>
@@ -166,11 +193,17 @@ _Please attach my proof of payment image to this message._`;
                     </div>
                     {formData.broker === "Deriv" ? (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2">
-                        <Input placeholder="Deriv CR Number" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.includes("brokerId") ? "border-red-500" : ""}`} />
+                        <div className="space-y-1">
+                          <Input placeholder="Deriv CR Number" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.brokerId ? "border-red-500" : ""}`} />
+                          {errors.brokerId && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.brokerId}</p>}
+                        </div>
                         <Input placeholder="Full Name on Deriv" value={formData.derivAccountName} onChange={(e) => updateForm({ derivAccountName: e.target.value })} className="bg-secondary/30 h-14 border-border" />
                       </div>
                     ) : (
-                      <Input placeholder="Broker Account ID / Number" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.includes("brokerId") ? "border-red-500" : ""}`} />
+                      <div className="space-y-1">
+                        <Input placeholder="Broker Account ID / Number" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.brokerId ? "border-red-500" : ""}`} />
+                        {errors.brokerId && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.brokerId}</p>}
+                      </div>
                     )}
                   </div>
                   <Button onClick={nextStep} className="w-full bg-blue-600 py-8 rounded-2xl font-black uppercase tracking-widest">Next: Payment Details</Button>
@@ -196,7 +229,8 @@ _Please attach my proof of payment image to this message._`;
                   </div>
                   <div className="space-y-2">
                     <Label className="text-[10px] font-black uppercase">Transaction Amount (USD)</Label>
-                    <Input type="number" value={formData.amount} onChange={(e) => updateForm({ amount: e.target.value })} className={`bg-secondary/30 py-8 text-4xl font-black text-blue-500 border-none focus:ring-0 ${errors.includes("amount") ? "ring-2 ring-red-500" : ""}`} />
+                    <Input type="number" value={formData.amount} onChange={(e) => updateForm({ amount: e.target.value })} className={`bg-secondary/30 py-8 text-4xl font-black text-blue-500 border-none focus:ring-0 ${errors.amount ? "ring-2 ring-red-500" : ""}`} />
+                    {errors.amount && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.amount}</p>}
                   </div>
                   <div className="p-8 rounded-[2.5rem] bg-secondary/20 border border-border space-y-4 text-xs font-bold uppercase tracking-widest">
                     <div className="flex justify-between text-muted-foreground"><span>Service Fee (10%)</span><span className="text-foreground">-${adminFee.toFixed(2)}</span></div>
@@ -206,10 +240,13 @@ _Please attach my proof of payment image to this message._`;
                         <span className="text-4xl font-black text-blue-500">${netReceive.toFixed(2)}</span>
                     </div>
                   </div>
-                  <div className="space-y-2">
-                      <Label className="text-[10px] font-black uppercase ml-1">{formData.gateway} Number</Label>
-                      <Input placeholder="07XXXXXXXX" value={formData.gatewayNumber} onChange={(e) => updateForm({ gatewayNumber: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.includes("gatewayNumber") ? "border-red-500" : ""}`} />
-                  </div>
+                  {(mode === "deposit" || formData.gateway !== "FNB (EFT)") && (
+                    <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase ml-1">{formData.gateway} Number</Label>
+                        <Input placeholder="07XXXXXXXX" value={formData.gatewayNumber} onChange={(e) => updateForm({ gatewayNumber: e.target.value })} className={`bg-secondary/30 h-14 border-border ${errors.gatewayNumber ? "border-red-500" : ""}`} />
+                        {errors.gatewayNumber && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.gatewayNumber}</p>}
+                    </div>
+                  )}
                   <Button onClick={nextStep} className="w-full bg-blue-600 py-8 rounded-2xl font-black uppercase tracking-widest">Continue to Verification</Button>
                 </motion.div>
               )}
@@ -221,47 +258,112 @@ _Please attach my proof of payment image to this message._`;
                   
                   {mode === "deposit" ? (
                     <div className="space-y-6">
-                      <div className="p-8 rounded-[2.5rem] bg-blue-600/10 border border-blue-500/30 space-y-6">
-                        <h4 className="text-xl font-black uppercase text-blue-500">Payment Instructions</h4>
-                        <div className="space-y-5 text-xs font-medium">
-                            <p>1. SEND FUNDS: Send to <span className="text-blue-400 font-black">078 429 3089</span>.</p>
-                            <div className="pl-6 py-3 bg-background/40 rounded-xl space-y-1 opacity-80 border-l-2 border-blue-500">
-                                <p>• EcoCash: *151# Send Money 078 429 3089</p>
-                                <p>• InnBucks: *227# Send Money 078 429 3089</p>
+                      {formData.gateway === "FNB (EFT)" ? (
+                        <div className="p-8 rounded-[2.5rem] bg-blue-600/10 border border-blue-500/30 space-y-6">
+                          <h4 className="text-xl font-black uppercase text-blue-500 underline underline-offset-8 decoration-blue-500/30">Deposit Instructions</h4>
+                          <p className="text-[10px] font-bold text-muted-foreground uppercase leading-relaxed">
+                            Please follow these steps to fund your account. Ensure the banking details are entered correctly to avoid any transaction errors.
+                          </p>
+                          <div className="space-y-5 text-xs font-medium leading-relaxed">
+                            <div className="space-y-1">
+                              <p className="text-blue-400 font-black uppercase">1. Log in to your Banking App</p>
+                              <p className="pl-4 opacity-80 italic">Open your FNB App or online banking portal.</p>
                             </div>
-                            <p>2. RECIPIENT: Confirm name is MARC A ZHOU.</p>
-                            <p>3. RECEIPT: Save your transaction screenshot.</p>
+                            <div className="space-y-2">
+                              <p className="text-blue-400 font-black uppercase">2. Make a Payment</p>
+                              <p className="pl-4 opacity-80">Transfer your desired deposit amount to the following account:</p>
+                              <div className="ml-4 p-4 bg-background/40 rounded-2xl border border-border space-y-2 font-mono text-[10px] tracking-tight">
+                                <div className="flex justify-between border-b border-border pb-1"><span>Account Name:</span> <span className="text-foreground font-black text-right">MAZ FX (PVT) LTD</span></div>
+                                <div className="flex justify-between border-b border-border pb-1"><span>Account Number:</span> <span className="text-foreground font-black text-xs text-right">63051409861</span></div>
+                                <div className="flex justify-between"><span>Account Type:</span> <span className="text-foreground font-black text-right">FNB Business Account</span></div>
+                              </div>
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-blue-400 font-black uppercase">3. Use a Reference</p>
+                              <p className="pl-4 opacity-80">Enter your <span className="text-foreground font-black underline">Full Name</span> or <span className="text-foreground font-black underline">Trading ID</span> as the payment reference.</p>
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-blue-400 font-black uppercase">4. Capture Proof</p>
+                              <p className="pl-4 opacity-80">Once complete, take a screenshot of the successful transaction or save the PDF receipt.</p>
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-blue-400 font-black uppercase">5. Verification</p>
+                              <p className="pl-4 opacity-80">Upload your Proof of Payment (POP) once redirected to WhatsApp to notify our finance team.</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="p-8 rounded-[2.5rem] bg-blue-600/10 border border-blue-500/30 space-y-6">
+                          <h4 className="text-xl font-black uppercase text-blue-500">Payment Instructions</h4>
+                          <div className="space-y-5 text-xs font-medium">
+                              <p>1. SEND FUNDS: Send to <span className="text-blue-400 font-black">078 429 3089</span>.</p>
+                              <div className="pl-6 py-3 bg-background/40 rounded-xl space-y-1 opacity-80 border-l-2 border-blue-500">
+                                  <p>• EcoCash: *151# Send Money 078 429 3089</p>
+                                  <p>• InnBucks: *227# Send Money 078 429 3089</p>
+                              </div>
+                              <p>2. RECIPIENT: Confirm name is MARC A ZHOU.</p>
+                              <p>3. RECEIPT: Save your transaction screenshot.</p>
+                          </div>
+                        </div>
+                      )}
                       <div className="p-6 border-2 border-blue-500 bg-blue-500/10 rounded-[2rem] animate-pulse">
                         <p className="text-sm font-black text-blue-500 text-center uppercase tracking-widest">
                           IMPORTANT: Don't forget to attach your proof of payment image once redirected to WhatsApp!
                         </p>
                       </div>
-                      <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-blue-600 py-8 font-black uppercase rounded-2xl tracking-widest">{isSubmitting ? "Uploading..." : "Submit Proof"}</Button>
+                      <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-blue-600 py-8 font-black uppercase rounded-2xl tracking-widest">{isSubmitting ? "Redirecting..." : "Submit Proof"}</Button>
                     </div>
                   ) : (
-                    formData.broker === "Deriv" ? (
-                      <div className="space-y-8">
-                          <div className="p-8 rounded-[2.5rem] bg-green-500/5 border border-green-500/20 space-y-4">
-                              <h4 className="text-xl font-black uppercase text-green-500">The Forex Mafia Withdrawal Process</h4>
-                              <p className="text-[11px] font-bold text-muted-foreground uppercase leading-relaxed">
-                                  1. Initiate Agent Transfer to "The Forex Mafia" on Deriv.<br/>
-                                  2. Capture Screenshot of successful transaction.<br/>
-                                  3. Upload screenshot and confirm your CR number below.
-                              </p>
-                          </div>
-                          <div className="space-y-4">
-                              <Input value={formData.brokerId} readOnly className="bg-secondary/30 border-border h-14 opacity-50" />
-                          </div>
-                          <div className="p-6 border-2 border-green-500 bg-green-500/10 rounded-[2rem] animate-pulse">
-                            <p className="text-sm font-black text-green-500 text-center uppercase tracking-widest">
-                              IMPORTANT: Don't forget to attach your proof of transfer image once redirected to WhatsApp!
+                    <div className="space-y-8">
+                        <div className="p-8 rounded-[2.5rem] bg-green-600/10 border border-green-500/30 space-y-6">
+                            <h4 className="text-xl font-black uppercase text-green-500 underline underline-offset-8 decoration-green-500/30">Withdrawal Instructions</h4>
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase leading-relaxed">
+                                To receive your funds from the academy, please follow this process:
                             </p>
-                          </div>
-                          <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-green-600 py-8 font-black uppercase tracking-widest">{isSubmitting ? "Verifying..." : "Confirm Withdrawal"}</Button>
-                      </div>
-                    ) : null
+                            <div className="space-y-5 text-xs font-medium leading-relaxed">
+                                <div className="space-y-1">
+                                    <p className="text-green-400 font-black uppercase">1. Request Withdrawal</p>
+                                    <p className="pl-4 opacity-80 italic">Initiate the withdrawal amount through your member dashboard.</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-green-400 font-black uppercase">2. Provide Destination Details</p>
+                                    <p className="pl-4 opacity-80">Ensure your banking details (Account Name, Number, and Bank) are correctly saved in your profile.</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-green-400 font-black uppercase">3. Wait for Processing</p>
+                                    <p className="pl-4 opacity-80">Our team will transfer the funds from the MAZ FX (PVT) LTD business account (63051409861) to your account.</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-green-400 font-black uppercase">4. Confirm Receipt</p>
+                                    <p className="pl-4 opacity-80">Once the status is marked as "Complete," check your banking app for the reflected balance.</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-green-400 font-black uppercase">5. Record Keeping</p>
+                                    <p className="pl-4 opacity-80">Take a screenshot of the incoming transaction for your records and to verify the payout was successful.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 gap-4">
+                            <div className="space-y-1">
+                                <Input placeholder="Bank Name" value={formData.bankName} onChange={(e) => updateForm({ bankName: e.target.value })} className={`bg-secondary/30 h-16 border-border ${errors.bankName ? "border-red-500" : ""}`} />
+                                {errors.bankName && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.bankName}</p>}
+                            </div>
+                            <div className="space-y-1">
+                                <Input placeholder="Account Name" value={formData.bankAccountName} onChange={(e) => updateForm({ bankAccountName: e.target.value })} className={`bg-secondary/30 h-16 border-border ${errors.bankAccountName ? "border-red-500" : ""}`} />
+                                {errors.bankAccountName && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.bankAccountName}</p>}
+                            </div>
+                            <div className="space-y-1">
+                                <Input placeholder="Account Number" value={formData.bankAccount} onChange={(e) => updateForm({ bankAccount: e.target.value })} className={`bg-secondary/30 h-16 border-border ${errors.bankAccount ? "border-red-500" : ""}`} />
+                                {errors.bankAccount && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.bankAccount}</p>}
+                            </div>
+                        </div>
+                        <div className="p-6 border-2 border-green-500 bg-green-500/10 rounded-[2rem] animate-pulse">
+                            <p className="text-sm font-black text-green-500 text-center uppercase tracking-widest">
+                                IMPORTANT: Don't forget to attach your proof of transfer image once redirected to WhatsApp!
+                            </p>
+                        </div>
+                        <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-green-600 py-8 font-black uppercase rounded-2xl tracking-widest">{isSubmitting ? "Redirecting..." : "Confirm Withdrawal"}</Button>
+                    </div>
                   )}
                 </motion.div>
               )}

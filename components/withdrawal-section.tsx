@@ -30,6 +30,7 @@ export function ChainforgeBridge() {
     gatewayNumber: "",
     bankName: "",
     bankAccount: "",
+    bankAccountName: "",
     bankBranch: "",
     amount: "10",
     proofFile: null as File | null,
@@ -52,7 +53,7 @@ export function ChainforgeBridge() {
 
   const validateStep = () => {
     const newErrors: Record<string, string> = {};
-    const phoneRegex = /^(07[1378]\d{7}|\+2637[1378]\d{7})$/;
+    const phoneRegex = /^(07\d{8}|\+2637\d{8})$/;
     const crRegex = /^CR\d+$/i;
 
     if (step === 1) {
@@ -71,15 +72,20 @@ export function ChainforgeBridge() {
     if (step === 2) {
       if (!formData.amount || parseFloat(formData.amount) <= 0) newErrors.amount = "Invalid amount";
       if (mode === "withdrawal") {
-        if (formData.gateway === "FNB (EFT)") {
-          if (!formData.bankName) newErrors.bankName = "Required";
-          if (!formData.bankAccount) newErrors.bankAccount = "Required";
-          if (!formData.bankBranch) newErrors.bankBranch = "Required";
-        } else if (!formData.gatewayNumber || !phoneRegex.test(formData.gatewayNumber)) {
-          newErrors.gatewayNumber = "Invalid format";
+        if (formData.gateway !== "FNB (EFT)") {
+          if (!formData.gatewayNumber || !phoneRegex.test(formData.gatewayNumber)) {
+            newErrors.gatewayNumber = "Invalid format";
+          }
         }
       }
     }
+
+    if (step === 3 && mode === "withdrawal") {
+      if (!formData.bankName) newErrors.bankName = "Bank Name required";
+      if (!formData.bankAccountName) newErrors.bankAccountName = "Account Name required";
+      if (!formData.bankAccount) newErrors.bankAccount = "Account Number required";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -97,6 +103,11 @@ export function ChainforgeBridge() {
     setIsSubmitting(true);
 
     try {
+      if (mode === "withdrawal" && !validateStep()) {
+        setIsSubmitting(false);
+        return;
+      }
+
       const message = `*CHAINFORGE BRIDGE TRANSACTION*
 Mode: ${mode?.toUpperCase()}
 ---
@@ -105,7 +116,10 @@ Email: ${formData.email}
 Phone: ${formData.phone}
 ---
 Broker: ${formData.broker} (${formData.brokerId})
-Gateway: ${formData.gateway} ${formData.gatewayNumber ? `(${formData.gatewayNumber})` : ''}
+Gateway: ${formData.gateway}
+${mode === 'withdrawal' ? `Bank: ${formData.bankName}
+Acc Name: ${formData.bankAccountName}
+Acc Number: ${formData.bankAccount}` : `Gateway Number: ${formData.gatewayNumber}`}
 Amount: $${formData.amount}
 Net Total: $${netResult.toFixed(2)}
 ---
@@ -212,24 +226,6 @@ _Please attach my proof of transfer image to this message._`;
                       <Input type="number" value={formData.amount} placeholder="Amount (USD)" onChange={(e) => updateForm({ amount: e.target.value })} className={`bg-secondary/30 h-20 text-4xl font-black text-blue-500 border-none focus:ring-0 ${errors.amount ? "ring-2 ring-red-500" : ""}`} />
                       {errors.amount && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.amount}</p>}
                     </div>
-                    
-                    {/* WITHDRAWAL BANK DETAILS INPUT */}
-                    {mode === "withdrawal" && formData.gateway === "FNB (EFT)" && (
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-in fade-in">
-                        <div className="space-y-1">
-                          <Input placeholder="Bank Name" value={formData.bankName} onChange={(e) => updateForm({ bankName: e.target.value })} className={`bg-secondary/30 h-16 ${errors.bankName ? "border-red-500" : ""}`} />
-                          {errors.bankName && <p className="text-[10px] text-red-500 px-1">{errors.bankName}</p>}
-                        </div>
-                        <div className="space-y-1">
-                          <Input placeholder="Account Number" value={formData.bankAccount} onChange={(e) => updateForm({ bankAccount: e.target.value })} className={`bg-secondary/30 h-16 ${errors.bankAccount ? "border-red-500" : ""}`} />
-                          {errors.bankAccount && <p className="text-[10px] text-red-500 px-1">{errors.bankAccount}</p>}
-                        </div>
-                        <div className="space-y-1">
-                          <Input placeholder="Branch Code" value={formData.bankBranch} onChange={(e) => updateForm({ bankBranch: e.target.value })} className={`bg-secondary/30 h-16 ${errors.bankBranch ? "border-red-500" : ""}`} />
-                          {errors.bankBranch && <p className="text-[10px] text-red-500 px-1">{errors.bankBranch}</p>}
-                        </div>
-                      </div>
-                    )}
                     {mode === "withdrawal" && formData.gateway !== "FNB (EFT)" && (
                       <div className="space-y-1">
                         <Input placeholder={`${formData.gateway} Number`} value={formData.gatewayNumber} onChange={(e) => updateForm({ gatewayNumber: e.target.value })} className={`bg-secondary/30 h-16 border-border ${errors.gatewayNumber ? "border-red-500" : ""}`} />
@@ -248,14 +244,78 @@ _Please attach my proof of transfer image to this message._`;
                   {mode === "deposit" && formData.gateway === "FNB (EFT)" ? (
                     /* FNB DEPOSIT DETAILS */
                     <div className="space-y-6">
-                      <div className="p-8 rounded-[2.5rem] bg-blue-600/10 border border-blue-500/30 space-y-4 font-bold uppercase text-[11px]">
-                        <h4 className="text-xl font-black text-blue-500">FNB Bank Details</h4>
-                        <div className="space-y-2 text-foreground">
-                          <p>Account Name: Chainforge Bridge</p>
-                          <p>Bank: First National Bank (FNB)</p>
-                          <p>Account Number: 62900112233</p>
-                          <p>Branch Code: 250655</p>
-                          <p className="text-blue-400 mt-4">Reference: CF-{formData.surname.toUpperCase()}</p>
+                      <div className="p-8 rounded-[2.5rem] bg-blue-600/10 border border-blue-500/30 space-y-6">
+                        <h4 className="text-xl font-black uppercase text-blue-500 underline underline-offset-8 decoration-blue-500/30">Deposit Instructions</h4>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase leading-relaxed">
+                          Please follow these steps to fund your account. Ensure the banking details are entered correctly to avoid any transaction errors.
+                        </p>
+                        <div className="space-y-5 text-[11px] font-medium leading-relaxed uppercase">
+                          <div className="space-y-1">
+                            <p className="text-blue-400 font-black">1. Log in to your Banking App</p>
+                            <p className="pl-4 opacity-80 italic">Open your FNB App or online banking portal.</p>
+                          </div>
+                          <div className="space-y-2">
+                            <p className="text-blue-400 font-black">2. Make a Payment</p>
+                            <p className="pl-4 opacity-80">Transfer your desired deposit amount to the following account:</p>
+                            <div className="ml-4 p-4 bg-background/40 rounded-2xl border border-border space-y-2 font-mono text-[10px] tracking-tight">
+                              <div className="flex justify-between border-b border-border pb-1"><span>Account Name:</span> <span className="text-foreground font-black text-right">MAZ FX (PVT) LTD</span></div>
+                              <div className="flex justify-between border-b border-border pb-1"><span>Account Number:</span> <span className="text-foreground font-black text-xs text-right">63051409861</span></div>
+                              <div className="flex justify-between"><span>Account Type:</span> <span className="text-foreground font-black text-right">FNB Business Account</span></div>
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-blue-400 font-black">3. Use a Reference</p>
+                            <p className="pl-4 opacity-80">Enter your Full Name or Trading ID as the payment reference.</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-blue-400 font-black">4. Capture Proof & Notify</p>
+                            <p className="pl-4 opacity-80">Once complete, upload your PDF receipt or screenshot once redirected to WhatsApp to notify our team.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : mode === "withdrawal" ? (
+                    <div className="space-y-8">
+                      <div className="p-8 rounded-[2.5rem] bg-green-600/10 border border-green-500/30 space-y-6">
+                        <h4 className="text-xl font-black uppercase text-green-500 underline underline-offset-8 decoration-green-500/30">Withdrawal Instructions</h4>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase leading-relaxed">
+                          To receive your funds from the academy, please follow this process:
+                        </p>
+                        <div className="space-y-5 text-xs font-medium leading-relaxed">
+                          <div className="space-y-1">
+                            <p className="text-green-400 font-black uppercase">1. Request Withdrawal</p>
+                            <p className="pl-4 opacity-80 italic">Initiate the withdrawal amount through your member dashboard.</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-green-400 font-black uppercase">2. Provide Destination Details</p>
+                            <p className="pl-4 opacity-80">Ensure your banking details (Account Name, Number, and Bank) are correctly saved in your profile.</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-green-400 font-black uppercase">3. Wait for Processing</p>
+                            <p className="pl-4 opacity-80">Our team will transfer the funds from the MAZ FX (PVT) LTD business account (63051409861) to your account.</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-green-400 font-black uppercase">4. Confirm Receipt</p>
+                            <p className="pl-4 opacity-80">Once the status is marked as "Complete," check your banking app for the reflected balance.</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-green-400 font-black uppercase">5. Record Keeping</p>
+                            <p className="pl-4 opacity-80">Take a screenshot of the incoming transaction for your records and to verify the payout was successful.</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 gap-4">
+                        <div className="space-y-1">
+                          <Input placeholder="Bank Name" value={formData.bankName} onChange={(e) => updateForm({ bankName: e.target.value })} className={`bg-secondary/30 h-16 border-border ${errors.bankName ? "border-red-500" : ""}`} />
+                          {errors.bankName && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.bankName}</p>}
+                        </div>
+                        <div className="space-y-1">
+                          <Input placeholder="Account Name" value={formData.bankAccountName} onChange={(e) => updateForm({ bankAccountName: e.target.value })} className={`bg-secondary/30 h-16 border-border ${errors.bankAccountName ? "border-red-500" : ""}`} />
+                          {errors.bankAccountName && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.bankAccountName}</p>}
+                        </div>
+                        <div className="space-y-1">
+                          <Input placeholder="Account Number" value={formData.bankAccount} onChange={(e) => updateForm({ bankAccount: e.target.value })} className={`bg-secondary/30 h-16 border-border ${errors.bankAccount ? "border-red-500" : ""}`} />
+                          {errors.bankAccount && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.bankAccount}</p>}
                         </div>
                       </div>
                     </div>

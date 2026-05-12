@@ -246,18 +246,54 @@ _Please attach my proof of payment image to this message._`;
                   
                   {mode === "deposit" ? (
                     <div className="space-y-6">
-                      <div className="p-8 rounded-[2.5rem] bg-blue-600/10 border border-blue-500/30 space-y-6">
-                        <h4 className="text-xl font-black uppercase text-blue-500">Payment Instructions</h4>
-                        <div className="space-y-5 text-xs font-medium">
-                            <p>1. SEND FUNDS: Send to <span className="text-blue-400 font-black">078 429 3089</span>.</p>
-                            <div className="pl-6 py-3 bg-background/40 rounded-xl space-y-1 opacity-80 border-l-2 border-blue-500">
-                                <p>• EcoCash: *151# Send Money 078 429 3089</p>
-                                <p>• InnBucks: *227# Send Money 078 429 3089</p>
+                      {formData.gateway === "FNB (EFT)" ? (
+                        <div className="p-8 rounded-[2.5rem] bg-blue-600/10 border border-blue-500/30 space-y-6">
+                          <h4 className="text-xl font-black uppercase text-blue-500 underline underline-offset-8 decoration-blue-500/30">Deposit Instructions</h4>
+                          <p className="text-[10px] font-bold text-muted-foreground uppercase leading-relaxed">
+                            Please follow these steps to fund your account. Ensure the banking details are entered correctly to avoid any transaction errors.
+                          </p>
+                          <div className="space-y-5 text-xs font-medium leading-relaxed">
+                            <div className="space-y-1">
+                              <p className="text-blue-400 font-black uppercase">1. Log in to your Banking App</p>
+                              <p className="pl-4 opacity-80 italic">Open your FNB App or online banking portal.</p>
                             </div>
-                            <p>2. RECIPIENT: Confirm name is MARC A ZHOU.</p>
-                            <p>3. RECEIPT: Save your transaction screenshot.</p>
+                            <div className="space-y-2">
+                              <p className="text-blue-400 font-black uppercase">2. Make a Payment</p>
+                              <p className="pl-4 opacity-80">Transfer your desired deposit amount to the following account:</p>
+                              <div className="ml-4 p-4 bg-background/40 rounded-2xl border border-border space-y-2 font-mono text-[10px] tracking-tight">
+                                <div className="flex justify-between border-b border-border pb-1"><span>Account Name:</span> <span className="text-foreground font-black text-right">MAZ FX (PVT) LTD</span></div>
+                                <div className="flex justify-between border-b border-border pb-1"><span>Account Number:</span> <span className="text-foreground font-black text-xs text-right">63051409861</span></div>
+                                <div className="flex justify-between"><span>Account Type:</span> <span className="text-foreground font-black text-right">FNB Business Account</span></div>
+                              </div>
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-blue-400 font-black uppercase">3. Use a Reference</p>
+                              <p className="pl-4 opacity-80">Enter your <span className="text-foreground font-black underline">Full Name</span> or <span className="text-foreground font-black underline">Trading ID</span> as the payment reference.</p>
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-blue-400 font-black uppercase">4. Capture Proof</p>
+                              <p className="pl-4 opacity-80">Once complete, take a screenshot of the successful transaction or save the PDF receipt.</p>
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-blue-400 font-black uppercase">5. Verification</p>
+                              <p className="pl-4 opacity-80">Upload your Proof of Payment (POP) once redirected to WhatsApp to notify our finance team.</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="p-8 rounded-[2.5rem] bg-blue-600/10 border border-blue-500/30 space-y-6">
+                          <h4 className="text-xl font-black uppercase text-blue-500">Payment Instructions</h4>
+                          <div className="space-y-5 text-xs font-medium">
+                              <p>1. SEND FUNDS: Send to <span className="text-blue-400 font-black">078 429 3089</span>.</p>
+                              <div className="pl-6 py-3 bg-background/40 rounded-xl space-y-1 opacity-80 border-l-2 border-blue-500">
+                                  <p>• EcoCash: *151# Send Money 078 429 3089</p>
+                                  <p>• InnBucks: *227# Send Money 078 429 3089</p>
+                              </div>
+                              <p>2. RECIPIENT: Confirm name is MARC A ZHOU.</p>
+                              <p>3. RECEIPT: Save your transaction screenshot.</p>
+                          </div>
+                        </div>
+                      )}
                       <div className="p-6 border-2 border-blue-500 bg-blue-500/10 rounded-[2rem] animate-pulse">
                         <p className="text-sm font-black text-blue-500 text-center uppercase tracking-widest">
                           IMPORTANT: Don't forget to attach your proof of payment image once redirected to WhatsApp!
@@ -266,27 +302,56 @@ _Please attach my proof of payment image to this message._`;
                       <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-blue-600 py-8 font-black uppercase rounded-2xl tracking-widest">{isSubmitting ? "Uploading..." : "Submit Proof"}</Button>
                     </div>
                   ) : (
-                    formData.broker === "Deriv" ? (
-                      <div className="space-y-8">
-                          <div className="p-8 rounded-[2.5rem] bg-green-500/5 border border-green-500/20 space-y-4">
-                              <h4 className="text-xl font-black uppercase text-green-500">The Forex Mafia Withdrawal Process</h4>
-                              <p className="text-[11px] font-bold text-muted-foreground uppercase leading-relaxed">
-                                  1. Initiate Agent Transfer to "The Forex Mafia" on Deriv.<br/>
-                                  2. Capture Screenshot of successful transaction.<br/>
-                                  3. Upload screenshot and confirm your CR number below.
-                              </p>
-                          </div>
-                          <div className="space-y-4">
-                              <Input value={formData.brokerId} readOnly className="bg-secondary/30 border-border h-14 opacity-50" />
-                          </div>
-                          <div className="p-6 border-2 border-green-500 bg-green-500/10 rounded-[2rem] animate-pulse">
-                            <p className="text-sm font-black text-green-500 text-center uppercase tracking-widest">
-                              IMPORTANT: Don't forget to attach your proof of transfer image once redirected to WhatsApp!
+                    <div className="space-y-8">
+                        <div className="p-8 rounded-[2.5rem] bg-green-600/10 border border-green-500/30 space-y-6">
+                            <h4 className="text-xl font-black uppercase text-green-500 underline underline-offset-8 decoration-green-500/30">Withdrawal Instructions</h4>
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase leading-relaxed">
+                                To receive your funds from the academy, please follow this process:
                             </p>
-                          </div>
-                          <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-green-600 py-8 font-black uppercase tracking-widest">{isSubmitting ? "Verifying..." : "Confirm Withdrawal"}</Button>
-                      </div>
-                    ) : null
+                            <div className="space-y-5 text-xs font-medium leading-relaxed">
+                                <div className="space-y-1">
+                                    <p className="text-green-400 font-black uppercase">1. Request Withdrawal</p>
+                                    <p className="pl-4 opacity-80 italic">Initiate the withdrawal amount through your member dashboard.</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-green-400 font-black uppercase">2. Provide Destination Details</p>
+                                    <p className="pl-4 opacity-80">Ensure your banking details (Account Name, Number, and Bank) are correctly saved in your profile.</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-green-400 font-black uppercase">3. Wait for Processing</p>
+                                    <p className="pl-4 opacity-80">Our team will transfer the funds from the MAZ FX (PVT) LTD business account (63051409861) to your account.</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-green-400 font-black uppercase">4. Confirm Receipt</p>
+                                    <p className="pl-4 opacity-80">Once the status is marked as "Complete," check your banking app for the reflected balance.</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-green-400 font-black uppercase">5. Record Keeping</p>
+                                    <p className="pl-4 opacity-80">Take a screenshot of the incoming transaction for your records and to verify the payout was successful.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 gap-4">
+                            <div className="space-y-1">
+                                <Input placeholder="Bank Name" value={formData.bankName} onChange={(e) => updateForm({ bankName: e.target.value })} className={`bg-secondary/30 h-16 border-border ${errors.bankName ? "border-red-500" : ""}`} />
+                                {errors.bankName && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.bankName}</p>}
+                            </div>
+                            <div className="space-y-1">
+                                <Input placeholder="Account Name" value={formData.bankAccountName} onChange={(e) => updateForm({ bankAccountName: e.target.value })} className={`bg-secondary/30 h-16 border-border ${errors.bankAccountName ? "border-red-500" : ""}`} />
+                                {errors.bankAccountName && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.bankAccountName}</p>}
+                            </div>
+                            <div className="space-y-1">
+                                <Input placeholder="Account Number" value={formData.bankAccount} onChange={(e) => updateForm({ bankAccount: e.target.value })} className={`bg-secondary/30 h-16 border-border ${errors.bankAccount ? "border-red-500" : ""}`} />
+                                {errors.bankAccount && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.bankAccount}</p>}
+                            </div>
+                        </div>
+                        <div className="p-6 border-2 border-green-500 bg-green-500/10 rounded-[2rem] animate-pulse">
+                            <p className="text-sm font-black text-green-500 text-center uppercase tracking-widest">
+                                IMPORTANT: Don't forget to attach your proof of transfer image once redirected to WhatsApp!
+                            </p>
+                        </div>
+                        <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-green-600 py-8 font-black uppercase rounded-2xl tracking-widest">{isSubmitting ? "Redirecting..." : "Confirm Withdrawal"}</Button>
+                    </div>
                   )}
                 </motion.div>
               )}
