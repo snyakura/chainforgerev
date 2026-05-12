@@ -68,12 +68,12 @@ export function PaymentMethods() {
                 <p className="text-muted-foreground font-bold uppercase text-[10px] tracking-[0.3em]">Institutional Grade Zimbabwean Liquidity</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <button onClick={() => { setMode("deposit"); setStep(1); }} className="group p-10 rounded-[2.5rem] border border-white/5 bg-white/5 hover:border-blue-500/50 transition-all hover:bg-blue-500/5">
+              <button onClick={() => { setMode("deposit"); setStep(1); }} className="group p-10 rounded-[2.5rem] border border-border bg-secondary/30 hover:border-blue-500/50 transition-all hover:bg-blue-500/5">
                 <ShieldCheck className="h-12 w-12 text-blue-500 mx-auto mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-xl font-black uppercase tracking-tight">Deposit Funds</h3>
                 <p className="text-[10px] text-muted-foreground mt-2 font-bold uppercase tracking-widest">ZWL/USD to Global Broker</p>
               </button>
-              <button onClick={() => { setMode("withdrawal"); setStep(1); }} className="group p-10 rounded-[2.5rem] border border-white/5 bg-white/5 hover:border-green-500/50 transition-all hover:bg-green-500/5">
+              <button onClick={() => { setMode("withdrawal"); setStep(1); }} className="group p-10 rounded-[2.5rem] border border-border bg-secondary/30 hover:border-green-500/50 transition-all hover:bg-green-500/5">
                 <Wallet className="h-12 w-12 text-green-500 mx-auto mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-xl font-black uppercase tracking-tight">Withdraw Profit</h3>
                 <p className="text-[10px] text-muted-foreground mt-2 font-bold uppercase tracking-widest">Broker to Local Gateway</p>
@@ -83,9 +83,9 @@ export function PaymentMethods() {
         )}
 
         {step > 0 && (
-          <div className="bg-zinc-900/80 border border-white/5 rounded-[3rem] p-8 md:p-12 backdrop-blur-3xl shadow-2xl relative overflow-hidden">
+          <div className="bg-card/80 border border-border rounded-[3rem] p-8 md:p-12 backdrop-blur-3xl shadow-2xl relative overflow-hidden">
              <div className="flex justify-between items-center mb-10">
-                <button onClick={prevStep} className="h-10 w-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-white/10 transition-colors"><ArrowLeft className="h-5 w-5" /></button>
+                <button onClick={prevStep} className="h-10 w-10 flex items-center justify-center bg-secondary/50 rounded-full hover:bg-secondary/80 transition-colors"><ArrowLeft className="h-5 w-5" /></button>
                 <div className="text-right">
                     <span className={`block text-[10px] font-black uppercase tracking-[0.3em] ${mode === 'deposit' ? 'text-blue-500' : 'text-green-500'}`}>{mode} Mode</span>
                     <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Step 0{step} of 04</span>
@@ -98,25 +98,25 @@ export function PaymentMethods() {
                 <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                   <h3 className="text-2xl font-black uppercase tracking-tighter border-l-4 border-blue-500 pl-4">Client Identification</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input placeholder="First Name" value={formData.firstName} onChange={(e) => updateForm({ firstName: e.target.value })} className="bg-white/5 h-14 border-white/10" />
-                    <Input placeholder="Surname" value={formData.surname} onChange={(e) => updateForm({ surname: e.target.value })} className="bg-white/5 h-14 border-white/10" />
-                    <Input placeholder="Email Address" value={formData.email} onChange={(e) => updateForm({ email: e.target.value })} className="bg-white/5 h-14 border-white/10" />
-                    <Input placeholder="WhatsApp Number" value={formData.phone} onChange={(e) => updateForm({ phone: e.target.value })} className="bg-white/5 h-14 border-white/10" />
+                    <Input placeholder="First Name" value={formData.firstName} onChange={(e) => updateForm({ firstName: e.target.value })} className="bg-secondary/30 h-14 border-border" />
+                    <Input placeholder="Surname" value={formData.surname} onChange={(e) => updateForm({ surname: e.target.value })} className="bg-secondary/30 h-14 border-border" />
+                    <Input placeholder="Email Address" value={formData.email} onChange={(e) => updateForm({ email: e.target.value })} className="bg-secondary/30 h-14 border-border" />
+                    <Input placeholder="WhatsApp Number" value={formData.phone} onChange={(e) => updateForm({ phone: e.target.value })} className="bg-secondary/30 h-14 border-border" />
                   </div>
                   <div className="space-y-4">
                     <Label className="text-[10px] font-black uppercase text-muted-foreground ml-1">Target Trading Platform</Label>
                     <div className="grid grid-cols-3 gap-3">
                       {["Weltrade", "Deriv", "Other"].map(b => (
-                        <button key={b} onClick={() => updateForm({ broker: b })} className={`py-4 rounded-2xl border text-xs font-black uppercase tracking-widest transition-all ${formData.broker === b ? 'border-blue-500 bg-blue-500/10 text-blue-500' : 'border-white/5 bg-white/5'}`}>{b}</button>
+                        <button key={b} onClick={() => updateForm({ broker: b })} className={`py-4 rounded-2xl border text-xs font-black uppercase tracking-widest transition-all ${formData.broker === b ? 'border-blue-500 bg-blue-500/10 text-blue-500' : 'border-border bg-secondary/30'}`}>{b}</button>
                       ))}
                     </div>
                     {formData.broker === "Deriv" ? (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2">
-                        <Input placeholder="Deriv CR Number" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className="bg-white/5 h-14 border-white/10" />
-                        <Input placeholder="Full Name on Deriv" value={formData.derivAccountName} onChange={(e) => updateForm({ derivAccountName: e.target.value })} className="bg-white/5 h-14 border-white/10" />
+                        <Input placeholder="Deriv CR Number" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className="bg-secondary/30 h-14 border-border" />
+                        <Input placeholder="Full Name on Deriv" value={formData.derivAccountName} onChange={(e) => updateForm({ derivAccountName: e.target.value })} className="bg-secondary/30 h-14 border-border" />
                       </div>
                     ) : (
-                      <Input placeholder="USDT (TRC20) Wallet Address" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className="bg-white/5 h-14 border-white/10" />
+                      <Input placeholder="USDT (TRC20) Wallet Address" value={formData.brokerId} onChange={(e) => updateForm({ brokerId: e.target.value })} className="bg-secondary/30 h-14 border-border" />
                     )}
                   </div>
                   <Button onClick={nextStep} className="w-full bg-blue-600 py-8 rounded-2xl font-black uppercase tracking-widest">Next: Payment Details</Button>
@@ -134,7 +134,7 @@ export function PaymentMethods() {
                   </div>
                   <div className="grid grid-cols-3 gap-4">
                     {[{ id: "EcoCash", icon: Smartphone }, { id: "InnBucks", icon: Wallet }, { id: "FNB (EFT)", icon: Landmark }].map(m => (
-                      <button key={m.id} onClick={() => updateForm({ gateway: m.id })} className={`p-6 rounded-[2rem] border flex flex-col items-center gap-3 transition-all ${formData.gateway === m.id ? 'border-blue-500 bg-blue-500/10' : 'border-white/5 bg-white/5'}`}>
+                      <button key={m.id} onClick={() => updateForm({ gateway: m.id })} className={`p-6 rounded-[2rem] border flex flex-col items-center gap-3 transition-all ${formData.gateway === m.id ? 'border-blue-500 bg-blue-500/10' : 'border-border bg-secondary/30'}`}>
                         <m.icon className="h-6 w-6" />
                         <span className="text-[10px] font-black uppercase">{m.id}</span>
                       </button>
@@ -142,19 +142,19 @@ export function PaymentMethods() {
                   </div>
                   <div className="space-y-2">
                     <Label className="text-[10px] font-black uppercase">Transaction Amount (USD)</Label>
-                    <Input type="number" value={formData.amount} onChange={(e) => updateForm({ amount: e.target.value })} className="bg-white/5 py-8 text-4xl font-black text-blue-500 border-none focus:ring-0" />
+                    <Input type="number" value={formData.amount} onChange={(e) => updateForm({ amount: e.target.value })} className="bg-secondary/30 py-8 text-4xl font-black text-blue-500 border-none focus:ring-0" />
                   </div>
-                  <div className="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 space-y-4 text-xs font-bold uppercase tracking-widest">
-                    <div className="flex justify-between text-muted-foreground"><span>Service Fee (10%)</span><span className="text-white">-${adminFee.toFixed(2)}</span></div>
-                    <div className="flex justify-between text-muted-foreground"><span>Gateway Fee</span><span className="text-white">-${providerFee.toFixed(2)}</span></div>
-                    <div className="pt-6 border-t border-white/10 flex justify-between items-center">
-                        <span className="text-white">Net Total Value</span>
+                  <div className="p-8 rounded-[2.5rem] bg-secondary/20 border border-border space-y-4 text-xs font-bold uppercase tracking-widest">
+                    <div className="flex justify-between text-muted-foreground"><span>Service Fee (10%)</span><span className="text-foreground">-${adminFee.toFixed(2)}</span></div>
+                    <div className="flex justify-between text-muted-foreground"><span>Gateway Fee</span><span className="text-foreground">-${providerFee.toFixed(2)}</span></div>
+                    <div className="pt-6 border-t border-border flex justify-between items-center">
+                        <span className="text-foreground">Net Total Value</span>
                         <span className="text-4xl font-black text-blue-500">${netReceive.toFixed(2)}</span>
                     </div>
                   </div>
                   <div className="space-y-2">
                       <Label className="text-[10px] font-black uppercase ml-1">{formData.gateway} Number</Label>
-                      <Input placeholder="07XXXXXXXX" value={formData.gatewayNumber} onChange={(e) => updateForm({ gatewayNumber: e.target.value })} className="bg-white/5 h-14 border-white/10" />
+                      <Input placeholder="07XXXXXXXX" value={formData.gatewayNumber} onChange={(e) => updateForm({ gatewayNumber: e.target.value })} className="bg-secondary/30 h-14 border-border" />
                   </div>
                   <Button onClick={nextStep} className="w-full bg-blue-600 py-8 rounded-2xl font-black uppercase tracking-widest">Continue to Verification</Button>
                 </motion.div>
@@ -171,7 +171,7 @@ export function PaymentMethods() {
                         <h4 className="text-xl font-black uppercase text-blue-500">Payment Instructions</h4>
                         <div className="space-y-5 text-xs font-medium">
                             <p>1. SEND FUNDS: Send to <span className="text-blue-400 font-black">078 429 3089</span>.</p>
-                            <div className="pl-6 py-3 bg-black/20 rounded-xl space-y-1 opacity-80 border-l-2 border-blue-500">
+                            <div className="pl-6 py-3 bg-background/40 rounded-xl space-y-1 opacity-80 border-l-2 border-blue-500">
                                 <p>• EcoCash: *151# Send Money 078 429 3089</p>
                                 <p>• InnBucks: *227# Send Money 078 429 3089</p>
                             </div>
@@ -181,8 +181,8 @@ export function PaymentMethods() {
                       </div>
                       <div className="space-y-4">
                           <Label className="text-[10px] font-black uppercase ml-1">Upload Receipt (POP)</Label>
-                          <Input type="file" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} className="bg-white/5 h-16 pt-6" />
-                          <Input placeholder="Transaction Reference (TXID)" value={formData.txid} onChange={(e) => updateForm({ txid: e.target.value })} className="bg-white/5 h-14" />
+                          <Input type="file" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} className="bg-secondary/30 h-16 pt-6" />
+                          <Input placeholder="Transaction Reference (TXID)" value={formData.txid} onChange={(e) => updateForm({ txid: e.target.value })} className="bg-secondary/30 h-14 border-border" />
                       </div>
                       <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-blue-600 py-8 font-black uppercase rounded-2xl tracking-widest">{isSubmitting ? "Uploading..." : "Submit Proof"}</Button>
                     </div>
@@ -198,10 +198,10 @@ export function PaymentMethods() {
                               </p>
                           </div>
                           <div className="space-y-4">
-                              <Input value={formData.brokerId} readOnly className="bg-white/5 border-white/10 h-14 opacity-50" />
+                              <Input value={formData.brokerId} readOnly className="bg-secondary/30 border-border h-14 opacity-50" />
                               <div className="space-y-2">
                                   <Label className="text-[10px] font-black uppercase text-muted-foreground ml-1">Upload Proof of Agent Transfer</Label>
-                                  <Input type="file" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} className="bg-white/5 h-16 pt-6" />
+                                  <Input type="file" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} className="bg-secondary/30 h-16 pt-6" />
                               </div>
                           </div>
                           <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-green-600 py-8 font-black uppercase tracking-widest">{isSubmitting ? "Verifying..." : "Confirm Withdrawal"}</Button>
@@ -218,24 +218,24 @@ export function PaymentMethods() {
                                 Direct transfers from broker wallets are strictly prohibited to prevent AML flags.
                             </p>
                             <div className="space-y-4">
-                                <div className="flex gap-4 items-center bg-black/20 p-4 rounded-2xl border border-white/5">
+                                <div className="flex gap-4 items-center bg-background/40 p-4 rounded-2xl border border-border">
                                     <span className="text-xl font-black text-red-500/40">01</span>
-                                    <h5 className="text-[11px] font-black uppercase text-white">Withdraw funds from broker to your private wallet.</h5>
+                                    <h5 className="text-[11px] font-black uppercase text-foreground">Withdraw funds from broker to your private wallet.</h5>
                                 </div>
-                                <div className="flex gap-4 items-center bg-black/20 p-4 rounded-2xl border border-white/5">
+                                <div className="flex gap-4 items-center bg-background/40 p-4 rounded-2xl border border-border">
                                     <span className="text-xl font-black text-red-500/40">02</span>
-                                    <h5 className="text-[11px] font-black uppercase text-white">Send USDT (TRC20) from your wallet to our address.</h5>
+                                    <h5 className="text-[11px] font-black uppercase text-foreground">Send USDT (TRC20) from your wallet to our address.</h5>
                                 </div>
-                                <div className="flex gap-4 items-center bg-black/20 p-4 rounded-2xl border border-white/5">
+                                <div className="flex gap-4 items-center bg-background/40 p-4 rounded-2xl border border-border">
                                     <span className="text-xl font-black text-red-500/40">03</span>
-                                    <h5 className="text-[11px] font-black uppercase text-white">Submit your private transaction hash below for verification.</h5>
+                                    <h5 className="text-[11px] font-black uppercase text-foreground">Submit your private transaction hash below for verification.</h5>
                                 </div>
                             </div>
                         </div>
 
-                          <div className="bg-white/5 p-8 rounded-[2.5rem] border border-white/10 flex flex-col items-center">
+                          <div className="bg-secondary/20 p-8 rounded-[2.5rem] border border-border flex flex-col items-center">
                               <img src="/QR.png" alt="TRC20 QR Code" className="h-40 w-40 mb-6 object-contain rounded-xl" />
-                              <div className="flex items-center gap-3 bg-black/40 px-4 py-3 rounded-xl border border-white/10 mb-4">
+                              <div className="flex items-center gap-3 bg-background/60 px-4 py-3 rounded-xl border border-border mb-4">
                                   <code className="text-[10px] text-blue-400 font-mono">TPvTAj6W8AZQzsnu27TsPjUMR7tNJ9CHgP</code>
                                   <button onClick={() => {navigator.clipboard.writeText("TPvTAj6W8AZQzsnu27TsPjUMR7tNJ9CHgP"); setCopied(true); setTimeout(()=>setCopied(false), 2000)}} className="text-blue-500">
                                       {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
@@ -247,8 +247,8 @@ export function PaymentMethods() {
                               </div>
                           </div>
                           <div className="space-y-4">
-                              <Input type="file" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} className="bg-white/5 h-16 pt-6" />
-                              <Input placeholder="USDT Transaction Hash (TXID)" value={formData.txid} onChange={(e) => updateForm({ txid: e.target.value })} className="bg-white/5 h-14" />
+                              <Input type="file" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} className="bg-secondary/30 h-16 pt-6" />
+                              <Input placeholder="USDT Transaction Hash (TXID)" value={formData.txid} onChange={(e) => updateForm({ txid: e.target.value })} className="bg-secondary/30 h-14 border-border" />
                           </div>
                           <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-blue-600 py-8 font-black uppercase tracking-widest">Finalize Transaction</Button>
                       </div>
@@ -271,8 +271,8 @@ export function PaymentMethods() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-                        <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-3">
-                            <div className="flex items-center gap-2 text-white font-black uppercase text-[10px]">
+                        <div className="p-5 rounded-2xl bg-secondary/20 border border-border space-y-3">
+                            <div className="flex items-center gap-2 text-foreground font-black uppercase text-[10px]">
                                 <Clock className="h-4 w-4 text-blue-500" />
                                 <span>Verification Timeline</span>
                             </div>
@@ -280,8 +280,8 @@ export function PaymentMethods() {
                                 Manual verification is active. Average processing time is 15 to 45 minutes during business hours.
                             </p>
                         </div>
-                        <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-3">
-                            <div className="flex items-center gap-2 text-white font-black uppercase text-[10px]">
+                        <div className="p-5 rounded-2xl bg-secondary/20 border border-border space-y-3">
+                            <div className="flex items-center gap-2 text-foreground font-black uppercase text-[10px]">
                                 <BellRing className="h-4 w-4 text-blue-500" />
                                 <span>Notification</span>
                             </div>

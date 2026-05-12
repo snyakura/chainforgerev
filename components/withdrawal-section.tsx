@@ -79,9 +79,9 @@ export function ChainforgeBridge() {
         )}
 
         {step > 0 && (
-          <div className="bg-zinc-900/80 border border-white/10 backdrop-blur-3xl rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+          <div className="bg-card/80 border border-border backdrop-blur-3xl rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
             <div className="flex justify-between items-center mb-10">
-              <button onClick={prevStep} className="h-10 w-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-white/10"><ArrowLeft className="h-5 w-5" /></button>
+              <button onClick={prevStep} className="h-10 w-10 flex items-center justify-center bg-secondary/50 rounded-full hover:bg-secondary/80 transition-colors"><ArrowLeft className="h-5 w-5" /></button>
               <div className="text-right">
                 <span className={`block text-[10px] font-black uppercase tracking-[0.2em] ${mode === "deposit" ? "text-blue-500" : "text-green-500"}`}>{mode} Mode</span>
                 <span className="text-[10px] text-muted-foreground font-bold uppercase">Step 0{step} of 04</span>
@@ -93,16 +93,16 @@ export function ChainforgeBridge() {
                 <motion.div key="s1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
                   <h3 className="text-2xl font-black uppercase tracking-tighter border-l-4 border-blue-500 pl-4">Identification</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input placeholder="First Name" onChange={(e) => updateForm({ firstName: e.target.value })} className="bg-white/5 h-16 border-white/10" />
-                    <Input placeholder="Surname" onChange={(e) => updateForm({ surname: e.target.value })} className="bg-white/5 h-16 border-white/10" />
-                    <Input placeholder="Email" onChange={(e) => updateForm({ email: e.target.value })} className="bg-white/5 h-16 border-white/10" />
-                    <Input placeholder="WhatsApp Number" onChange={(e) => updateForm({ phone: e.target.value })} className="bg-white/5 h-16 border-white/10" />
+                    <Input placeholder="First Name" onChange={(e) => updateForm({ firstName: e.target.value })} className="bg-secondary/30 h-16 border-border" />
+                    <Input placeholder="Surname" onChange={(e) => updateForm({ surname: e.target.value })} className="bg-secondary/30 h-16 border-border" />
+                    <Input placeholder="Email" onChange={(e) => updateForm({ email: e.target.value })} className="bg-secondary/30 h-16 border-border" />
+                    <Input placeholder="WhatsApp Number" onChange={(e) => updateForm({ phone: e.target.value })} className="bg-secondary/30 h-16 border-border" />
                   </div>
                   <div className="space-y-4">
                     <Label className="text-[10px] font-black uppercase text-muted-foreground">Select Broker</Label>
                     <div className="grid grid-cols-3 gap-3">
                       {["Weltrade", "Deriv", "Other"].map((b) => (
-                        <button key={b} onClick={() => updateForm({ broker: b })} className={`py-4 rounded-xl border text-[10px] font-black uppercase transition-all ${formData.broker === b ? "border-blue-500 bg-blue-500/10 text-blue-500" : "border-white/5 bg-white/5"}`}>{b}</button>
+                        <button key={b} onClick={() => updateForm({ broker: b })} className={`py-4 rounded-xl border text-[10px] font-black uppercase transition-all ${formData.broker === b ? "border-blue-500 bg-blue-500/10 text-blue-500" : "border-border bg-secondary/30"}`}>{b}</button>
                       ))}
                     </div>
                   </div>
@@ -115,21 +115,21 @@ export function ChainforgeBridge() {
                   <h3 className="text-2xl font-black uppercase tracking-tighter border-l-4 border-blue-500 pl-4">Financial Details</h3>
                   <div className="grid grid-cols-3 gap-4">
                     {["EcoCash", "InnBucks", "FNB (EFT)"].map((g) => (
-                      <button key={g} onClick={() => updateForm({ gateway: g as any })} className={`p-6 rounded-2xl border-2 transition-all ${formData.gateway === g ? "border-blue-500 bg-blue-500/10" : "border-white/5 bg-white/5"}`}>
+                      <button key={g} onClick={() => updateForm({ gateway: g as any })} className={`p-6 rounded-2xl border-2 transition-all ${formData.gateway === g ? "border-blue-500 bg-blue-500/10" : "border-border bg-secondary/30"}`}>
                         <span className="text-[10px] font-black uppercase">{g}</span>
                       </button>
                     ))}
                   </div>
 
                   <div className="space-y-4">
-                    <Input type="number" placeholder="Amount (USD)" onChange={(e) => updateForm({ amount: e.target.value })} className="bg-white/5 h-20 text-4xl font-black text-blue-500 border-none" />
+                    <Input type="number" placeholder="Amount (USD)" onChange={(e) => updateForm({ amount: e.target.value })} className="bg-secondary/30 h-20 text-4xl font-black text-blue-500 border-none focus:ring-0" />
                     
                     {/* WITHDRAWAL BANK DETAILS INPUT */}
                     {mode === "withdrawal" && formData.gateway === "FNB (EFT)" && (
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-in fade-in">
-                        <Input placeholder="Bank Name" onChange={(e) => updateForm({ bankName: e.target.value })} className="bg-white/5 h-16" />
-                        <Input placeholder="Account Number" onChange={(e) => updateForm({ bankAccount: e.target.value })} className="bg-white/5 h-16" />
-                        <Input placeholder="Branch Code" onChange={(e) => updateForm({ bankBranch: e.target.value })} className="bg-white/5 h-16" />
+                        <Input placeholder="Bank Name" onChange={(e) => updateForm({ bankName: e.target.value })} className="bg-secondary/30 h-16" />
+                        <Input placeholder="Account Number" onChange={(e) => updateForm({ bankAccount: e.target.value })} className="bg-secondary/30 h-16" />
+                        <Input placeholder="Branch Code" onChange={(e) => updateForm({ bankBranch: e.target.value })} className="bg-secondary/30 h-16" />
                       </div>
                     )}
                   </div>
@@ -146,7 +146,7 @@ export function ChainforgeBridge() {
                     <div className="space-y-6">
                       <div className="p-8 rounded-[2.5rem] bg-blue-600/10 border border-blue-500/30 space-y-4 font-bold uppercase text-[11px]">
                         <h4 className="text-xl font-black text-blue-500">FNB Bank Details</h4>
-                        <div className="space-y-2 text-white">
+                        <div className="space-y-2 text-foreground">
                           <p>Account Name: Chainforge Bridge</p>
                           <p>Bank: First National Bank (FNB)</p>
                           <p>Account Number: 62900112233</p>
@@ -154,7 +154,7 @@ export function ChainforgeBridge() {
                           <p className="text-blue-400 mt-4">Reference: CF-{formData.surname.toUpperCase()}</p>
                         </div>
                       </div>
-                      <div className={`relative h-40 rounded-3xl border-4 border-dashed flex flex-col items-center justify-center transition-all ${formData.proofFile ? "border-green-500 bg-green-500/5" : "border-blue-500/30 bg-blue-600/5"}`}>
+                      <div className={`relative h-40 rounded-3xl border-4 border-dashed flex flex-col items-center justify-center transition-all ${formData.proofFile ? "border-green-500 bg-green-500/5" : "border-border bg-secondary/30"}`}>
                         <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} />
                         <ImageIcon className="h-10 w-10 text-blue-500 mb-2" />
                         <p className="text-xs font-black uppercase">{formData.proofFile ? formData.proofFile.name : "Upload Bank Confirmation Screenshot"}</p>
@@ -162,9 +162,9 @@ export function ChainforgeBridge() {
                     </div>
                   ) : (
                     /* DEFAULT VERIFICATION FLOW (Crypto/Mobile Money) */
-                    <div className="text-center p-8 bg-white/5 rounded-[2rem]">
+                    <div className="text-center p-8 bg-secondary/30 rounded-[2rem]">
                       <p className="text-xs font-black uppercase text-muted-foreground">Standard verification active for {formData.gateway}</p>
-                      <div className="mt-6 border-2 border-dashed border-white/10 h-32 rounded-xl flex items-center justify-center">
+                      <div className="mt-6 border-2 border-dashed border-border h-32 rounded-xl flex items-center justify-center">
                         <input type="file" className="absolute opacity-0" onChange={(e) => updateForm({ proofFile: e.target.files?.[0] || null })} />
                         <span className="text-[10px] font-black uppercase">Upload POP Image</span>
                       </div>
