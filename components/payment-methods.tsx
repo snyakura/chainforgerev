@@ -304,8 +304,8 @@ _Please attach my proof of payment image to this message._`;
                           </div>
                         </div>
                       )}
-                      <div className="p-6 border-2 border-blue-500 bg-blue-500/10 rounded-[2rem] animate-pulse">
-                        <p className="text-sm font-black text-blue-500 text-center uppercase tracking-widest">
+                      <div className="p-6 border-2 border-red-500 bg-red-500/10 rounded-[2rem] animate-pulse">
+                        <p className="text-sm font-black text-red-500 text-center uppercase tracking-widest">
                           IMPORTANT: Don't forget to attach your proof of payment image once redirected to WhatsApp!
                         </p>
                       </div>
