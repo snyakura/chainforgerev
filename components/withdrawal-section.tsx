@@ -48,8 +48,7 @@ export function ChainforgeBridge() {
 
   const amountValue = parseFloat(formData.amount) || 0;
   const adminFee = amountValue * 0.10;
-  let providerFee = formData.gateway === "EcoCash" ? 1.00 : formData.gateway === "InnBucks" ? 0.50 : 4.00;
-  const netResult = Math.max(0, amountValue - adminFee - providerFee);
+  const netResult = Math.max(0, amountValue - adminFee);
 
   const validateStep = () => {
     const newErrors: Record<string, string> = {};

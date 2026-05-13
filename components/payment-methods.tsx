@@ -49,8 +49,7 @@ export function PaymentMethods() {
 
   const amountValue = parseFloat(formData.amount) || 0;
   const adminFee = amountValue * 0.10;
-  let providerFee = formData.gateway === "EcoCash" ? 1.00 : formData.gateway === "InnBucks" ? 0.50 : 4.00;
-  const netReceive = Math.max(0, amountValue - adminFee - providerFee);
+  const netReceive = Math.max(0, amountValue - adminFee);
 
   const validateStep = () => {
     const newErrors: Record<string, string> = {};
@@ -234,7 +233,6 @@ _Please attach my proof of payment image to this message._`;
                   </div>
                   <div className="p-8 rounded-[2.5rem] bg-secondary/20 border border-border space-y-4 text-xs font-bold uppercase tracking-widest">
                     <div className="flex justify-between text-muted-foreground"><span>Service Fee (10%)</span><span className="text-foreground">-${adminFee.toFixed(2)}</span></div>
-                    <div className="flex justify-between text-muted-foreground"><span>Gateway Fee</span><span className="text-foreground">-${providerFee.toFixed(2)}</span></div>
                     <div className="pt-6 border-t border-border flex justify-between items-center">
                         <span className="text-foreground">Net Total Value</span>
                         <span className="text-4xl font-black text-blue-500">${netReceive.toFixed(2)}</span>
