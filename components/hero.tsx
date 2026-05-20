@@ -70,7 +70,6 @@ export function Hero() {
 
             <div className="mt-8 flex flex-col items-center justify-center gap-4 w-full max-w-lg mx-auto">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-                {/* Deposit Button: Triggers open-deposit and smooth scrolls to #bridge */}
                 <Button
                   size="lg"
                   className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white hover:text-white flex justify-center hover:scale-105 transition-all font-bold px-8 py-6 rounded-2xl"
@@ -85,7 +84,6 @@ export function Hero() {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 
-                {/* Withdrawal Button: Triggers open-withdrawal and smooth scrolls to #bridge */}
                 <Button
                   size="lg"
                   variant="outline"
@@ -102,7 +100,6 @@ export function Hero() {
                 </Button>
               </div>
 
-              {/* Know The Mafia Button: Spans full width below the grid with fixed white hover states */}
               <Button
                 size="lg"
                 variant="ghost"
@@ -131,8 +128,17 @@ export function Hero() {
               ))}
             </div>
 
-            <div className="mt-12 flex justify-center">
-              <img src="/TFM.png" alt="TFM Logo" className="h-40 md:h-64 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity" />
+            {/* TUNED CONTAINER SPACING:
+              - Added '-mt-12' on mobile to yank the logo up tightly under the features.
+              - Added '-mb-24' on mobile to remove the dead space underneath it before the next section.
+            */}
+            <div className="flex justify-center -mt-12 sm:-mt-16 md:-mt-16 lg:-mt-24 -mb-24 sm:-mb-28 md:-mb-32">
+              <img 
+                src="/TFM.png" 
+                alt="TFM Logo" 
+                /* BUMPED MOBILE SIZE: Changed from h-[200px] to h-[320px] so it looks prominent on phones */
+                className="h-[320px] sm:h-[400px] md:h-[500px] lg:h-[650px] w-auto object-contain opacity-90 hover:opacity-100 transition-opacity" 
+              />
             </div>
           </motion.div>
         </div>
