@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, Upload, BrainCircuit, Sparkles, Activity, Target, TrendingDown, Loader2, FileImage } from "lucide-react";
+import { ArrowRight, Calendar, Upload, BrainCircuit, Sparkles, Target, Loader2 } from "lucide-react";
 import EconomicCalendarWidget from "./economic-calendar-widget";
 import { Button } from "@/components/ui/button";
 
@@ -12,7 +12,6 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-
 export function NewsFeed() {
   const [mounted, setMounted] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -20,6 +19,7 @@ export function NewsFeed() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [analysisResult, setAnalysisResult] = useState<string>("");
+  const [apiError, setApiError] = useState<string>("");
 
   useEffect(() => {
     setMounted(true);
@@ -31,23 +31,40 @@ export function NewsFeed() {
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
       setShowAnalysis(false);
+      setApiError("");
     }
   };
 
-  const runAnalysis = async () => {
+  const runAnalysis = async (e: React.MouseEvent) => {
+    // Prevent event bubbling so the parent container elements don't conflict
+    e.preventDefault();
+    e.stopPropagation();
+
     if (!selectedFile) return;
+    
     setIsAnalyzing(true);
+    setShowAnalysis(false);
+    setApiError("");
     
     try {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
-      const res = await fetch("/api/analyze", { method: "POST", body: formData });
+      const res = await fetch("/api/chart", { 
+        method: "POST", 
+        body: formData 
+      });
+      
       const data = await res.json();
-      setAnalysisResult(data.analysis);
-      setShowAnalysis(true);
-    } catch (err) {
-      alert("Failed to analyze chart. Please check your API key.");
+      
+      if (res.ok) {
+        setAnalysisResult(data.analysis);
+        setShowAnalysis(true);
+      } else {
+        setApiError(data.error || `Analysis failed with status ${res.status}`);
+      }
+    } catch (err: any) {
+      setApiError(err.message || "Failed to connect to the analysis engine.");
     } finally {
       setIsAnalyzing(false);
     }
@@ -134,7 +151,6 @@ export function NewsFeed() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative">
-            {/* Trading Grid Background Effect */}
             <div 
               className="absolute inset-0 -z-10 opacity-[0.03] pointer-events-none" 
               style={{ 
@@ -143,61 +159,80 @@ export function NewsFeed() {
               }} 
             />
 
-            {/* Left Column: Upload */}
-            <div className="space-y-6 text-left bg-card/80 p-6 rounded-[2.5rem] border border-border">
-              <div className="flex items-center gap-3 border-l-4 border-blue-500 pl-4">
-                <span className="text-blue-500 font-black">1.</span>
-                <h3 className="text-xl font-black uppercase tracking-tight text-foreground">Upload Chart</h3>
-              </div>
-              
-              <div className="group relative rounded-[2.5rem] border-2 border-dashed border-border bg-card/40 p-12 transition-all hover:border-blue-500/50 flex flex-col items-center justify-center text-center">
-                <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+            {/* LEFT COLUMN: UPLOAD */}
+            <div className="space-y-6 text-left bg-card/80 p-6 rounded-[2.5rem] border border-border flex flex-col justify-between">
+              <div className="space-y-6">
+                <div className="flex items-center gap-3 border-l-4 border-blue-500 pl-4">
+                  <span className="text-blue-500 font-black">1.</span>
+                  <h3 className="text-xl font-black uppercase tracking-tight text-foreground">Upload Chart</h3>
+                </div>
                 
-                {!previewUrl ? (
-                  <>
-                    <div className="h-20 w-20 rounded-3xl bg-blue-500/10 flex items-center justify-center mb-6">
-                      <Upload className="h-8 w-8 text-blue-500" />
+                {/* File Drop Wrapper with button separated cleanly */}
+                <div className="group relative rounded-[2.5rem] border-2 border-dashed border-border bg-card/40 p-12 transition-all hover:border-blue-500/50 flex flex-col items-center justify-center text-center h-72">
+                  <input 
+                    type="file" 
+                    key={previewUrl || "empty"} // Force element remount resetting system caches
+                    accept="image/*" 
+                    onChange={handleFileChange} 
+                    className="absolute inset-0 opacity-0 cursor-pointer z-10" 
+                  />
+                  
+                  {!previewUrl ? (
+                    <>
+                      <div className="h-16 w-16 rounded-3xl bg-blue-500/10 flex items-center justify-center mb-4">
+                        <Upload className="h-6 w-6 text-blue-500" />
+                      </div>
+                      <h4 className="text-md font-bold uppercase text-foreground">Drop your screenshot here</h4>
+                      <p className="text-[11px] text-muted-foreground mt-1">Supports MT4/MT5, TradingView (PNG, JPG)</p>
+                    </>
+                  ) : (
+                    <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10">
+                      <img src={previewUrl} alt="Preview" className="w-full h-full object-contain bg-slate-950/40" />
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <p className="text-xs font-bold uppercase text-white">Click or Drag to change image</p>
+                      </div>
                     </div>
-                    <h4 className="text-lg font-bold uppercase text-foreground">Drop your screenshot here</h4>
-                    <p className="text-xs text-muted-foreground mt-2">Supports MT4/MT5, TradingView (PNG, JPG)</p>
-                  </>
-                ) : (
-                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10">
-                    <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <p className="text-xs font-bold uppercase text-white">Click to change image</p>
-                    </div>
-                  </div>
-                )}
-
-                <Button 
-                  onClick={runAnalysis}
-                  disabled={isAnalyzing || !selectedFile}
-                  className="mt-8 w-full bg-blue-600 py-8 font-black uppercase rounded-2xl tracking-widest hover:scale-[1.02] transition-transform text-white relative z-20"
-                >
-                  {isAnalyzing ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : null}
-                  {isAnalyzing ? "Processing..." : "Analyze Chart"}
-                </Button>
+                  )}
+                </div>
               </div>
+
+              {/* Dynamic Error Readout box replaces raw alert box popups */}
+              {apiError && (
+                <div className="text-xs text-red-400 bg-red-950/30 border border-red-900/50 p-4 rounded-2xl font-mono mt-4">
+                  ⚠️ Error processing chart: {apiError}
+                </div>
+              )}
+
+              {/* Isolated Action Trigger Button Layer */}
+              <Button 
+                onClick={runAnalysis}
+                disabled={isAnalyzing || !selectedFile}
+                className="mt-6 w-full bg-blue-600 py-8 font-black uppercase rounded-2xl tracking-widest hover:scale-[1.01] active:scale-[0.99] transition-all text-white cursor-pointer"
+              >
+                {isAnalyzing ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : null}
+                {isAnalyzing ? "Processing..." : "Analyze Chart"}
+              </Button>
             </div>
 
-            {/* Right Column: AI Outcome */}
+            {/* RIGHT COLUMN: AI OUTCOME */}
             <div className="space-y-6 text-left bg-card/80 p-6 rounded-[2.5rem] border border-border min-h-[500px] flex flex-col">
               <div className="flex items-center gap-3 border-l-4 border-blue-500 pl-4">
                 <span className="text-blue-500 font-black">2.</span>
                 <h3 className="text-xl font-black uppercase tracking-tight text-foreground">AI Analysis Outcome</h3>
               </div>
 
-              <div className="flex-1 rounded-3xl bg-card/40 p-8 relative overflow-y-auto">
+              <div className="flex-1 rounded-3xl bg-card/40 p-8 relative overflow-y-auto min-h-[350px] border border-white/[0.02]">
                 {!showAnalysis && !isAnalyzing && (
-                  <div className="flex flex-col items-center justify-center text-center p-12 opacity-50">
-                    <BrainCircuit className="h-16 w-16 text-muted-foreground mb-4" />
-                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground text-center">Upload a chart to begin technical analysis</p>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 opacity-40">
+                    <BrainCircuit className="h-12 w-12 text-muted-foreground mb-3" />
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground max-w-xs leading-relaxed">
+                      Upload a chart to begin technical analysis
+                    </p>
                   </div>
                 )}
 
                 {isAnalyzing && (
-                  <div className="flex flex-col items-center justify-center h-full space-y-4">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4">
                     <div className="h-1 bg-secondary w-48 rounded-full overflow-hidden">
                       <motion.div 
                         initial={{ x: "-100%" }}
@@ -206,24 +241,28 @@ export function NewsFeed() {
                         className="h-full bg-blue-500 w-1/2"
                       />
                     </div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground animate-pulse">Neural engine processing...</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground animate-pulse">
+                      Neural engine processing...
+                    </p>
                   </div>
                 )}
 
                 {showAnalysis && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="prose prose-invert prose-sm max-w-none">
-                    <div className="flex items-center gap-2 text-blue-500">
-                      <Sparkles className="h-5 w-5" />
-                      <span className="text-xs font-black uppercase tracking-widest">Intelligence Report CF-992</span>
-                    </div>
-                    <div className="mt-6 whitespace-pre-wrap text-foreground leading-relaxed font-medium">
-                      {analysisResult}
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="prose prose-invert prose-sm max-w-none flex flex-col h-full justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 text-blue-500 border-b border-white/5 pb-3">
+                        <Sparkles className="h-4 w-4" />
+                        <span className="text-[10px] font-black uppercase tracking-widest">Intelligence Report Live</span>
+                      </div>
+                      <div className="mt-6 whitespace-pre-wrap text-foreground/90 leading-relaxed font-mono text-xs max-h-[380px] overflow-y-auto pr-2">
+                        {analysisResult}
+                      </div>
                     </div>
 
-                    <div className="pt-6 border-t border-white/5 flex justify-between items-center">
+                    <div className="pt-6 mt-6 border-t border-white/5 flex justify-between items-center">
                       <div className="flex items-center gap-2">
                         <div className="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Analysis High-Confidence</span>
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">Analysis Complete</span>
                       </div>
                       <Target className="h-4 w-4 text-blue-500" />
                     </div>

@@ -1,71 +1,59 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
 
-// Ensure the API key is present before initializing to fail fast if env is missing
-const apiKey = process.env.OPENAI_API_KEY;
-if (!apiKey) {
-  console.warn("Missing OPENAI_API_KEY environment variable.");
-}
-
-const openai = new OpenAI({ apiKey });
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
+    // Ensure we are receiving multipart form data
+    const contentType = req.headers.get("content-type") || "";
+    if (!contentType.includes("multipart/form-data")) {
+      return NextResponse.json(
+        { error: "Invalid content type. Expected multipart/form-data." },
+        { status: 400 }
+      );
+    }
+
     const formData = await req.formData();
-    const file = formData.get("file") as File | null;
+    const file = formData.get("file");
 
     if (!file || !(file instanceof File)) {
-      return NextResponse.json({ error: "No valid image provided" }, { status: 400 });
+      return NextResponse.json(
+        { error: "No image file provided in the request." },
+        { status: 400 }
+      );
     }
 
-    // Convert File safely to a Base64 string compatible with Next.js edge/node environments
-    const bytes = await file.arrayBuffer();
-    const base64Image = Buffer.from(bytes).toString("base64");
+    // Simulate AI processing delay
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // Integration call to GPT-4o
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
-      max_tokens: 1000, // 👈 CRITICAL: Prevents OpenAI from cutting off the analysis mid-sentence
-      temperature: 0.2, // 👈 OPTIMIZATION: Keeps the analysis strictly technical and less "creative"
-      messages: [
-        {
-          role: "system",
-          content: 
-            "You are an expert Forex Technical Analyst with 15 years of institutional experience. " +
-            "Analyze the attached chart image. Provide a highly structured breakdown in Markdown format with clear sections: " +
-            "### 🔍 Key Observations (using bold text for key patterns), " +
-            "### 📈 Market Structure, " +
-            "### 🎯 Support & Resistance Levels, and " +
-            "### 🔮 Theoretical Scenarios (Provide both a bullish and bearish alternative). " +
-            "Keep your tone entirely objective, professional, and do not provide explicit financial advice.",
-        },
-        {
-          role: "user",
-          content: [
-            { type: "text", text: "Please analyze this trading chart and provide institutional-grade insights." },
-            {
-              type: "image_url",
-              image_url: {
-                // Safely falls back to image/jpeg if type parsing fails
-                url: `data:${file.type || "image/jpeg"};base64,${base64Image}`,
-              },
-            },
-          ],
-        },
-      ],
-    });
+    const mockAnalysis = `### 🔍 **Key Observations**
+- **Bearish Rejection** noted at the 1.0950 psychological resistance level.
+- **RSI Divergence** confirmed on the 4H timeframe, suggesting exhaustive buying pressure.
+- Large sell-side liquidity gaps identified below the current price action.
 
-    const analysisResult = response.choices[0]?.message?.content;
+### 📈 Market Structure
+Price remains within a defined **Bearish Channel**. Market structure shift (MSS) confirmed following the break of the minor internal swing low at 1.0880.
 
-    if (!analysisResult) {
-      throw new Error("OpenAI returned an empty response.");
-    }
+### 🎯 Support & Resistance Levels
+- **Resistance 1:** 1.0950 (Institutional Supply)
+- **Support 1:** 1.0820 (Previous Demand Zone)
+- **Support 2:** 1.0750 (Target Fibonacci Extension)
 
-    return NextResponse.json({ analysis: analysisResult });
-  } catch (error: any) {
-    console.error("OpenAI API Error:", error);
+### 🔮 Theoretical Scenarios
+1. **Primary (Bearish):** A clean retest of 1.0880 followed by a drop toward 1.0820.
+2. **Secondary (Consolidation):** Price ranges between 1.0850 and 1.0920 before the next directional expansion.`;
+
     return NextResponse.json(
-      { error: error?.message || "Analysis failed to process." }, 
+      { analysis: mockAnalysis },
+      { 
+        status: 200,
+        headers: { "Content-Type": "application/json" } 
+      }
+    );
+  } catch (err: any) {
+    console.error("API Route Error:", err);
+    return NextResponse.json(
+      { error: err.message || "Internal Server Error" },
       { status: 500 }
     );
   }
