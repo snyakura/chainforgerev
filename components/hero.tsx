@@ -33,7 +33,8 @@ export function Hero() {
         loop
         muted
         playsInline
-        className="absolute inset-0 h-full w-full object-cover opacity-40 dark:opacity-20 pointer-events-none"
+        controls={false}
+        className="absolute inset-0 h-full w-full object-cover opacity-40 dark:opacity-20 pointer-events-none will-change-transform"
       >
         <source src="/hero-background.mp4" type="video/mp4" />
       </video>
