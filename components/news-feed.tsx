@@ -118,13 +118,14 @@ export function NewsFeed() {
 
         {/* AI Analyser Section */}
         <motion.div
+          id="ai-analyser"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="mt-24"
         >
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-black uppercase tracking-tighter sm:text-4xl text-slate-100">
+            <h2 className="text-3xl font-black uppercase tracking-tighter sm:text-4xl text-foreground">
                 AI Forex <span className="text-blue-500">Chart Analyst</span>
             </h2>
             <p className="mt-3 text-muted-foreground font-bold uppercase text-[10px] tracking-[0.3em]">
@@ -143,13 +144,13 @@ export function NewsFeed() {
             />
 
             {/* Left Column: Upload */}
-            <div className="space-y-6 text-left">
+            <div className="space-y-6 text-left bg-card/80 p-6 rounded-[2.5rem] border border-border">
               <div className="flex items-center gap-3 border-l-4 border-blue-500 pl-4">
                 <span className="text-blue-500 font-black">1.</span>
                 <h3 className="text-xl font-black uppercase tracking-tight text-foreground">Upload Chart</h3>
               </div>
               
-              <div className="group relative rounded-[2.5rem] border-2 border-dashed border-white/10 bg-slate-800/40 p-12 transition-all hover:border-blue-500/50 flex flex-col items-center justify-center text-center">
+              <div className="group relative rounded-[2.5rem] border-2 border-dashed border-border bg-card/40 p-12 transition-all hover:border-blue-500/50 flex flex-col items-center justify-center text-center">
                 <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
                 
                 {!previewUrl ? (
@@ -157,8 +158,8 @@ export function NewsFeed() {
                     <div className="h-20 w-20 rounded-3xl bg-blue-500/10 flex items-center justify-center mb-6">
                       <Upload className="h-8 w-8 text-blue-500" />
                     </div>
-                    <h4 className="text-lg font-bold uppercase text-slate-100">Drop your screenshot here</h4>
-                    <p className="text-xs text-slate-400 mt-2">Supports MT4/MT5, TradingView (PNG, JPG)</p>
+                    <h4 className="text-lg font-bold uppercase text-foreground">Drop your screenshot here</h4>
+                    <p className="text-xs text-muted-foreground mt-2">Supports MT4/MT5, TradingView (PNG, JPG)</p>
                   </>
                 ) : (
                   <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10">
@@ -181,17 +182,17 @@ export function NewsFeed() {
             </div>
 
             {/* Right Column: AI Outcome */}
-            <div className="space-y-6 text-left bg-slate-900/50 p-6 rounded-[2.5rem] border border-white/5 min-h-[500px] flex flex-col">
+            <div className="space-y-6 text-left bg-card/80 p-6 rounded-[2.5rem] border border-border min-h-[500px] flex flex-col">
               <div className="flex items-center gap-3 border-l-4 border-blue-500 pl-4">
                 <span className="text-blue-500 font-black">2.</span>
                 <h3 className="text-xl font-black uppercase tracking-tight text-foreground">AI Analysis Outcome</h3>
               </div>
 
-              <div className="flex-1 rounded-3xl bg-slate-800/30 p-8 relative overflow-y-auto">
+              <div className="flex-1 rounded-3xl bg-card/40 p-8 relative overflow-y-auto">
                 {!showAnalysis && !isAnalyzing && (
                   <div className="flex flex-col items-center justify-center text-center p-12 opacity-50">
                     <BrainCircuit className="h-16 w-16 text-muted-foreground mb-4" />
-                    <p className="text-xs font-bold uppercase tracking-widest text-slate-400 text-center">Upload a chart to begin technical analysis</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground text-center">Upload a chart to begin technical analysis</p>
                   </div>
                 )}
 
@@ -215,7 +216,7 @@ export function NewsFeed() {
                       <Sparkles className="h-5 w-5" />
                       <span className="text-xs font-black uppercase tracking-widest">Intelligence Report CF-992</span>
                     </div>
-                    <div className="mt-6 whitespace-pre-wrap text-slate-300 leading-relaxed font-medium">
+                    <div className="mt-6 whitespace-pre-wrap text-foreground leading-relaxed font-medium">
                       {analysisResult}
                     </div>
 
