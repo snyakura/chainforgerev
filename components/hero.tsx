@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Shield, Zap, Signal, Wallet } from "lucide-react";
+import { ArrowRight, Shield, Zap, Signal, Wallet, Bitcoin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const features = [
@@ -38,7 +38,7 @@ export function Hero() {
         <source src="/hero-background.mp4" type="video/mp4" />
       </video>
 
-      <div className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-32">
+      <div className="relative mx-auto max-w-7xl px-4 pt-10 pb-4 sm:px-6 lg:px-8 lg:pt-32 lg:pb-8">
         <div className="flex flex-col items-center justify-center gap-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -68,27 +68,45 @@ export function Hero() {
               elevate your trading game.
             </p>
 
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              {/* Deposit Button: Triggers open-deposit and smooth scrolls to #bridge */}
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 w-full max-w-lg mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                {/* Deposit Button: Triggers open-deposit and smooth scrolls to #bridge */}
+                <Button
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white hover:text-white flex justify-center hover:scale-105 transition-all font-bold px-8 py-6 rounded-2xl"
+                  onClick={() => {
+                    scrollToSection("#bridge");
+                    setTimeout(() => {
+                      window.dispatchEvent(new CustomEvent("open-deposit"));
+                    }, 10);
+                  }}
+                >
+                  Deposit
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                
+                {/* Withdrawal Button: Triggers open-withdrawal and smooth scrolls to #bridge */}
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full border-border text-muted-foreground hover:text-foreground hover:bg-secondary flex justify-center hover:scale-105 transition-all font-bold px-8 py-6 rounded-2xl"
+                  onClick={() => {
+                    scrollToSection("#bridge");
+                    setTimeout(() => {
+                      window.dispatchEvent(new CustomEvent("open-withdrawal"));
+                    }, 10);
+                  }}
+                >
+                  <Wallet className="mr-2 h-5 w-5" />
+                  Withdrawal
+                </Button>
+              </div>
+
+              {/* Know The Mafia Button: Spans full width below the grid with fixed white hover states */}
               <Button
                 size="lg"
-                className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white hover:text-white sm:w-auto flex justify-center hover:scale-105 transition-all font-bold px-8 py-6 rounded-2xl"
-                onClick={() => {
-                  scrollToSection("#bridge");
-                  setTimeout(() => {
-                    window.dispatchEvent(new CustomEvent("open-deposit"));
-                  }, 10);
-                }}
-              >
-                Deposit
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              
-              {/* Withdrawal Button: Triggers open-withdrawal and smooth scrolls to #bridge */}
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full border-border text-muted-foreground hover:text-foreground hover:bg-secondary flex justify-center hover:scale-105 transition-all sm:w-auto"
+                variant="ghost"
+                className="w-full border border-white/20 bg-white/5 text-white transition-all font-bold px-8 py-6 rounded-2xl tracking-widest uppercase text-xs focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 flex justify-center hover:scale-105 hover:bg-white/10 hover:border-white/40"
                 onClick={() => {
                   scrollToSection("#bridge");
                   setTimeout(() => {
@@ -96,8 +114,8 @@ export function Hero() {
                   }, 10);
                 }}
               >
-                <Wallet className="mr-2 h-5 w-5" />
-                Withdrawal
+                <Bitcoin className="mr-2 h-4 w-4" />
+                Know The Mafia
               </Button>
             </div>
 
@@ -111,6 +129,10 @@ export function Hero() {
                   {feature.label}
                 </div>
               ))}
+            </div>
+
+            <div className="mt-12 flex justify-center">
+              <img src="/TFM.png" alt="TFM Logo" className="h-40 md:h-64 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity" />
             </div>
           </motion.div>
         </div>
