@@ -37,6 +37,7 @@ const socialLinks = [
 
 function scrollToSection(href: string) {
   if (href === "#") return;
+  window.dispatchEvent(new CustomEvent("reset-bridge"));
   if (href === "#home") {
     window.scrollTo({ top: 0, behavior: "smooth" });
     return;

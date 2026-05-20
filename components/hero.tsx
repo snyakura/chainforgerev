@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Shield, Zap, Signal, Wallet, Bitcoin } from "lucide-react";
+import { ArrowRight, Shield, Zap, Signal, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const features = [
@@ -69,22 +69,35 @@ export function Hero() {
             </p>
 
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              {/* Deposit Button: Triggers open-deposit and smooth scrolls to #bridge */}
               <Button
                 size="lg"
                 className="w-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white hover:text-white sm:w-auto flex justify-center hover:scale-105 transition-all font-bold px-8 py-6 rounded-2xl"
-                onClick={() => scrollToSection("#services")}
+                onClick={() => {
+                  scrollToSection("#bridge");
+                  setTimeout(() => {
+                    window.dispatchEvent(new CustomEvent("open-deposit"));
+                  }, 10);
+                }}
               >
-                Get Started
+                Deposit
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
+              
+              {/* Withdrawal Button: Triggers open-withdrawal and smooth scrolls to #bridge */}
               <Button
                 size="lg"
                 variant="outline"
                 className="w-full border-border text-muted-foreground hover:text-foreground hover:bg-secondary flex justify-center hover:scale-105 transition-all sm:w-auto"
-                onClick={() => scrollToSection("#about")}
+                onClick={() => {
+                  scrollToSection("#bridge");
+                  setTimeout(() => {
+                    window.dispatchEvent(new CustomEvent("open-withdrawal"));
+                  }, 10);
+                }}
               >
-                <Bitcoin className="mr-2 h-5 w-5 -rotate-12" />
-                Know About the Mafia
+                <Wallet className="mr-2 h-5 w-5" />
+                Withdrawal
               </Button>
             </div>
 

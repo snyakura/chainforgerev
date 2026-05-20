@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Smartphone, Wallet, Landmark, ArrowLeft, 
@@ -33,6 +33,32 @@ export function ServicesAndBridgeSection() {
     amount: "10",
     proofFile: null as File | null,
   });
+
+  useEffect(() => {
+    const handleOpenDeposit = () => {
+      setMode("deposit");
+      setStep(1);
+    };
+
+    const handleOpenWithdrawal = () => {
+      setMode("withdrawal");
+      setStep(1);
+    };
+
+    const handleResetBridge = () => {
+      setMode(null);
+      setStep(0);
+    };
+
+    window.addEventListener("open-deposit", handleOpenDeposit);
+    window.addEventListener("open-withdrawal", handleOpenWithdrawal);
+    window.addEventListener("reset-bridge", handleResetBridge);
+    return () => {
+      window.removeEventListener("open-deposit", handleOpenDeposit);
+      window.removeEventListener("open-withdrawal", handleOpenWithdrawal);
+      window.removeEventListener("reset-bridge", handleResetBridge);
+    };
+  }, []);
 
   const updateForm = (updates: Partial<typeof formData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
@@ -115,7 +141,7 @@ _Please attach my proof of payment image to this message._`;
   };
 
   return (
-    <section className="relative py-24 bg-background text-foreground isolate font-sans">
+    <section id="bridge" className="relative py-24 bg-background text-foreground isolate font-sans">
       <div className="max-w-3xl mx-auto px-4">
         
         {/* STEP 0: SELECTION */}
@@ -292,10 +318,12 @@ _Please attach my proof of payment image to this message._`;
                           </div>
                         </div>
                       )}
-                      <div className="p-6 border-2 border-h your proof of payment image once redirected to WhatsApp!
+                      <div className="p-6 border-2 border-red-500 bg-red-500/10 rounded-[2rem] animate-pulse">
+                        <p className="text-sm font-black text-red-500 text-center uppercase tracking-widest">
+                          IMPORTANT: Don't forget to attach your proof of payment image once redirected to WhatsApp!
                         </p>
                       </div>
-                      <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-blue-600 py-8 font-black uppercase rounded-2xl tracking-widest">{isSubmitting ? "Uploading..." : "Submit Proof"}</Button>
+                      <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-blue-600 py-8 font-black uppercase rounded-2xl tracking-widest">{isSubmitting ? "Redirecting..." : "Submit Proof"}</Button>
                     </div>
                   ) : (
                     <div className="space-y-8">

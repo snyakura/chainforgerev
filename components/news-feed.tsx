@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight, Calendar, Upload, BrainCircuit, Sparkles, Activity, Target, TrendingDown, Loader2, FileImage } from "lucide-react";
 import EconomicCalendarWidget from "./economic-calendar-widget";
+import { Button } from "@/components/ui/button";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -14,10 +15,43 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 
 export function NewsFeed() {
   const [mounted, setMounted] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showAnalysis, setShowAnalysis] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<string>("");
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+      setShowAnalysis(false);
+    }
+  };
+
+  const runAnalysis = async () => {
+    if (!selectedFile) return;
+    setIsAnalyzing(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      const res = await fetch("/api/analyze", { method: "POST", body: formData });
+      const data = await res.json();
+      setAnalysisResult(data.analysis);
+      setShowAnalysis(true);
+    } catch (err) {
+      alert("Failed to analyze chart. Please check your API key.");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   return (
     <section className="py-24 bg-card/10 relative overflow-hidden" id="news" data-section="community">
@@ -81,6 +115,123 @@ export function NewsFeed() {
             </motion.div>
           </div>
         </div>
+
+        {/* AI Analyser Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-24"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-black uppercase tracking-tighter sm:text-4xl text-slate-100">
+                AI Forex <span className="text-blue-500">Chart Analyst</span>
+            </h2>
+            <p className="mt-3 text-muted-foreground font-bold uppercase text-[10px] tracking-[0.3em]">
+                Institutional Grade Technical Intelligence
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative">
+            {/* Trading Grid Background Effect */}
+            <div 
+              className="absolute inset-0 -z-10 opacity-[0.03] pointer-events-none" 
+              style={{ 
+                backgroundImage: 'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)', 
+                backgroundSize: '40px 40px' 
+              }} 
+            />
+
+            {/* Left Column: Upload */}
+            <div className="space-y-6 text-left">
+              <div className="flex items-center gap-3 border-l-4 border-blue-500 pl-4">
+                <span className="text-blue-500 font-black">1.</span>
+                <h3 className="text-xl font-black uppercase tracking-tight text-foreground">Upload Chart</h3>
+              </div>
+              
+              <div className="group relative rounded-[2.5rem] border-2 border-dashed border-white/10 bg-slate-800/40 p-12 transition-all hover:border-blue-500/50 flex flex-col items-center justify-center text-center">
+                <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                
+                {!previewUrl ? (
+                  <>
+                    <div className="h-20 w-20 rounded-3xl bg-blue-500/10 flex items-center justify-center mb-6">
+                      <Upload className="h-8 w-8 text-blue-500" />
+                    </div>
+                    <h4 className="text-lg font-bold uppercase text-slate-100">Drop your screenshot here</h4>
+                    <p className="text-xs text-slate-400 mt-2">Supports MT4/MT5, TradingView (PNG, JPG)</p>
+                  </>
+                ) : (
+                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10">
+                    <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <p className="text-xs font-bold uppercase text-white">Click to change image</p>
+                    </div>
+                  </div>
+                )}
+
+                <Button 
+                  onClick={runAnalysis}
+                  disabled={isAnalyzing || !selectedFile}
+                  className="mt-8 w-full bg-blue-600 py-8 font-black uppercase rounded-2xl tracking-widest hover:scale-[1.02] transition-transform text-white relative z-20"
+                >
+                  {isAnalyzing ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : null}
+                  {isAnalyzing ? "Processing..." : "Analyze Chart"}
+                </Button>
+              </div>
+            </div>
+
+            {/* Right Column: AI Outcome */}
+            <div className="space-y-6 text-left bg-slate-900/50 p-6 rounded-[2.5rem] border border-white/5 min-h-[500px] flex flex-col">
+              <div className="flex items-center gap-3 border-l-4 border-blue-500 pl-4">
+                <span className="text-blue-500 font-black">2.</span>
+                <h3 className="text-xl font-black uppercase tracking-tight text-foreground">AI Analysis Outcome</h3>
+              </div>
+
+              <div className="flex-1 rounded-3xl bg-slate-800/30 p-8 relative overflow-y-auto">
+                {!showAnalysis && !isAnalyzing && (
+                  <div className="flex flex-col items-center justify-center text-center p-12 opacity-50">
+                    <BrainCircuit className="h-16 w-16 text-muted-foreground mb-4" />
+                    <p className="text-xs font-bold uppercase tracking-widest text-slate-400 text-center">Upload a chart to begin technical analysis</p>
+                  </div>
+                )}
+
+                {isAnalyzing && (
+                  <div className="flex flex-col items-center justify-center h-full space-y-4">
+                    <div className="h-1 bg-secondary w-48 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ x: "-100%" }}
+                        animate={{ x: "100%" }}
+                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                        className="h-full bg-blue-500 w-1/2"
+                      />
+                    </div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground animate-pulse">Neural engine processing...</p>
+                  </div>
+                )}
+
+                {showAnalysis && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="prose prose-invert prose-sm max-w-none">
+                    <div className="flex items-center gap-2 text-blue-500">
+                      <Sparkles className="h-5 w-5" />
+                      <span className="text-xs font-black uppercase tracking-widest">Intelligence Report CF-992</span>
+                    </div>
+                    <div className="mt-6 whitespace-pre-wrap text-slate-300 leading-relaxed font-medium">
+                      {analysisResult}
+                    </div>
+
+                    <div className="pt-6 border-t border-white/5 flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <div className="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Analysis High-Confidence</span>
+                      </div>
+                      <Target className="h-4 w-4 text-blue-500" />
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

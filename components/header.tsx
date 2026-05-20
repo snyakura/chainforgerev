@@ -29,6 +29,8 @@ export function Header() {
   };
 
 const scrollToSection = (href: string) => {
+    window.dispatchEvent(new CustomEvent("reset-bridge"));
+
     if (href === "#home") {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
@@ -54,6 +56,7 @@ const scrollToSection = (href: string) => {
 
   const handleNavClick = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
+    window.dispatchEvent(new CustomEvent("reset-bridge"));
     
     if (mobileMenuOpen) {
       // 1. Close the menu first
@@ -75,7 +78,11 @@ const scrollToSection = (href: string) => {
         <div className="flex h-16 items-center justify-between">
           
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link 
+            href="#home" 
+            onClick={(e) => handleNavClick(e, "#home")}
+            className="flex items-center gap-2"
+          >
             <motion.div 
               whileHover={{ scale: 1.05 }}
               className="flex h-[150px] w-[150px] lg:h-[200px] lg:w-[200px] items-center justify-center relative"

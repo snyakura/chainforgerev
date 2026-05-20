@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Smartphone, Wallet, Landmark, ArrowLeft, 
@@ -36,6 +36,32 @@ export function PaymentMethods() {
     bankAccountName: "",
     proofFile: null as File | null,
   });
+
+  useEffect(() => {
+    const handleOpenDeposit = () => {
+      setMode("deposit");
+      setStep(1);
+    };
+
+    const handleOpenWithdrawal = () => {
+      setMode("withdrawal");
+      setStep(1);
+    };
+
+    const handleResetBridge = () => {
+      setMode(null);
+      setStep(0);
+    };
+
+    window.addEventListener("open-deposit", handleOpenDeposit);
+    window.addEventListener("open-withdrawal", handleOpenWithdrawal);
+    window.addEventListener("reset-bridge", handleResetBridge);
+    return () => {
+      window.removeEventListener("open-deposit", handleOpenDeposit);
+      window.removeEventListener("open-withdrawal", handleOpenWithdrawal);
+      window.removeEventListener("reset-bridge", handleResetBridge);
+    };
+  }, []);
 
   const updateForm = (updates: Partial<typeof formData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
@@ -93,9 +119,19 @@ export function PaymentMethods() {
   };
 
   const handleSubmit = async () => {
-    setIsSubmitting(true);
+    if (!validateStep()) {
+      return;
+    }
+    setIsSubmitting(true); // Set submitting state after validation
 
     try {
+      let transactionDetails = '';
+      if (mode === 'withdrawal') {
+        transactionDetails = `Bank: ${formData.bankName}\nAcc Name: ${formData.bankAccountName}\nAcc Number: ${formData.bankAccount}`;
+      } else { // deposit
+        transactionDetails = `Gateway: ${formData.gateway} (${formData.gatewayNumber})`;
+      }
+
       const message = `*CHAINFORGE BRIDGE TRANSACTION*
 Mode: ${mode?.toUpperCase()}
 ---
@@ -104,10 +140,7 @@ Email: ${formData.email}
 Phone: ${formData.phone}
 ---
 Broker: ${formData.broker} (${formData.brokerId})
-Gateway: ${formData.gateway} (${formData.gatewayNumber})
-${mode === 'withdrawal' ? `Bank: ${formData.bankName}
-Acc Name: ${formData.bankAccountName}
-Acc Number: ${formData.bankAccount}` : ''}
+${transactionDetails}
 Amount: $${formData.amount}
 Net Receive: $${netReceive.toFixed(2)}
 ---
