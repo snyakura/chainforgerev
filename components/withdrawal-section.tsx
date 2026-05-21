@@ -47,8 +47,8 @@ export function ChainforgeBridge() {
   };
 
   const amountValue = parseFloat(formData.amount) || 0;
-  const adminFee = amountValue * 0.10;
-  const netResult = Math.max(0, amountValue - adminFee);
+  const adminFee = mode === "deposit" ? amountValue * 0.10 : 0;
+  const netResult = mode === "deposit" ? Math.max(0, amountValue - adminFee) : amountValue;
 
   const validateStep = () => {
     const newErrors: Record<string, string> = {};

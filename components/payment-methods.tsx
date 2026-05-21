@@ -35,6 +35,7 @@ export function PaymentMethods() {
     bankAccount: "",
     bankAccountName: "",
     proofFile: null as File | null,
+    binancePayQr: null as File | null,
   });
 
   useEffect(() => {
@@ -74,8 +75,8 @@ export function PaymentMethods() {
   };
 
   const amountValue = parseFloat(formData.amount) || 0;
-  const adminFee = amountValue * 0.10;
-  const netReceive = Math.max(0, amountValue - adminFee);
+  const adminFee = mode === "deposit" ? amountValue * 0.10 : 0;
+  const netReceive = mode === "deposit" ? Math.max(0, amountValue - adminFee) : amountValue;
 
   const validateStep = () => {
     const newErrors: Record<string, string> = {};
@@ -264,13 +265,15 @@ _Please attach my proof of payment image to this message._`;
                     <Input type="number" value={formData.amount} onChange={(e) => updateForm({ amount: e.target.value })} className={`bg-secondary/30 py-8 text-4xl font-black text-blue-500 border-none focus:ring-0 ${errors.amount ? "ring-2 ring-red-500" : ""}`} />
                     {errors.amount && <p className="text-[10px] text-red-500 font-bold uppercase px-1">{errors.amount}</p>}
                   </div>
-                  <div className="p-8 rounded-[2.5rem] bg-secondary/20 border border-border space-y-4 text-xs font-bold uppercase tracking-widest">
-                    <div className="flex justify-between text-muted-foreground"><span>Service Fee (10%)</span><span className="text-foreground">-${adminFee.toFixed(2)}</span></div>
-                    <div className="pt-6 border-t border-border flex justify-between items-center">
-                        <span className="text-foreground">Net Total Value</span>
-                        <span className="text-4xl font-black text-blue-500">${netReceive.toFixed(2)}</span>
+                  {mode === "deposit" && (
+                    <div className="p-8 rounded-[2.5rem] bg-secondary/20 border border-border space-y-4 text-xs font-bold uppercase tracking-widest">
+                      <div className="flex justify-between text-muted-foreground"><span>Service Fee (10%)</span><span className="text-foreground">-${adminFee.toFixed(2)}</span></div>
+                      <div className="pt-6 border-t border-border flex justify-between items-center">
+                          <span className="text-foreground">Net Total Value</span>
+                          <span className="text-4xl font-black text-blue-500">${netReceive.toFixed(2)}</span>
+                      </div>
                     </div>
-                  </div>
+                  )}
                   {(mode === "deposit" || formData.gateway !== "FNB (EFT)") && (
                     <div className="space-y-2">
                         <Label className="text-[10px] font-black uppercase ml-1">{formData.gateway} Number</Label>

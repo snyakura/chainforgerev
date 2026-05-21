@@ -9,9 +9,9 @@ import { useTheme } from "next-themes";
 
 const navItems = [
   { label: "Home", href: "#home" },
+  { label: "Services", href: "#services" },
   { label: "AI Analyser", href: "#ai-analyser" },
   { label: "About", href: "#about" }, 
-  { label: "Services", href: "#services" },
   // { label: "Testimonials", href: "#testimonials" }, // Keeping consistent with footer, currently commented out
 ];
 
