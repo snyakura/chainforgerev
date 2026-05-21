@@ -267,8 +267,12 @@ _Please attach my proof of transfer image to this message._`;
                             <p className="pl-4 opacity-80">Enter your Full Name or Trading ID as the payment reference.</p>
                           </div>
                           <div className="space-y-1">
-                            <p className="text-blue-400 font-black">4. Capture Proof & Notify</p>
-                            <p className="pl-4 opacity-80">Once complete, upload your PDF receipt or screenshot once redirected to WhatsApp to notify our team.</p>
+                            <p className="text-blue-400 font-black">4. Capture Proof & QR</p>
+                            <p className="pl-4 opacity-80">Save a screenshot of the transaction and your QR code for account linking.</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-blue-400 font-black">5. Notify</p>
+                            <p className="pl-4 opacity-80">Upload your documents once redirected to WhatsApp to notify our team.</p>
                           </div>
                         </div>
                       </div>
@@ -320,13 +324,14 @@ _Please attach my proof of transfer image to this message._`;
                     </div>
                   ) : (
                     /* DEFAULT VERIFICATION FLOW (Crypto/Mobile Money) */
-                    <div className="text-center p-8 bg-secondary/30 rounded-[2rem]">
+                    <div className="text-left p-8 bg-secondary/30 rounded-[2rem] space-y-2">
                       <p className="text-xs font-black uppercase text-muted-foreground">Standard verification active for {formData.gateway}</p>
+                      <p className="text-[10px] font-bold uppercase opacity-80">4. QR CODE: Save a screenshot of your QR code for verification.</p>
                     </div>
                   )}
                   <div className="p-6 border-2 border-red-500 bg-red-500/10 rounded-[2rem] animate-pulse">
                     <p className="text-sm font-black text-red-500 text-center uppercase tracking-widest">
-                      IMPORTANT: Don't forget to attach your proof of payment image once redirected to WhatsApp!
+                      IMPORTANT: Don't forget to attach your proof of payment image and QR code screenshot once redirected to WhatsApp!
                     </p>
                   </div>
                   <Button onClick={handleSubmit} className="w-full bg-blue-600 h-16 rounded-2xl font-black uppercase">Submit Verification</Button>
