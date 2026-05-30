@@ -106,10 +106,7 @@ export function Hero() {
                 variant="ghost"
                 className="w-full border border-white/20 bg-white/5 text-white transition-all font-bold px-8 py-6 rounded-2xl tracking-widest uppercase text-xs focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 flex justify-center hover:scale-105 hover:bg-white/10 hover:border-white/40"
                 onClick={() => {
-                  scrollToSection("#bridge");
-                  setTimeout(() => {
-                    window.dispatchEvent(new CustomEvent("open-withdrawal"));
-                  }, 10);
+                  scrollToSection("#about");
                 }}
               >
                 <Bitcoin className="mr-2 h-4 w-4" />
